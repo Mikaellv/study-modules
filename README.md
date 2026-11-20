@@ -7,7 +7,7 @@ Two interactive, self-contained courses for complete beginners. Each runs in the
 | **Git from Zero** | Simulated terminal with a live view of the working directory, staging area, commits and remote. Covers `config`, `init`, `status`, `add`, `commit`, `log`, `diff`, `restore`, `revert`, `.gitignore`, branches, merging, conflicts, `clone`, `push`, `pull`. | `docs/git-basics.html` |
 | **SQL from Zero** | Real SQLite database (sql.js) of a small bookshop. Covers `SELECT`, `WHERE`, `ORDER BY`, `LIMIT`, `DISTINCT`, aggregates, `GROUP BY`/`HAVING`, `JOIN`/`LEFT JOIN`, `INSERT`/`UPDATE`/`DELETE`, `CREATE`/`ALTER`/`DROP TABLE`. | `docs/sql-basics.html` |
 
-Each module has 9 lessons: explanation, runnable examples, a short quiz and practice tasks that are checked automatically. Both end with a final project and include a cheat sheet. Progress is saved in the browser (localStorage).
+Each module has 9 lessons: explanation, runnable examples, a short quiz and typed practice that is checked automatically. Git lessons have "Type the command" drills plus a practice terminal; SQL lessons have exercises you write in an editor (the solution unlocks only after your first attempt). Both end with a final project and include a cheat sheet. Progress is saved in the browser (localStorage).
 
 ## Running
 

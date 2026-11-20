@@ -61,8 +61,19 @@ h3 { font-family: var(--font-display); font-size: 1.05rem; margin: 22px 0 6px; }
 .prose p, .prose li { margin: 0 0 10px; }
 .prose ul, .prose ol { padding-left: 1.3em; }
 code { font-family: var(--font-mono); font-size: 0.86em; background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; }
-code.cmd { cursor: pointer; border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); }
-code.cmd:hover { background: var(--accent-soft); }
+.drills { margin-top: 28px; display: flex; flex-direction: column; gap: 12px; }
+.drills > p { margin: 0; }
+.drill { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 16px; }
+.drill.ok { border-color: var(--ok); }
+.drill p { margin: 0 0 8px; font-weight: 600; }
+.drow { display: flex; align-items: center; gap: 8px; background: var(--term-bg); border-radius: 8px; padding: 6px 6px 6px 12px; }
+.drow .dpr { font-family: var(--font-mono); color: var(--term-blue); font-size: 0.85rem; }
+.drow input { flex: 1; min-width: 0; background: transparent; border: 0; outline: none; color: var(--term-fg); font-family: var(--font-mono); font-size: 0.88rem; caret-color: var(--term-green); padding: 4px 0; }
+.drow input:disabled { color: var(--term-green); }
+.drow .btn { flex: none; }
+.dfb { font-size: 0.86rem; margin-top: 6px; min-height: 1em; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.dfb .bad { color: var(--bad); } .dfb .good { color: var(--ok); font-weight: 600; }
+.dfb .answer { font-family: var(--font-mono); background: var(--surface-2); border-radius: 5px; padding: 1px 6px; }
 pre.block { font-family: var(--font-mono); font-size: 0.85rem; background: var(--term-bg); color: var(--term-fg); padding: 12px 14px; border-radius: 8px; overflow-x: auto; line-height: 1.5; }
 .tablewrap { overflow-x: auto; margin: 12px 0 16px; }
 table.ref { border-collapse: collapse; font-size: 0.9rem; min-width: 460px; width: 100%; }
@@ -712,7 +723,7 @@ const clean = () => S.repo && !isDirty() && changes().untracked.length === 0;
 const ran = re => re.test(lastCmd);
 const README = '# Family Recipes\n';
 const PANCAKES = L('Pancakes', '- 2 eggs', '- 1 cup flour', '- 1 cup milk');
-const c = (s) => `<code class="cmd">${esc(s)}</code>`;
+const c = (s) => `<code>${esc(s)}</code>`;
 
 /* ============================== Lessons ============================== */
 const LESSONS = [
@@ -765,7 +776,7 @@ git config --global user.email "ada@example.com"</pre>
 <h3>3. Ask Git what is going on</h3>
 <p>${c('git status')} is the command you will run most. It tells you which branch you are on, which files changed, and what Git suggests you do next. When in doubt, run <code>git status</code>.</p>
 <p class="tip">The default first branch is called <code>main</code>. Older Git versions call it <code>master</code>. You can make new repositories use <code>main</code> with <code>git config --global init.defaultBranch main</code>.</p>
-<p>Click any orange command in the text to copy it into the terminal, then press <kbd>Enter</kbd>. Type <code>help</code> to see everything the practice terminal understands.</p>`,
+<p>Type every command yourself rather than copying it. Typing is what makes the commands stick. In the practice terminal, type <code>help</code> to see everything it understands.</p>`,
   quiz: [
     { q: 'How often do you run git init for a project?', o: ['Before every commit', 'Once, when you start tracking the project', 'Every time you open the terminal', 'Once per file'], a: 1, why: 'git init creates the repository. After that, the .git folder stays there.' },
     { q: 'What does --global do in git config --global user.name "Sam"?', o: ['Publishes your name on the internet', 'Sets the name for all repositories on this computer', 'Sets the name only for the current folder', 'Creates a new user account'], a: 1 },
@@ -1059,6 +1070,87 @@ git push                     # share your work</pre>
   },
 },
 ];
+/* "Type the command" drills: answers are matched after trimming, collapsing spaces and turning ' into " */
+const R = s => new RegExp('^' + s + '$');
+const DRILLS = {
+  intro: [
+    { q: 'Type the command that shows which version of Git is installed.', a: [R('git (--version|version)')], show: 'git --version' },
+    { q: 'The changes are staged. Type the command that saves them as a commit with the message Add menu.', a: [R('git commit -m "Add menu"')], show: 'git commit -m "Add menu"' },
+  ],
+  setup: [
+    { q: 'Set your Git name to Ada Lovelace for every project on this computer.', a: [R('git config --global user\\.name "Ada Lovelace"')], show: 'git config --global user.name "Ada Lovelace"' },
+    { q: 'Set your Git email to ada@example.com for every project on this computer.', a: [R('git config --global user\\.email "?ada@example\\.com"?')], show: 'git config --global user.email "ada@example.com"' },
+    { q: 'Turn the current folder into a Git repository.', a: [R('git init')], show: 'git init' },
+    { q: 'Ask Git which files have changed and what it suggests doing next.', a: [R('git status')], show: 'git status' },
+  ],
+  commit: [
+    { q: 'Stage only the file index.html.', a: [R('git add index\\.html')], show: 'git add index.html' },
+    { q: 'Stage every change in the project folder.', a: [R('git add (\\.|-A|--all)')], show: 'git add .' },
+    { q: 'Commit the staged changes with the message Add contact page.', a: [R('git commit -m "Add contact page"')], show: 'git commit -m "Add contact page"' },
+    { q: 'In one command, stage all changes to tracked files and commit them with the message Fix typo.', a: [R('git commit (-am|-a -m|-m "Fix typo" -a) ?("Fix typo")?'), R('git commit -a -m "Fix typo"')], test: v => /^git commit /.test(v) && /(^| )-a(m)?( |$)/.test(v) && /"Fix typo"/.test(v), show: 'git commit -am "Fix typo"' },
+  ],
+  history: [
+    { q: 'Show the commit history with one commit per line.', a: [R('git log --oneline')], show: 'git log --oneline' },
+    { q: 'Show the changes you have made but not staged yet.', a: [R('git diff')], show: 'git diff' },
+    { q: 'Show exactly what is staged for the next commit.', a: [R('git diff --(staged|cached)')], show: 'git diff --staged' },
+    { q: 'Show the commits of all branches, one per line.', a: [R('git log (--oneline --all|--all --oneline)')], show: 'git log --oneline --all' },
+  ],
+  undo: [
+    { q: 'You edited menu.md and want the last committed version back. Discard your edits.', a: [R('git restore menu\\.md'), R('git checkout -- menu\\.md')], show: 'git restore menu.md' },
+    { q: 'You staged secrets.env by mistake. Unstage it without deleting the file.', a: [R('git restore --staged secrets\\.env'), R('git reset (HEAD )?secrets\\.env')], show: 'git restore --staged secrets.env' },
+    { q: 'Undo the commit a1b2c3d by making a new commit that reverses it.', a: [R('git revert a1b2c3d')], show: 'git revert a1b2c3d' },
+    { q: 'Type the line you would put in .gitignore to ignore every file ending in .log.', a: [R('\\*\\.log')], show: '*.log' },
+  ],
+  branches: [
+    { q: 'List all branches.', a: [R('git branch')], show: 'git branch' },
+    { q: 'Create a branch called login and switch to it, in one command.', a: [R('git switch -c login'), R('git checkout -b login')], show: 'git switch -c login' },
+    { q: 'Switch back to the main branch.', a: [R('git switch main'), R('git checkout main')], show: 'git switch main' },
+    { q: 'The login branch is merged. Delete it.', a: [R('git branch -d login'), R('git branch --delete login')], show: 'git branch -d login' },
+  ],
+  merge: [
+    { q: 'You are on main. Bring the work from the branch feature-x into it.', a: [R('git merge feature-x')], show: 'git merge feature-x' },
+    { q: 'You fixed the conflict in README.md. Mark it as resolved.', a: [R('git add (README\\.md|\\.)')], show: 'git add README.md' },
+    { q: 'The merge has conflicts and you want to go back to how things were before. Cancel it.', a: [R('git merge --abort')], show: 'git merge --abort' },
+  ],
+  remotes: [
+    { q: 'Download the repository at https://github.com/team/shop.git to your computer.', a: [R('git clone https://github\\.com/team/shop\\.git')], show: 'git clone https://github.com/team/shop.git' },
+    { q: 'Connect your local repository to https://github.com/you/notes.git under the name origin.', a: [R('git remote add origin https://github\\.com/you/notes\\.git')], show: 'git remote add origin https://github.com/you/notes.git' },
+    { q: 'Push main to origin for the first time and remember the connection.', a: [R('git push (-u|--set-upstream) origin main')], show: 'git push -u origin main' },
+    { q: 'Download your teammates\' new commits and merge them into your branch.', a: [R('git pull'), R('git pull origin main')], show: 'git pull' },
+  ],
+};
+LESSONS.forEach(l => { if (DRILLS[l.id]) l.drills = DRILLS[l.id]; });
+function drillsHTML(L0) {
+  return `<section class="drills"><h2 style="margin:0">Type the command</h2><p class="tip">Write each command from memory and press Enter. Single or double quotes both work. After two tries you can reveal the answer, but you still type it in.</p>${L0.drills.map((d, i) => `<div class="drill" data-d="${i}"><p>${esc(d.q)}</p><div class="drow"><span class="dpr">$</span><input id="drill-${L0.id}-${i}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Your command"><button class="btn dcheck" type="button">Check</button></div><div class="dfb" aria-live="polite"></div></div>`).join('')}</section>`;
+}
+function drillWrongMsg(d, v) {
+  if (/^Git /.test(v)) return 'Commands are case sensitive: write git in lowercase.';
+  if (d.show.startsWith('git ') && !v.startsWith('git ')) return 'Git commands start with git.';
+  if (d.show.includes('"') && !v.includes('"')) return `Put text with spaces inside quotes, like ${(d.show.match(/"[^"]*"/) || ['"text"'])[0]}.`;
+  return 'Not quite. Check the command name, the options and the spelling.';
+}
+function wireDrills(L0) {
+  main.querySelectorAll('.drill').forEach(el => {
+    const i = +el.dataset.d, d = L0.drills[i], input = el.querySelector('input'), fb = el.querySelector('.dfb'), btn = el.querySelector('.dcheck');
+    let tries = 0;
+    const check = () => {
+      const v = input.value.trim().replace(/^\$\s*/, '').replace(/\s+/g, ' ').replace(/'/g, '"');
+      if (!v) { fb.innerHTML = '<span class="bad">Type a command first.</span>'; return; }
+      if (d.a.some(r => r.test(v)) || (d.test && d.test(v))) {
+        drillState[i] = true; el.classList.add('ok'); input.disabled = true; btn.disabled = true;
+        fb.innerHTML = `<span class="good">Correct.</span>${v !== d.show.replace(/'/g, '"') ? `<span class="tip">Also common: <span class="answer">${esc(d.show)}</span></span>` : ''}`;
+        checkComplete(); return;
+      }
+      tries++;
+      fb.innerHTML = `<span class="bad">${esc(drillWrongMsg(d, v))}</span>${tries >= 2 ? '<button class="linkbtn reveal" type="button">Show answer</button>' : ''}`;
+      const rv = fb.querySelector('.reveal'); if (rv) rv.onclick = () => { fb.innerHTML = `<span>Answer: <span class="answer">${esc(d.show)}</span>. Now type it in yourself.</span>`; input.value = ''; input.focus(); };
+    };
+    btn.addEventListener('click', check);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') check(); });
+  });
+}
+let drillState = [];
+
 const CHEAT = {
   id: 'cheatsheet', title: 'Cheat sheet',
   body: `
@@ -1127,6 +1219,7 @@ function render() {
   <h1>${esc(L0.title)}</h1>
   <div class="prose">${L0.body}</div>
   ${L0.quiz ? quizHTML(L0.quiz) : ''}
+  ${L0.drills ? drillsHTML(L0) : ''}
   ${L0.lab ? `<section class="lab"><div class="labhead"><h2>Practice</h2><button class="btn" id="hintbtn" type="button">Show hint</button><button class="btn" id="resetlab" type="button">Start over</button></div>
     <ol class="tasks" id="tasks"></ol>
     <div class="labgrid">
@@ -1145,7 +1238,8 @@ function render() {
     if (oi === q.a) { b.classList.add('right'); fb.textContent = 'Correct. ' + (q.why || ''); fb.style.color = 'var(--ok)'; quizState[qi] = true; checkComplete(); }
     else { b.classList.add('wrong'); fb.textContent = 'Not quite. Try another answer.'; fb.style.color = 'var(--bad)'; }
   }));
-  main.querySelectorAll('code.cmd').forEach(el => el.addEventListener('click', () => fillCmd(el.textContent)));
+  drillState = L0.drills ? L0.drills.map(() => false) : [];
+  if (L0.drills) wireDrills(L0);
   if (L0.lab) startLab(L0); else { lab = null; outEl = null; }
   if (!L0.lab && !L0.quiz && !isLesson) {}
   checkComplete(true);
@@ -1191,7 +1285,6 @@ function checkTasks() {
 function renderTasks() {
   const el = document.getElementById('tasks'); if (!el) return;
   el.innerHTML = lab.def.tasks.map((t, i) => `<li class="${i < lab.idx ? 'done' : i === lab.idx ? 'cur' : ''}"><div>${esc(t.t)}${i === lab.idx && lab.hint ? `<div class="hint">Try: <code class="hintcmd">${esc(t.h)}</code></div>` : ''}</div></li>`).join('');
-  el.querySelectorAll('.hintcmd').forEach(c => c.addEventListener('click', () => { if (!/  then  |, then /.test(c.textContent)) fillCmd(c.textContent); }));
   document.getElementById('hintbtn').textContent = lab.hint ? 'Hide hint' : 'Show hint';
   document.getElementById('hintbtn').disabled = lab.idx >= lab.def.tasks.length;
 }
@@ -1233,7 +1326,7 @@ function renderState() {
 }
 function checkComplete(silent) {
   const L0 = ALL[current]; if (current >= LESSONS.length) return;
-  const quizOk = !L0.quiz || quizState.every(Boolean);
+  const quizOk = (!L0.quiz || quizState.every(Boolean)) && (!L0.drills || drillState.every(Boolean));
   const labOk = !L0.lab || (lab && lab.idx >= L0.lab.tasks.length);
   const box = document.getElementById('donebox');
   if (quizOk && labOk) {
@@ -1243,7 +1336,7 @@ function checkComplete(silent) {
   } else if (isDone(L0.id)) {
     box.innerHTML = `<div class="donebox" style="background:var(--surface);border-color:var(--line)">You already completed this lesson. Feel free to practise again.</div>`;
   } else {
-    const parts = []; if (L0.quiz && !quizOk) parts.push('answer the questions'); if (L0.lab && !labOk) parts.push('finish the practice tasks');
+    const parts = []; if (L0.quiz && !quizState.every(Boolean)) parts.push('answer the questions'); if (L0.drills && !drillState.every(Boolean)) parts.push('type the commands'); if (L0.lab && !labOk) parts.push('finish the practice tasks');
     box.innerHTML = `<p class="tip" style="margin-top:20px">To complete this lesson: ${parts.join(' and ')}.</p>`;
   }
 }

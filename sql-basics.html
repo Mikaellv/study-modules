@@ -301,6 +301,7 @@ ${ex('SELECT title, year FROM books;')}
 <li>A line starting with <code>--</code> is a comment, ignored by the database.</li>
 </ul>
 <div class="note">This page runs a real SQLite database in your browser. SQLite, PostgreSQL, MySQL and SQL Server all share the SQL in this course; they only differ in advanced features. Each exercise starts from a fresh copy of the shop, so you cannot break anything.</div>
+<p>Every exercise has an empty editor: you write the SQL yourself and it is checked against the expected result. Hints are always available; the solution unlocks after your first attempt.</p>
 <p class="tip">To use SQL on your own computer later, the free <em>DB Browser for SQLite</em> is the easiest start. You open or create a database file and type queries just like here.</p>`,
   quiz: [
     { q: 'In a table, what is a row?', o: ['One kind of information, like “price”', 'One record, like one book', 'The name of the table', 'A SQL keyword'], a: 1 },
@@ -669,7 +670,10 @@ function wireExercise(L0, el) {
   ta.addEventListener('keydown', ev => { if (ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey)) { ev.preventDefault(); run(); } });
   ta.addEventListener('input', () => { store.drafts[k] = ta.value; save(); });
   el.querySelector('.hintb').addEventListener('click', () => { rev.hidden = false; rev.innerHTML = `<b>Hint:</b> ${esc(e.hint)}`; });
-  el.querySelector('.solb').addEventListener('click', () => { rev.hidden = false; rev.innerHTML = `<b>One possible solution</b> (other correct queries exist):<pre>${hl(e.sol)}</pre><button class="btn usesol" type="button" style="margin-top:6px">Copy into editor</button>`; rev.querySelector('.usesol').onclick = () => { ta.value = e.sol; ta.focus(); }; });
+  const solb = el.querySelector('.solb');
+  if (!store.solved[k]) { solb.disabled = true; solb.title = 'Run your own attempt first'; }
+  el.querySelector('.run').addEventListener('click', () => { if (ta.value.trim()) { solb.disabled = false; solb.title = ''; } });
+  solb.addEventListener('click', () => { rev.hidden = false; rev.innerHTML = `<b>One possible solution</b> (other correct queries exist). Type it into the editor yourself:<pre>${hl(e.sol)}</pre>`; });
 }
 function wirePlayground() {
   if (!playDb) playDb = freshDb();
