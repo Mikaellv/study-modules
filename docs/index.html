@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Study Modules</title>
+<style>
+:root { --bg: #f4f5f7; --ink: #1c222b; --muted: #5a6472; --line: #dbdfe5; --card: #fff; }
+@media (prefers-color-scheme: dark) { :root { --bg: #0f1217; --ink: #e7ebf0; --muted: #9ba5b3; --line: #2b313b; --card: #171b22; color-scheme: dark; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 system-ui, sans-serif; }
+main { max-width: 720px; margin: 0 auto; padding: 48px 16px; }
+h1 { margin: 0 0 8px; }
+p { color: var(--muted); }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 28px; }
+a.card { display: block; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px; color: inherit; text-decoration: none; }
+a.card:hover { border-color: currentColor; }
+a.card b { font-size: 1.2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Study Modules</h1>
+  <p>Two interactive beginner courses. No prior knowledge needed and nothing to install.</p>
+  <div class="cards">
+    <a class="card" href="git-basics.html"><b>Git from Zero</b><p>9 lessons with a practice terminal: commits, history, undo, branches, merges, conflicts and remotes.</p></a>
+    <a class="card" href="sql-basics.html"><b>SQL from Zero</b><p>9 lessons on a real SQLite bookshop database: SELECT, WHERE, sorting, aggregates, GROUP BY, JOINs, INSERT/UPDATE/DELETE, CREATE TABLE.</p></a>
+  </div>
+</main>
+</body>
+</html>

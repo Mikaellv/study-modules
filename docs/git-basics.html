@@ -1,0 +1,1270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Git from Zero</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Layout: sticky top bar, lesson rail on the left, lesson column with a terminal + repo-state lab underneath the reading */
+:root {
+  --bg: #f4f5f7; --surface: #ffffff; --surface-2: #eef0f3; --ink: #1c222b; --muted: #5a6472; --line: #dbdfe5;
+  --accent: #d9480f; --accent-soft: #fde8dd; --accent-ink: #ffffff;
+  --ok: #2b8a3e; --ok-soft: #e3f4e6; --bad: #c92a2a; --bad-soft: #fde4e4; --warn: #a86400;
+  --term-bg: #151a21; --term-fg: #d4dbe4; --term-dim: #8691a0; --term-green: #7ee08a; --term-red: #ff8079; --term-yellow: #e7b84b; --term-blue: #80bfff;
+  --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1217; --surface: #171b22; --surface-2: #1e232b; --ink: #e7ebf0; --muted: #9ba5b3; --line: #2b313b;
+  --accent: #ff7a45; --accent-soft: #3a2018; --accent-ink: #1a0d07;
+  --ok: #5cc277; --ok-soft: #15301d; --bad: #ff7b7b; --bad-soft: #3a1a1a; --warn: #e7b84b;
+  --term-bg: #0a0d11; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0f1217; --surface: #171b22; --surface-2: #1e232b; --ink: #e7ebf0; --muted: #9ba5b3; --line: #2b313b;
+  --accent: #ff7a45; --accent-soft: #3a2018; --accent-ink: #1a0d07;
+  --ok: #5cc277; --ok-soft: #15301d; --bad: #ff7b7b; --bad-soft: #3a1a1a; --warn: #e7b84b;
+  --term-bg: #0a0d11; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.6; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+button { font: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line);
+  padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.brand { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -0.01em; display: flex; align-items: center; gap: 10px; }
+.brand svg { flex: none; }
+.progress { margin-left: auto; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.bar { width: 140px; height: 6px; border-radius: 3px; background: var(--surface-2); overflow: hidden; }
+.bar > span { display: block; height: 100%; background: var(--accent); transition: width .3s; }
+.linkbtn { background: none; border: 0; color: var(--muted); text-decoration: underline; font-size: 0.8rem; padding: 2px; }
+
+.shell { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 32px; max-width: 1280px; margin: 0 auto;
+  padding-block: 24px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.side { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 72px); align-self: start; }
+.side h2 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 8px; font-weight: 600; }
+.nav { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.nav a { display: grid; grid-template-columns: 26px 1fr 16px; align-items: center; gap: 8px; padding: 7px 8px; border-radius: 8px; color: var(--ink); text-decoration: none; font-size: 0.92rem; }
+.nav a:hover { background: var(--surface-2); }
+.nav a[aria-current="page"] { background: var(--accent-soft); }
+.nav .num { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); text-align: right; }
+.nav .tick { color: var(--ok); font-weight: 700; }
+
+.lesson { min-width: 0; max-width: 980px; }
+.eyebrow { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin: 0; }
+h1 { font-family: var(--font-display); font-size: clamp(1.7rem, 3.5vw, 2.3rem); line-height: 1.15; letter-spacing: -0.02em; margin: 4px 0 18px; text-wrap: balance; }
+h2 { font-family: var(--font-display); font-size: 1.3rem; margin: 32px 0 10px; text-wrap: balance; }
+h3 { font-family: var(--font-display); font-size: 1.05rem; margin: 22px 0 6px; }
+.prose { max-width: 70ch; }
+.prose p, .prose li { margin: 0 0 10px; }
+.prose ul, .prose ol { padding-left: 1.3em; }
+code { font-family: var(--font-mono); font-size: 0.86em; background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; }
+code.cmd { cursor: pointer; border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); }
+code.cmd:hover { background: var(--accent-soft); }
+pre.block { font-family: var(--font-mono); font-size: 0.85rem; background: var(--term-bg); color: var(--term-fg); padding: 12px 14px; border-radius: 8px; overflow-x: auto; line-height: 1.5; }
+.tablewrap { overflow-x: auto; margin: 12px 0 16px; }
+table.ref { border-collapse: collapse; font-size: 0.9rem; min-width: 460px; width: 100%; }
+table.ref th, table.ref td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.ref th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
+.note { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent); padding: 10px 14px; border-radius: 6px; margin: 14px 0; max-width: 70ch; }
+.tip { font-size: 0.85rem; color: var(--muted); }
+
+.flow { display: flex; align-items: stretch; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
+.flow .box { flex: 1 1 150px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; min-width: 0; }
+.flow .box b { font-family: var(--font-display); display: block; }
+.flow .box span { font-size: 0.82rem; color: var(--muted); }
+.flow .arrow { align-self: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent); text-align: center; flex: 0 0 auto; }
+
+.quiz { margin-top: 28px; display: flex; flex-direction: column; gap: 14px; }
+.q { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; }
+.q p { margin: 0 0 10px; font-weight: 600; }
+.opts { display: flex; flex-direction: column; gap: 6px; }
+.opt { text-align: left; background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; color: var(--ink); }
+.opt:hover { border-color: var(--accent); }
+.opt.right { background: var(--ok-soft); border-color: var(--ok); }
+.opt.wrong { background: var(--bad-soft); border-color: var(--bad); }
+.qfb { font-size: 0.85rem; margin-top: 8px; min-height: 1em; }
+
+.lab { margin-top: 34px; border-top: 1px solid var(--line); padding-top: 6px; }
+.labhead { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.labhead h2 { margin-right: auto; }
+.btn { background: var(--surface); border: 1px solid var(--line); color: var(--ink); border-radius: 8px; padding: 6px 12px; font-size: 0.85rem; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+.tasks { list-style: none; padding: 0; margin: 10px 0 12px; display: flex; flex-direction: column; gap: 4px; counter-reset: t; }
+.tasks li { display: grid; grid-template-columns: 24px 1fr; gap: 8px; padding: 6px 10px; border-radius: 8px; color: var(--muted); counter-increment: t; }
+.tasks li::before { content: counter(t); font-family: var(--font-mono); font-size: 0.75rem; width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; margin-top: 1px; }
+.tasks li.cur { background: var(--surface); border: 1px solid var(--line); color: var(--ink); }
+.tasks li.cur::before { border-color: var(--accent); color: var(--accent); }
+.tasks li.done { color: var(--ink); }
+.tasks li.done::before { content: "✓"; background: var(--ok); border-color: var(--ok); color: var(--surface); font-weight: 700; }
+.hint { font-size: 0.85rem; margin-top: 4px; color: var(--muted); }
+.hint code { cursor: pointer; }
+
+.labgrid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 14px; align-items: start; }
+.term { background: var(--term-bg); color: var(--term-fg); border-radius: var(--radius); font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.5; display: flex; flex-direction: column; min-width: 0; height: 460px; }
+.term .bar2 { display: flex; gap: 6px; padding: 9px 12px; border-bottom: 1px solid #ffffff14; align-items: center; color: var(--term-dim); font-size: 0.75rem; }
+.term .bar2 i { width: 9px; height: 9px; border-radius: 50%; background: #ffffff26; display: inline-block; }
+.term .bar2 span { margin-left: 6px; }
+.out { flex: 1; overflow-y: auto; padding: 10px 12px; white-space: pre-wrap; word-break: break-word; }
+.out .l-cmd { color: var(--term-fg); }
+.out .l-cmd .pr { color: var(--term-blue); }
+.out .green { color: var(--term-green); } .out .red { color: var(--term-red); } .out .yellow { color: var(--term-yellow); } .out .dim { color: var(--term-dim); } .out .blue { color: var(--term-blue); }
+.out .event { color: var(--term-yellow); border-left: 2px solid var(--term-yellow); padding-left: 8px; margin: 4px 0; }
+.out .good { color: var(--term-green); border-left: 2px solid var(--term-green); padding-left: 8px; margin: 4px 0; }
+.inrow { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-top: 1px solid #ffffff14; }
+.inrow .pr { color: var(--term-blue); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 45%; }
+.inrow input { flex: 1; min-width: 0; background: transparent; border: 0; color: var(--term-fg); font: inherit; outline: none; caret-color: var(--term-green); }
+
+.state { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.area { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 12px; min-width: 0; }
+.area h4 { margin: 0 0 6px; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); display: flex; justify-content: space-between; gap: 8px; }
+.area h4 em { font-style: normal; text-transform: none; letter-spacing: 0; font-family: var(--font-mono); }
+.area ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+.area li { font-family: var(--font-mono); font-size: 0.8rem; display: flex; gap: 8px; align-items: baseline; min-width: 0; }
+.area .empty { font-size: 0.8rem; color: var(--muted); font-family: var(--font-body); }
+.fname { background: none; border: 0; padding: 0; color: var(--ink); font: inherit; text-align: left; overflow-wrap: anywhere; }
+.fname:hover { text-decoration: underline; }
+.badge { font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600; padding: 0 5px; border-radius: 4px; flex: none; }
+.b-new { background: var(--ok-soft); color: var(--ok); } .b-mod { background: var(--accent-soft); color: var(--accent); } .b-del, .b-con { background: var(--bad-soft); color: var(--bad); } .b-unt { background: var(--surface-2); color: var(--muted); }
+.peek { font-family: var(--font-mono); font-size: 0.76rem; background: var(--surface-2); border-radius: 6px; padding: 6px 8px; margin: 2px 0 4px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.commit { display: grid !important; grid-template-columns: auto 1fr; gap: 2px 8px !important; padding: 4px 0; border-bottom: 1px dashed var(--line); }
+.commit:last-child { border-bottom: 0; }
+.commit .hash { color: var(--accent); }
+.commit .msg { font-family: var(--font-body); overflow-wrap: anywhere; }
+.commit .refs { grid-column: 2; display: flex; flex-wrap: wrap; gap: 4px; }
+.ref { font-size: 0.68rem; padding: 0 6px; border-radius: 10px; border: 1px solid var(--line); color: var(--muted); }
+.ref.head { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.ref.br { border-color: var(--accent); color: var(--accent); }
+.ref.mg { border-style: dashed; }
+
+.pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 36px; flex-wrap: wrap; }
+.donebox { margin-top: 18px; padding: 12px 16px; border-radius: var(--radius); background: var(--ok-soft); border: 1px solid var(--ok); color: var(--ink); }
+
+@media (max-width: 900px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .side { position: static; }
+  .nav { flex-direction: row; overflow-x: auto; padding-bottom: 4px; }
+  .nav a { grid-template-columns: auto auto auto; white-space: nowrap; }
+  .labgrid { grid-template-columns: minmax(0, 1fr); }
+  .term { height: 380px; }
+  .bar { width: 80px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<header class="top">
+  <div class="brand">
+    <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="7" cy="5" r="3" fill="var(--accent)"/><circle cx="7" cy="21" r="3" fill="var(--accent)"/><circle cx="19" cy="11" r="3" fill="none" stroke="var(--accent)" stroke-width="2"/><path d="M7 8v10M7 15c0-4 12-1 12-6" stroke="var(--accent)" stroke-width="2" fill="none"/></svg>
+    Git from Zero
+  </div>
+  <div class="progress"><span id="progtext">0 / 9 lessons</span><div class="bar"><span id="progbar" style="width:0%"></span></div><button class="linkbtn" id="resetall" type="button">Reset progress</button></div>
+</header>
+<div class="shell">
+  <aside class="side"><h2>Lessons</h2><ol class="nav" id="nav"></ol></aside>
+  <main class="lesson" id="main"></main>
+</div>
+
+<script>
+(() => {
+/* ============================== Storage ============================== */
+const KEY = 'git-from-zero.v1';
+let store = { done: [], config: null };
+try { const v = JSON.parse(localStorage.getItem(KEY) || 'null'); if (v) store = Object.assign(store, v); } catch (e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} };
+
+/* ============================== Git simulator ============================== */
+let S;
+const has = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const L = (...lines) => lines.join('\n') + '\n';
+function fresh() { return { files: {}, repo: null, objects: {}, servers: {}, config: {}, clock: 0 }; }
+function newId() { let h; do { h = Math.floor(Math.random() * 0xfffffff).toString(16).padStart(7, '0'); } while (S.objects[h]); return h; }
+function mkCommit(tree, parents, msg, author) {
+  const id = newId();
+  S.objects[id] = { id, tree: { ...tree }, parents, msg, time: ++S.clock, author: author || S.config['user.name'] || 'You', email: S.config['user.email'] || 'you@example.com' };
+  return id;
+}
+const headId = () => S.repo.branches[S.repo.head] ?? null;
+const treeOf = id => (id ? S.objects[id].tree : {});
+function ancestors(id) { const set = new Set(), st = [id]; while (st.length) { const c = st.pop(); if (!c || set.has(c)) continue; set.add(c); st.push(...S.objects[c].parents); } return set; }
+const isAnc = (a, b) => !a || (!!b && ancestors(b).has(a));
+function mergeBase(a, b) { const A = ancestors(a); let best = null; for (const c of ancestors(b)) if (A.has(c) && (!best || S.objects[c].time > S.objects[best].time)) best = c; return best; }
+const union = (...objs) => [...new Set(objs.flatMap(o => Object.keys(o)))].sort();
+function diffTree(A, B) { return union(A, B).filter(p => A[p] !== B[p]).map(p => ({ p, type: !has(A, p) ? 'new file' : !has(B, p) ? 'deleted' : 'modified' })); }
+function ignorePatterns() {
+  const g = S.files['.gitignore']; if (!g) return [];
+  return g.split('\n').map(x => x.trim()).filter(x => x && !x.startsWith('#')).map(x => new RegExp('^' + x.replace(/\/$/, '').replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*').replace(/\?/g, '.') + '$'));
+}
+const isIgnored = p => ignorePatterns().some(r => r.test(p));
+function changes() {
+  const r = S.repo, H = treeOf(headId()), I = r.index, W = S.files;
+  const conflicts = r.merging ? r.merging.conflicts : [];
+  const staged = diffTree(H, I).filter(c => !conflicts.includes(c.p));
+  const unstaged = Object.keys(I).sort().filter(p => !conflicts.includes(p) && W[p] !== I[p]).map(p => ({ p, type: has(W, p) ? 'modified' : 'deleted' }));
+  const untracked = Object.keys(W).sort().filter(p => !has(I, p) && !isIgnored(p));
+  return { staged, unstaged, untracked, conflicts };
+}
+const isDirty = () => { const c = changes(); return c.staged.length > 0 || c.unstaged.length > 0 || c.conflicts.length > 0; };
+function resolve(ref) {
+  const r = S.repo; if (!ref) return null;
+  let m = ref.match(/^(.+?)~(\d*)$/) || ref.match(/^(.+?)(\^+)$/);
+  if (m) { let id = resolve(m[1]); let n = m[2].startsWith('^') ? m[2].length : (m[2] === '' ? 1 : +m[2]); while (id && n-- > 0) id = S.objects[id].parents[0] || null; return id; }
+  if (ref === 'HEAD') return headId();
+  if (has(r.branches, ref)) return r.branches[ref];
+  if (has(r.tracking, ref)) return r.tracking[ref];
+  if (/^[0-9a-f]{4,}$/.test(ref)) { const hits = Object.keys(S.objects).filter(k => k.startsWith(ref)); if (hits.length === 1) return hits[0]; }
+  return undefined;
+}
+function setTree(T, keepUntracked = true) {
+  const r = S.repo, H = treeOf(headId());
+  const untracked = {}; if (keepUntracked) for (const p in S.files) if (!has(r.index, p) && !has(H, p)) untracked[p] = S.files[p];
+  r.index = { ...T }; S.files = { ...untracked, ...T };
+}
+const short = id => id;
+function fmtDate(t) {
+  const d = new Date(2026, 10, 20, 9, t * 7);
+  const D = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()], M = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()];
+  const p = n => String(n).padStart(2, '0');
+  return `${D} ${M} ${d.getDate()} ${p(d.getHours())}:${p(d.getMinutes())}:00 2026 +0000`;
+}
+function decorations(id) {
+  const r = S.repo, out = [];
+  for (const b of Object.keys(r.branches)) if (r.branches[b] === id) out.push(b === r.head ? { t: 'HEAD -> ' + b, k: 'head' } : { t: b, k: 'br' });
+  for (const t of Object.keys(r.tracking)) if (r.tracking[t] === id) out.push({ t, k: 'rt' });
+  out.sort((a, b) => (a.k === 'head' ? -1 : b.k === 'head' ? 1 : 0));
+  return out;
+}
+
+/* ----- terminal output ----- */
+let outEl = null, buffer = [];
+function print(text, cls) { buffer.push({ text: String(text), cls }); }
+function flush() {
+  if (!outEl) { buffer = []; return; }
+  for (const b of buffer) { const d = document.createElement('div'); if (b.cls) d.className = b.cls; d.textContent = b.text; outEl.appendChild(d); }
+  buffer = []; outEl.scrollTop = outEl.scrollHeight;
+}
+const NOREPO = 'fatal: not a git repository (or any of the parent directories): .git';
+
+/* ----- tokenizer ----- */
+function splitAnd(s) { const parts = []; let cur = '', q = null; for (let i = 0; i < s.length; i++) { const c = s[i]; if (q) { if (c === q) q = null; cur += c; continue; } if (c === '"' || c === "'") { q = c; cur += c; continue; } if (c === '&' && s[i + 1] === '&') { parts.push(cur); cur = ''; i++; continue; } if (c === ';') { parts.push(cur); cur = ''; continue; } cur += c; } parts.push(cur); return parts.map(x => x.trim()).filter(Boolean); }
+function tokenize(s) {
+  const out = []; let cur = '', q = null, any = false;
+  const push = () => { if (cur || any) out.push(cur); cur = ''; any = false; };
+  for (let i = 0; i < s.length; i++) {
+    const c = s[i];
+    if (q) { if (c === q) q = null; else cur += c; continue; }
+    if (c === '"' || c === "'") { q = c; any = true; continue; }
+    if (/\s/.test(c)) { push(); continue; }
+    if (c === '>') { push(); if (s[i + 1] === '>') { out.push({ op: '>>' }); i++; } else out.push({ op: '>' }); continue; }
+    cur += c;
+  }
+  if (q) return null;
+  push(); return out;
+}
+
+/* ----- shell commands ----- */
+const shell = {
+  help() {
+    print(L('Commands this practice terminal understands:', '',
+      '  Files:  ls [-a]   cat FILE   touch FILE   rm FILE   clear',
+      '          echo "text" > FILE    (write a file, replacing its content)',
+      '          echo "text" >> FILE   (add a line to the end of a file)',
+      '  Git:    init  status  add  commit  log  diff  restore  rm  revert',
+      '          branch  switch  checkout  merge  remote  clone  push  pull  fetch  config',
+      '', 'Tip: press ↑ / ↓ to reuse earlier commands. Use && to run two commands in a row.'), 'dim');
+    return true;
+  },
+  clear() { if (outEl) outEl.innerHTML = ''; return true; },
+  pwd() { print('/home/you/project'); return true; },
+  ls(a) {
+    const all = a.includes('-a') || a.includes('-la') || a.includes('-al');
+    let names = Object.keys(S.files).sort(); if (!all) names = names.filter(n => !n.startsWith('.'));
+    if (all) names = ['.', '..', ...(S.repo ? ['.git'] : []), ...names];
+    if (names.length) print(names.join('  ')); else print('(this folder is empty)', 'dim');
+    return true;
+  },
+  cat(a) { if (!a[0]) { print('cat: missing file name', 'red'); return false; } let ok = true; for (const f of a) { if (!has(S.files, f)) { print(`cat: ${f}: No such file or directory`, 'red'); ok = false; } else print(S.files[f].replace(/\n$/, '')); } return ok; },
+  touch(a) { if (!a[0]) { print('touch: missing file operand', 'red'); return false; } for (const f of a) if (!has(S.files, f)) S.files[f] = ''; return true; },
+  rm(a) { const fs = a.filter(x => !x.startsWith('-')); if (!fs.length) { print('rm: missing operand', 'red'); return false; } for (const f of fs) { if (!has(S.files, f)) { print(`rm: cannot remove '${f}': No such file or directory`, 'red'); return false; } delete S.files[f]; } return true; },
+  cd() { print('This practice terminal works inside a single project folder, so cd is not needed here.', 'dim'); return true; },
+  mkdir() { print('Folders are not supported in this practice terminal. Keep files in the project folder.', 'dim'); return true; },
+  nano() { print('There is no text editor here. Write files with:  echo "text" > file.txt', 'dim'); return true; },
+};
+shell.vim = shell.vi = shell.code = shell.notepad = shell.nano;
+
+/* ----- git commands ----- */
+function needRepo() { if (!S.repo) { print(NOREPO, 'red'); return false; } return true; }
+function needIdentity() {
+  if (S.config['user.name'] && S.config['user.email']) return true;
+  print(L('Author identity unknown', '', '*** Please tell me who you are.', '', 'Run', '', '  git config --global user.email "you@example.com"', '  git config --global user.name "Your Name"', '', 'to set your account\'s default identity.'), 'red');
+  return false;
+}
+function trackInfo() {
+  const r = S.repo, h = headId(), up = r.upstream[r.head]; if (!up || !h) return null;
+  const tname = `${up}/${r.head}`, t = r.tracking[tname]; if (t === undefined) return null;
+  const A = ancestors(h), B = t ? ancestors(t) : new Set();
+  const ahead = [...A].filter(x => !B.has(x)).length, behind = [...B].filter(x => !A.has(x)).length;
+  return { tname, ahead, behind };
+}
+const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
+
+const G = {
+  '--version'() { print('git version 2.47.1'); return true; },
+  version() { return G['--version'](); },
+  help() { return shell.help(); },
+  config(a) {
+    const args = a.filter(x => x !== '--global' && x !== '--local');
+    if (args[0] === '--list' || args[0] === '-l') { const ks = Object.keys(S.config); if (!ks.length) print('(nothing configured yet)', 'dim'); ks.forEach(k => print(`${k}=${S.config[k]}`)); return true; }
+    if (!args[0]) { print('usage: git config [--global] <name> [<value>]', 'red'); return false; }
+    if (args.length === 1) { if (has(S.config, args[0])) print(S.config[args[0]]); return true; }
+    S.config[args[0]] = args.slice(1).join(' ');
+    if (args[0] === 'user.name' || args[0] === 'user.email') { store.config = { 'user.name': S.config['user.name'], 'user.email': S.config['user.email'] }; save(); }
+    return true;
+  },
+  init() {
+    if (S.repo) { print('Reinitialized existing Git repository in /home/you/project/.git/'); return true; }
+    const b = S.config['init.defaultBranch'] || 'main';
+    S.repo = { index: {}, branches: { [b]: null }, head: b, remotes: {}, upstream: {}, tracking: {}, merging: null };
+    print('Initialized empty Git repository in /home/you/project/.git/'); return true;
+  },
+  status() {
+    if (!needRepo()) return false;
+    const r = S.repo, h = headId();
+    print('On branch ' + r.head);
+    const ti = trackInfo();
+    if (ti) {
+      if (!ti.ahead && !ti.behind) print(`Your branch is up to date with '${ti.tname}'.`);
+      else if (ti.ahead && !ti.behind) print(`Your branch is ahead of '${ti.tname}' by ${plural(ti.ahead, 'commit')}.\n  (use "git push" to publish your local commits)`);
+      else if (!ti.ahead) print(`Your branch is behind '${ti.tname}' by ${plural(ti.behind, 'commit')}, and can be fast-forwarded.\n  (use "git pull" to update your local branch)`);
+      else print(`Your branch and '${ti.tname}' have diverged,\nand have ${ti.ahead} and ${ti.behind} different commits each, respectively.\n  (use "git pull" if you want to integrate the remote branch with yours)`);
+    }
+    if (!h) print('\nNo commits yet');
+    const c = changes();
+    if (r.merging) {
+      if (c.conflicts.length) print('\nYou have unmerged paths.\n  (fix conflicts and run "git commit")\n  (use "git merge --abort" to abort the merge)');
+      else print('\nAll conflicts fixed but you are still merging.\n  (use "git commit" to conclude merge)');
+    }
+    if (c.staged.length) { print('\nChanges to be committed:\n  (use "git restore --staged <file>..." to unstage)'); c.staged.forEach(x => print(`\t${(x.type + ':').padEnd(12)}${x.p}`, 'green')); }
+    if (c.conflicts.length) { print('\nUnmerged paths:\n  (use "git add <file>..." to mark resolution)'); c.conflicts.forEach(p => print(`\tboth modified:   ${p}`, 'red')); }
+    if (c.unstaged.length) { print('\nChanges not staged for commit:\n  (use "git add <file>..." to update what will be committed)\n  (use "git restore <file>..." to discard changes in working directory)'); c.unstaged.forEach(x => print(`\t${(x.type + ':').padEnd(12)}${x.p}`, 'red')); }
+    if (c.untracked.length) { print('\nUntracked files:\n  (use "git add <file>..." to include in what will be committed)'); c.untracked.forEach(p => print('\t' + p, 'red')); }
+    if (!c.staged.length && !c.unstaged.length && !c.untracked.length && !c.conflicts.length) {
+      if (!r.merging) print(h ? 'nothing to commit, working tree clean' : '\nnothing to commit (create/copy files and use "git add" to track)');
+    } else if (!c.staged.length && !r.merging) {
+      print(c.unstaged.length ? '\nno changes added to commit (use "git add" and/or "git commit -a")' : '\nnothing added to commit but untracked files present (use "git add" to track)');
+    }
+    return true;
+  },
+  add(a) {
+    if (!needRepo()) return false;
+    const r = S.repo, paths = a.filter(x => !x.startsWith('-') || x === '-A' || x === '--all');
+    if (!paths.length) { print("Nothing specified, nothing added.\nhint: Maybe you wanted to say 'git add .'?", 'yellow'); return false; }
+    const targets = new Set();
+    for (const p of paths) {
+      if (p === '.' || p === '-A' || p === '--all' || p === '*') { Object.keys(S.files).forEach(f => { if (has(r.index, f) || !isIgnored(f)) targets.add(f); }); Object.keys(r.index).forEach(f => targets.add(f)); continue; }
+      if (p.includes('*')) { const re = new RegExp('^' + p.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*') + '$'); const hit = union(S.files, r.index).filter(f => re.test(f)); if (!hit.length) { print(`fatal: pathspec '${p}' did not match any files`, 'red'); return false; } hit.forEach(f => targets.add(f)); continue; }
+      if (!has(S.files, p) && !has(r.index, p)) { print(`fatal: pathspec '${p}' did not match any files`, 'red'); return false; }
+      if (has(S.files, p) && !has(r.index, p) && isIgnored(p)) { print(`The following paths are ignored by one of your .gitignore files:\n${p}\nhint: Use -f if you really want to add them.`, 'yellow'); return false; }
+      targets.add(p);
+    }
+    for (const t of targets) { if (has(S.files, t)) r.index[t] = S.files[t]; else delete r.index[t]; if (r.merging) r.merging.conflicts = r.merging.conflicts.filter(x => x !== t); }
+    return true;
+  },
+  rm(a) {
+    if (!needRepo()) return false;
+    const cached = a.includes('--cached'), fs = a.filter(x => !x.startsWith('-'));
+    if (!fs.length) { print('usage: git rm [--cached] <file>...', 'red'); return false; }
+    for (const f of fs) { if (!has(S.repo.index, f)) { print(`fatal: pathspec '${f}' did not match any files`, 'red'); return false; } delete S.repo.index[f]; if (!cached) delete S.files[f]; print(`rm '${f}'`); }
+    return true;
+  },
+  commit(a) {
+    if (!needRepo()) return false;
+    const r = S.repo; let all = false; const msgs = [];
+    for (let i = 0; i < a.length; i++) {
+      const x = a[i];
+      if (x === '-m' || x === '--message') { if (a[i + 1] === undefined) { print("error: switch `m' requires a value", 'red'); return false; } msgs.push(a[++i]); }
+      else if (x === '-a' || x === '--all') all = true;
+      else if (x === '-am' || x === '-ma') { all = true; if (a[i + 1] === undefined) { print("error: switch `m' requires a value", 'red'); return false; } msgs.push(a[++i]); }
+      else if (x === '--amend') { print('--amend is not part of this course. Make a new commit instead.', 'dim'); return false; }
+      else if (x.startsWith('-')) { print(`error: unknown option '${x.replace(/^-+/, '')}'`, 'red'); return false; }
+      else { print(`error: pathspec '${x}' did not match any file(s) known to git\nhint: Did you forget the quotes around your message? Use: git commit -m "your message"`, 'red'); return false; }
+    }
+    if (!needIdentity()) return false;
+    if (r.merging && r.merging.conflicts.length) { print("error: Committing is not possible because you have unmerged files.\nhint: Fix them up in the work tree, and then use 'git add <file>'\nhint: as appropriate to mark resolution and make a commit.\nfatal: Exiting because of an unresolved conflict.", 'red'); return false; }
+    if (all) for (const p of Object.keys(r.index)) { if (has(S.files, p)) r.index[p] = S.files[p]; else delete r.index[p]; }
+    const h = headId(), staged = diffTree(treeOf(h), r.index);
+    if (!staged.length && !r.merging) {
+      const c = changes();
+      print('On branch ' + r.head);
+      if (c.unstaged.length || c.untracked.length) print(c.unstaged.length ? 'Changes not staged for commit. Stage them first with "git add <file>".\nno changes added to commit (use "git add" and/or "git commit -a")' : 'nothing added to commit but untracked files present (use "git add" to track)', 'yellow');
+      else print('nothing to commit, working tree clean');
+      return false;
+    }
+    let msg = msgs.join('\n\n').trim();
+    if (!msg) { if (r.merging) msg = `Merge branch '${r.merging.label}'`; else { print('Aborting commit due to empty commit message.\n(Real Git would open a text editor here. In this terminal, always add a message: git commit -m "Describe the change")', 'red'); return false; } }
+    const parents = h ? [h] : []; if (r.merging) parents.push(r.merging.theirs);
+    const id = mkCommit(r.index, parents, msg); r.branches[r.head] = id; r.merging = null;
+    const n = staged.length, ins = staged.filter(s => s.type === 'new file');
+    print(`[${r.head}${h ? '' : ' (root-commit)'} ${id}] ${msg.split('\n')[0]}`);
+    if (n) print(` ${plural(n, 'file')} changed`);
+    ins.forEach(s => print(` create mode 100644 ${s.p}`));
+    return true;
+  },
+  log(a) {
+    if (!needRepo()) return false;
+    const r = S.repo, oneline = a.includes('--oneline'), all = a.includes('--all'); let limit = Infinity;
+    a.forEach((x, i) => { if (/^-\d+$/.test(x)) limit = +x.slice(1); if (x === '-n') limit = +a[i + 1]; });
+    const h = headId();
+    if (!h && !all) { print(`fatal: your current branch '${r.head}' does not have any commits yet`, 'red'); return false; }
+    const starts = all ? [...Object.values(r.branches), ...Object.values(r.tracking)] : [h];
+    const set = new Set(); starts.filter(Boolean).forEach(s => ancestors(s).forEach(x => set.add(x)));
+    const list = [...set].map(id => S.objects[id]).sort((x, y) => y.time - x.time).slice(0, limit);
+    for (const c of list) {
+      const dec = decorations(c.id).map(d => d.t).join(', ');
+      if (oneline) print(`${c.id}${dec ? ' (' + dec + ')' : ''} ${c.msg.split('\n')[0]}`, 'yellow');
+      else {
+        print(`commit ${c.id}${dec ? ' (' + dec + ')' : ''}`, 'yellow');
+        if (c.parents.length > 1) print(`Merge: ${c.parents.join(' ')}`);
+        print(`Author: ${c.author} <${c.email}>\nDate:   ${fmtDate(c.time)}\n\n${c.msg.split('\n').map(x => '    ' + x).join('\n')}\n`);
+      }
+    }
+    return true;
+  },
+  diff(a) {
+    if (!needRepo()) return false;
+    const r = S.repo, staged = a.includes('--staged') || a.includes('--cached');
+    const only = a.filter(x => !x.startsWith('-'));
+    const A = staged ? treeOf(headId()) : r.index;
+    const B = staged ? r.index : Object.fromEntries(Object.keys(r.index).filter(p => has(S.files, p)).map(p => [p, S.files[p]]));
+    let paths = union(A, B).filter(p => A[p] !== B[p]);
+    if (!staged) paths = paths.filter(p => has(r.index, p));
+    if (only.length) paths = paths.filter(p => only.includes(p));
+    if (!paths.length) { print(staged ? '(no output: nothing is staged that differs from the last commit)' : '(no output: no unstaged changes in tracked files)', 'dim'); return true; }
+    for (const p of paths) {
+      print(`diff --git a/${p} b/${p}`);
+      print(has(A, p) ? `--- a/${p}` : '--- /dev/null'); print(has(B, p) ? `+++ b/${p}` : '+++ /dev/null');
+      lineDiff(A[p], B[p]).forEach(d => print(d.s + d.t, d.s === '+' ? 'green' : d.s === '-' ? 'red' : null));
+    }
+    return true;
+  },
+  restore(a) {
+    if (!needRepo()) return false;
+    const r = S.repo, staged = a.includes('--staged') || a.includes('-S');
+    let paths = a.filter(x => !x.startsWith('-'));
+    if (!paths.length) { print('fatal: you must specify path(s) to restore', 'red'); return false; }
+    const H = treeOf(headId());
+    if (paths.includes('.')) paths = staged ? union(H, r.index) : Object.keys(r.index);
+    for (const p of paths) {
+      if (staged) { if (!has(r.index, p) && !has(H, p)) { print(`error: pathspec '${p}' did not match any file(s) known to git`, 'red'); return false; } if (has(H, p)) r.index[p] = H[p]; else delete r.index[p]; }
+      else { if (!has(r.index, p)) { print(`error: pathspec '${p}' did not match any file(s) known to git`, 'red'); return false; } S.files[p] = r.index[p]; }
+    }
+    return true;
+  },
+  revert(a) {
+    if (!needRepo()) return false;
+    const r = S.repo, ref = a.find(x => !x.startsWith('-'));
+    if (!ref) { print('usage: git revert <commit>', 'red'); return false; }
+    const id = resolve(ref); if (!id) { print(`fatal: bad revision '${ref}'`, 'red'); return false; }
+    if (!needIdentity()) return false;
+    if (isDirty()) { print('error: your local changes would be overwritten by revert.\nhint: commit your changes or discard them first.', 'red'); return false; }
+    const c = S.objects[id]; if (c.parents.length > 1) { print(`error: commit ${id} is a merge. This course does not cover reverting merges.`, 'red'); return false; }
+    const P = treeOf(c.parents[0]), C = c.tree, H = { ...treeOf(headId()) };
+    for (const p of union(P, C)) { if (P[p] === C[p]) continue; if (H[p] !== C[p]) { print(`error: could not revert ${id}... ${c.msg}\nThe file ${p} changed again after that commit. Fix it by hand instead.`, 'red'); return false; } if (has(P, p)) H[p] = P[p]; else delete H[p]; }
+    setTree(H);
+    const nid = mkCommit(H, [headId()], `Revert "${c.msg}"\n\nThis reverts commit ${id}.`); r.branches[r.head] = nid;
+    print(`[${r.head} ${nid}] Revert "${c.msg}"`); print(` ${plural(diffTree(P, C).length, 'file')} changed`);
+    return true;
+  },
+  branch(a) {
+    if (!needRepo()) return false;
+    const r = S.repo, h = headId();
+    if (!a.length || a[0] === '--list' || a[0] === '-a' || a[0] === '-v') {
+      Object.keys(r.branches).filter(b => r.branches[b]).sort().forEach(b => print((b === r.head ? '* ' : '  ') + b, b === r.head ? 'green' : null));
+      if (a[0] === '-a') Object.keys(r.tracking).sort().forEach(t => print('  remotes/' + t, 'red'));
+      return true;
+    }
+    if (a[0] === '-d' || a[0] === '-D' || a[0] === '--delete') {
+      const n = a[1]; if (!n) { print('fatal: branch name required', 'red'); return false; }
+      if (!has(r.branches, n) || !r.branches[n]) { print(`error: branch '${n}' not found`, 'red'); return false; }
+      if (n === r.head) { print(`error: Cannot delete branch '${n}' checked out at '/home/you/project'`, 'red'); return false; }
+      if (a[0] !== '-D' && !isAnc(r.branches[n], h)) { print(`error: the branch '${n}' is not fully merged.\nIf you are sure you want to delete it, run 'git branch -D ${n}'`, 'red'); return false; }
+      print(`Deleted branch ${n} (was ${r.branches[n]}).`); delete r.branches[n]; return true;
+    }
+    if (a[0] === '-m' || a[0] === '-M') {
+      const [from, to] = a.length >= 3 ? [a[1], a[2]] : [r.head, a[1]];
+      if (!to || !has(r.branches, from)) { print('usage: git branch -m <new-name>', 'red'); return false; }
+      r.branches[to] = r.branches[from]; delete r.branches[from]; if (r.head === from) r.head = to; if (r.upstream[from]) { r.upstream[to] = r.upstream[from]; delete r.upstream[from]; }
+      return true;
+    }
+    const n = a[0];
+    if (!/^[A-Za-z0-9._\/-]+$/.test(n) || n.startsWith('-')) { print(`fatal: '${n}' is not a valid branch name`, 'red'); return false; }
+    if (!h) { print(`fatal: not a valid object name: '${r.head}'\n(make your first commit before creating branches)`, 'red'); return false; }
+    if (has(r.branches, n) && r.branches[n]) { print(`fatal: a branch named '${n}' already exists`, 'red'); return false; }
+    r.branches[n] = a[1] ? resolve(a[1]) || h : h; return true;
+  },
+  switch(a) { return switchCmd(a, 'switch'); },
+  checkout(a) {
+    if (a[0] === '--') { return G.restore(a.slice(1)); }
+    return switchCmd(a, 'checkout');
+  },
+  merge(a) {
+    if (!needRepo()) return false;
+    const r = S.repo;
+    if (a[0] === '--abort') { if (!r.merging) { print('fatal: There is no merge to abort (MERGE_HEAD missing).', 'red'); return false; } S.files = r.merging.orig.files; r.index = r.merging.orig.index; r.merging = null; print('Merge aborted. Everything is back to how it was before the merge.', 'dim'); return true; }
+    const name = a.find(x => !x.startsWith('-'));
+    if (!name) { print('fatal: No remote for the current branch.\nusage: git merge <branch>', 'red'); return false; }
+    if (r.merging) { print('error: Merging is not possible because you have unmerged files.', 'red'); return false; }
+    const id = resolve(name); if (!id) { print(`merge: ${name} - not something we can merge`, 'red'); return false; }
+    return doMerge(id, name);
+  },
+  remote(a) {
+    if (!needRepo()) return false;
+    const r = S.repo;
+    if (!a.length) { Object.keys(r.remotes).forEach(n => print(n)); return true; }
+    if (a[0] === '-v') { Object.keys(r.remotes).forEach(n => { print(`${n}\t${r.remotes[n]} (fetch)`); print(`${n}\t${r.remotes[n]} (push)`); }); if (!Object.keys(r.remotes).length) print('(no remotes yet)', 'dim'); return true; }
+    if (a[0] === 'add') {
+      const [n, url] = [a[1], a[2]]; if (!n || !url) { print('usage: git remote add <name> <url>', 'red'); return false; }
+      if (has(r.remotes, n)) { print(`error: remote ${n} already exists.`, 'red'); return false; }
+      r.remotes[n] = url; if (!S.servers[url]) S.servers[url] = { branches: {} }; return true;
+    }
+    if (a[0] === 'remove' || a[0] === 'rm') { const n = a[1]; if (!has(r.remotes, n)) { print(`error: No such remote: '${n}'`, 'red'); return false; } delete r.remotes[n]; Object.keys(r.tracking).forEach(t => { if (t.startsWith(n + '/')) delete r.tracking[t]; }); return true; }
+    print(`error: unknown subcommand: ${a[0]}`, 'red'); return false;
+  },
+  clone(a) {
+    const url = a.find(x => !x.startsWith('-'));
+    if (!url) { print('usage: git clone <url>', 'red'); return false; }
+    if (S.repo) { print("fatal: you are already inside a Git repository here. (This practice terminal holds one project at a time.)", 'red'); return false; }
+    const srv = S.servers[url];
+    if (!srv) { print(`Cloning into '${url.split('/').pop().replace(/\.git$/, '')}'...\nfatal: repository '${url}' not found`, 'red'); return false; }
+    const name = url.split('/').pop().replace(/\.git$/, '');
+    const def = has(srv.branches, 'main') ? 'main' : Object.keys(srv.branches)[0];
+    S.repo = { index: {}, branches: {}, head: def || 'main', remotes: { origin: url }, upstream: {}, tracking: {}, merging: null };
+    Object.keys(srv.branches).forEach(b => S.repo.tracking['origin/' + b] = srv.branches[b]);
+    if (def) { S.repo.branches[def] = srv.branches[def]; S.repo.upstream[def] = 'origin'; }
+    else S.repo.branches.main = null;
+    setTree(treeOf(S.repo.branches[S.repo.head]));
+    print(`Cloning into '${name}'...\nremote: Enumerating objects: ${Object.keys(S.objects).length * 3}, done.\nReceiving objects: 100%, done.`);
+    print(`(In real life you would now run: cd ${name}. This practice terminal moves you there automatically.)`, 'dim');
+    return true;
+  },
+  fetch(a) {
+    if (!needRepo()) return false;
+    const rn = a.find(x => !x.startsWith('-')) || 'origin', r = S.repo;
+    if (!has(r.remotes, rn)) { print(`fatal: '${rn}' does not appear to be a git repository`, 'red'); return false; }
+    const url = r.remotes[rn], srv = S.servers[url]; print('From ' + url);
+    for (const b of Object.keys(srv.branches)) { const old = r.tracking[`${rn}/${b}`]; if (old !== srv.branches[b]) print(`   ${old ? old + '..' : ' * [new branch]      '}${old ? srv.branches[b] + '  ' : ''}${b}  -> ${rn}/${b}`); r.tracking[`${rn}/${b}`] = srv.branches[b]; }
+    return true;
+  },
+  pull(a) {
+    if (!needRepo()) return false;
+    const r = S.repo, pos = a.filter(x => !x.startsWith('-'));
+    const rn = pos[0] || r.upstream[r.head], bn = pos[1] || r.head;
+    if (!rn) { print(`There is no tracking information for the current branch.\nPlease specify which branch you want to merge with:\n\n    git pull origin ${r.head}\n\nor set it once with: git push -u origin ${r.head}`, 'red'); return false; }
+    if (!has(r.remotes, rn)) { print(`fatal: '${rn}' does not appear to be a git repository`, 'red'); return false; }
+    const url = r.remotes[rn], srv = S.servers[url], t = srv.branches[bn];
+    if (!t) { print(`fatal: couldn't find remote ref ${bn}`, 'red'); return false; }
+    print('From ' + url); print(` * branch            ${bn}       -> FETCH_HEAD`);
+    r.tracking[`${rn}/${bn}`] = t;
+    return doMerge(t, `${rn}/${bn}`);
+  },
+  push(a) {
+    if (!needRepo()) return false;
+    const r = S.repo, setUp = a.includes('-u') || a.includes('--set-upstream'), pos = a.filter(x => !x.startsWith('-'));
+    const rn = pos[0] || r.upstream[r.head], bn = pos[1] || r.head;
+    if (!rn) {
+      if (!Object.keys(r.remotes).length) { print('fatal: No configured push destination.\nAdd one first with:\n\n    git remote add origin <url>', 'red'); return false; }
+      print(`fatal: The current branch ${r.head} has no upstream branch.\nTo push the current branch and set the remote as upstream, use\n\n    git push --set-upstream origin ${r.head}\n\n(-u is the short form of --set-upstream)`, 'red'); return false;
+    }
+    if (!has(r.remotes, rn)) { print(`fatal: '${rn}' does not appear to be a git repository\nfatal: Could not read from remote repository.`, 'red'); return false; }
+    const local = r.branches[bn]; if (!local) { print(`error: src refspec ${bn} does not match any\n(make a commit on ${bn} first)`, 'red'); return false; }
+    const url = r.remotes[rn], srv = S.servers[url], remote = srv.branches[bn];
+    if (remote && !isAnc(remote, local)) { print(`To ${url}\n ! [rejected]        ${bn} -> ${bn} (fetch first)\nerror: failed to push some refs to '${url}'\nhint: Updates were rejected because the remote contains work that you do not\nhint: have locally. Run "git pull" first, then push again.`, 'red'); return false; }
+    print('To ' + url);
+    if (remote === local) print('Everything up-to-date');
+    else print(remote ? `   ${remote}..${local}  ${bn} -> ${bn}` : ` * [new branch]      ${bn} -> ${bn}`);
+    srv.branches[bn] = local; r.tracking[`${rn}/${bn}`] = local;
+    if (setUp) { r.upstream[bn] = rn; print(`branch '${bn}' set up to track '${rn}/${bn}'.`); }
+    return true;
+  },
+};
+function switchCmd(a, verb) {
+  if (!needRepo()) return false;
+  const r = S.repo, create = a.includes('-c') || a.includes('-b') || a.includes('--create'), name = a.find(x => !x.startsWith('-'));
+  if (!name) { print(`fatal: missing branch name; try ${verb} ${verb === 'switch' ? '-c' : '-b'} <name>`, 'red'); return false; }
+  if (r.merging) { print('error: you need to resolve your current merge first (finish it with git commit, or run git merge --abort)', 'red'); return false; }
+  const h = headId();
+  if (create) {
+    if (has(r.branches, name) && r.branches[name]) { print(`fatal: a branch named '${name}' already exists`, 'red'); return false; }
+    if (!/^[A-Za-z0-9._\/-]+$/.test(name)) { print(`fatal: '${name}' is not a valid branch name`, 'red'); return false; }
+    if (!h) delete r.branches[r.head];
+    r.branches[name] = h; r.head = name; print(`Switched to a new branch '${name}'`); return true;
+  }
+  if (name === r.head) { print(`Already on '${name}'`); return true; }
+  if (!has(r.branches, name) || !r.branches[name]) {
+    const tr = Object.keys(r.tracking).find(t => t.endsWith('/' + name));
+    if (tr) { r.branches[name] = r.tracking[tr]; r.upstream[name] = tr.split('/')[0]; print(`branch '${name}' set up to track '${tr}'.`); }
+    else if (resolve(name)) { print('Moving to a single commit (detached HEAD) is outside this course. Switch to a branch name instead.', 'dim'); return false; }
+    else { print(verb === 'switch' ? `fatal: invalid reference: ${name}` : `error: pathspec '${name}' did not match any file(s) known to git`, 'red'); return false; }
+  }
+  const err = checkoutTree(r.branches[name]); if (err) { print(err, 'red'); return false; }
+  r.head = name; print(`Switched to branch '${name}'`);
+  const ti = trackInfo(); if (ti && !ti.ahead && !ti.behind) print(`Your branch is up to date with '${ti.tname}'.`);
+  return true;
+}
+function checkoutTree(target) {
+  const r = S.repo, H = treeOf(headId()), T = treeOf(target), bad = [];
+  const paths = union(H, T, r.index);
+  const local = p => r.index[p] !== H[p] || (has(r.index, p) && S.files[p] !== r.index[p]);
+  for (const p of paths) {
+    if (local(p) && H[p] !== T[p]) bad.push(p);
+    if (!has(H, p) && !has(r.index, p) && has(S.files, p) && has(T, p) && S.files[p] !== T[p]) bad.push(p);
+  }
+  if (bad.length) return `error: Your local changes to the following files would be overwritten by checkout:\n\t${bad.join('\n\t')}\nPlease commit your changes or discard them before you switch branches.\nAborting`;
+  for (const p of paths) { if (local(p)) continue; if (has(T, p)) { r.index[p] = T[p]; S.files[p] = T[p]; } else { delete r.index[p]; delete S.files[p]; } }
+  return null;
+}
+function doMerge(theirs, label) {
+  const r = S.repo, ours = headId();
+  if (isAnc(theirs, ours)) { print('Already up to date.'); return true; }
+  if (isDirty()) { print('error: Your local changes would be overwritten by merge.\nPlease commit your changes or discard them before you merge.\nAborting', 'red'); return false; }
+  if (!ours || isAnc(ours, theirs)) {
+    const ch = diffTree(treeOf(ours), treeOf(theirs));
+    print(`Updating ${ours || '0000000'}..${theirs}\nFast-forward`); ch.forEach(c => print(` ${c.p} | ${c.type}`));
+    setTree(treeOf(theirs)); r.branches[r.head] = theirs; return true;
+  }
+  if (!needIdentity()) return false;
+  const base = mergeBase(ours, theirs), B = treeOf(base), O = treeOf(ours), T = treeOf(theirs);
+  const result = {}, conflicts = [];
+  for (const p of union(B, O, T)) {
+    const b = B[p], o = O[p], t = T[p]; let v;
+    if (o === t) v = o; else if (o === b) v = t; else if (t === b) v = o; else { conflicts.push(p); continue; }
+    if (v !== undefined) result[p] = v;
+  }
+  const orig = { files: { ...S.files }, index: { ...r.index } };
+  if (!conflicts.length) {
+    setTree(result);
+    const id = mkCommit(result, [ours, theirs], `Merge branch '${label}'`); r.branches[r.head] = id;
+    print("Merge made by the 'ort' strategy."); diffTree(O, result).forEach(c => print(` ${c.p} | ${c.type}`));
+    return true;
+  }
+  const nl = s => (s === undefined ? '' : s.endsWith('\n') ? s : s + '\n');
+  setTree({ ...result, ...Object.fromEntries(conflicts.filter(p => has(O, p)).map(p => [p, O[p]])) });
+  for (const p of conflicts) { S.files[p] = `<<<<<<< HEAD\n${nl(O[p])}=======\n${nl(T[p])}>>>>>>> ${label}\n`; print(`Auto-merging ${p}\nCONFLICT (content): Merge conflict in ${p}`, 'red'); }
+  r.merging = { theirs, label, conflicts, orig };
+  print('Automatic merge failed; fix conflicts and then commit the result.', 'red');
+  return true;
+}
+function lineDiff(a, b) {
+  const A = a === undefined ? [] : a.replace(/\n$/, '').split('\n'), B = b === undefined ? [] : b.replace(/\n$/, '').split('\n');
+  if (a === '') A.length = 0; if (b === '') B.length = 0;
+  const n = A.length, m = B.length, dp = Array.from({ length: n + 1 }, () => new Array(m + 1).fill(0));
+  for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--) dp[i][j] = A[i] === B[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+  const out = []; let i = 0, j = 0;
+  while (i < n && j < m) { if (A[i] === B[j]) { out.push({ s: ' ', t: A[i] }); i++; j++; } else if (dp[i + 1][j] >= dp[i][j + 1]) out.push({ s: '-', t: A[i++] }); else out.push({ s: '+', t: B[j++] }); }
+  while (i < n) out.push({ s: '-', t: A[i++] }); while (j < m) out.push({ s: '+', t: B[j++] });
+  return out;
+}
+
+/* ----- command dispatcher ----- */
+let lastCmd = '';
+function runOne(line) {
+  lastCmd = line.replace(/\s+/g, ' ').trim();
+  const tk = tokenize(line);
+  if (!tk) { print('bash: unexpected end of line (a quote " is not closed)', 'red'); return false; }
+  if (!tk.length) return true;
+  const opIdx = tk.findIndex(t => typeof t === 'object');
+  const cmd = tk[0];
+  if (typeof cmd === 'object') { print('bash: syntax error near unexpected token', 'red'); return false; }
+  if (cmd === 'echo') {
+    const text = tk.slice(1, opIdx < 0 ? undefined : opIdx).filter(t => typeof t === 'string').join(' ');
+    if (opIdx < 0) { print(text); return true; }
+    const file = tk[opIdx + 1];
+    if (typeof file !== 'string' || !file) { print('bash: syntax error: missing file name after ' + tk[opIdx].op, 'red'); return false; }
+    S.files[file] = tk[opIdx].op === '>>' ? (S.files[file] || '') + text + '\n' : text + '\n';
+    return true;
+  }
+  if (opIdx >= 0) { print('Redirection (>) only works with echo in this practice terminal.', 'red'); return false; }
+  const args = tk.slice(1);
+  if (cmd === 'git') {
+    if (!args.length) { print('usage: git <command> [<args>]\nType "help" to see the commands this terminal supports.'); return true; }
+    const sub = args[0], fn = G[sub];
+    if (!fn) { print(`git: '${sub}' is not a git command. See 'help'.`, 'red'); return false; }
+    return fn(args.slice(1));
+  }
+  if (shell[cmd]) return shell[cmd](args);
+  print(`bash: ${cmd}: command not found${cmd === 'Git' ? '  (commands are case sensitive: use git)' : ''}`, 'red'); return false;
+}
+
+/* ============================== Lesson helpers ============================== */
+const DEFAULT_ID = { 'user.name': 'Your Name', 'user.email': 'you@example.com' };
+function base({ identity = true } = {}) { S = fresh(); if (identity) S.config = { ...(store.config && store.config['user.name'] ? store.config : DEFAULT_ID) }; }
+function initRepo() { S.repo = { index: {}, branches: { main: null }, head: 'main', remotes: {}, upstream: {}, tracking: {}, merging: null }; }
+function cf(changes, msg, author) {
+  const r = S.repo; for (const p in changes) { if (changes[p] === null) { delete S.files[p]; delete r.index[p]; } else { S.files[p] = changes[p]; r.index[p] = changes[p]; } }
+  const h = headId(), id = mkCommit(r.index, h ? [h] : [], msg, author); r.branches[r.head] = id; return id;
+}
+function sw(b) { if (!has(S.repo.branches, b) || !S.repo.branches[b]) S.repo.branches[b] = headId(); checkoutTree(S.repo.branches[b]); S.repo.head = b; }
+const H = () => (S.repo ? treeOf(headId()) : {});
+const clean = () => S.repo && !isDirty() && changes().untracked.length === 0;
+const ran = re => re.test(lastCmd);
+const README = '# Family Recipes\n';
+const PANCAKES = L('Pancakes', '- 2 eggs', '- 1 cup flour', '- 1 cup milk');
+const c = (s) => `<code class="cmd">${esc(s)}</code>`;
+
+/* ============================== Lessons ============================== */
+const LESSONS = [
+{
+  id: 'intro', title: 'What Git is and why people use it',
+  body: `
+<p>When you work on anything that changes over time, like code, a website or a thesis, you eventually want answers to questions like: <em>What did this look like last week? What exactly did I change? Who changed this line?</em> <strong>Git</strong> is a program that answers those questions. It records <strong>snapshots</strong> of a project folder, one after another, and keeps every one of them.</p>
+<p>Think of it as save points in a video game. Each save point remembers the whole project, a short message about what changed, who made it and when. You can look at any of them, compare them, and go back.</p>
+<h3>Four words you will use every day</h3>
+<div class="tablewrap"><table class="ref">
+<tr><th>Word</th><th>Meaning</th></tr>
+<tr><td><b>Repository</b> (repo)</td><td>A project folder that Git is tracking. The history lives in a hidden subfolder called <code>.git</code>.</td></tr>
+<tr><td><b>Commit</b></td><td>One snapshot of the project, with a message like “Add contact page”. Every commit gets a unique ID called a <em>hash</em>, for example <code>3f9a2c1</code>.</td></tr>
+<tr><td><b>Branch</b></td><td>A named line of work. You can try an idea on a branch without disturbing the main version.</td></tr>
+<tr><td><b>Remote</b></td><td>A copy of the repository on a server (GitHub, GitLab, Bitbucket) so you can back it up and share it.</td></tr>
+</table></div>
+<h3>Git is not GitHub</h3>
+<p>Git is the tool that runs on your computer. GitHub is a website that stores Git repositories online and adds things like code review. You can use Git without GitHub, but not the other way around.</p>
+<h3>How you talk to Git: the terminal</h3>
+<p>You use Git by typing commands into a <strong>terminal</strong> (also called command line or shell). You type a line, press <kbd>Enter</kbd>, and the program replies. A Git command has the same shape every time:</p>
+<pre class="block">git commit -m "Add contact page"
+│   │      │  └─ a value for the option (here: the message)
+│   │      └──── an option (starts with - or --)
+│   └─────────── what you want Git to do
+└─────────────── the program</pre>
+<p>Text with spaces goes inside quotes. Commands are case sensitive: <code>git</code> works, <code>Git</code> does not.</p>
+<h3>Installing Git on your own computer</h3>
+<ul>
+<li><b>Windows:</b> download the installer from git-scm.com and keep the default options. It installs a terminal called <em>Git Bash</em>.</li>
+<li><b>macOS:</b> open the Terminal app and type <code>git --version</code>. If Git is missing, macOS offers to install it.</li>
+<li><b>Linux:</b> use your package manager, for example <code>sudo apt install git</code>.</li>
+</ul>
+<div class="note">You do not need to install anything for this course. From the next lesson on, every lesson has a practice terminal right in the page. It behaves like real Git for everything taught here.</div>`,
+  quiz: [
+    { q: 'What is a commit?', o: ['A snapshot of the project, saved with a message', 'A website for sharing code', 'A backup copy on a USB stick', 'A command that deletes old files'], a: 0, why: 'A commit records the state of every tracked file, plus a message, author and time.' },
+    { q: 'Which statement about Git and GitHub is true?', o: ['They are two names for the same thing', 'Git is a tool on your computer; GitHub hosts Git repositories online', 'GitHub runs on your computer and Git runs on the web', 'Git only works if you have a GitHub account'], a: 1, why: 'Git works fully offline. GitHub is one of several services that store repositories online.' },
+    { q: 'In  git commit -m "Fix typo"  what is "Fix typo"?', o: ['A file name', 'A branch name', 'The commit message', 'A password'], a: 2, why: '-m means “message”, and the text after it is the message.' },
+  ],
+},
+{
+  id: 'setup', title: 'Set up Git and create a repository',
+  body: `
+<h3>1. Tell Git who you are</h3>
+<p>Every commit records an author. Before your first commit, set your name and email once per computer:</p>
+<pre class="block">git config --global user.name "Ada Lovelace"
+git config --global user.email "ada@example.com"</pre>
+<p><code>--global</code> means “for every project on this computer”. Use the same email you will use on GitHub, so your commits are linked to your account.</p>
+<h3>2. Turn a folder into a repository</h3>
+<p>Open a terminal inside your project folder and run ${c('git init')}. Git creates the hidden <code>.git</code> folder and starts tracking. Nothing else in the folder changes. You only do this once per project.</p>
+<h3>3. Ask Git what is going on</h3>
+<p>${c('git status')} is the command you will run most. It tells you which branch you are on, which files changed, and what Git suggests you do next. When in doubt, run <code>git status</code>.</p>
+<p class="tip">The default first branch is called <code>main</code>. Older Git versions call it <code>master</code>. You can make new repositories use <code>main</code> with <code>git config --global init.defaultBranch main</code>.</p>
+<p>Click any orange command in the text to copy it into the terminal, then press <kbd>Enter</kbd>. Type <code>help</code> to see everything the practice terminal understands.</p>`,
+  quiz: [
+    { q: 'How often do you run git init for a project?', o: ['Before every commit', 'Once, when you start tracking the project', 'Every time you open the terminal', 'Once per file'], a: 1, why: 'git init creates the repository. After that, the .git folder stays there.' },
+    { q: 'What does --global do in git config --global user.name "Sam"?', o: ['Publishes your name on the internet', 'Sets the name for all repositories on this computer', 'Sets the name only for the current folder', 'Creates a new user account'], a: 1 },
+  ],
+  lab: {
+    setup() { base({ identity: false }); S.files['notes.txt'] = 'Ideas for the recipe website\n'; },
+    tasks: [
+      { t: 'Check that Git is installed by asking for its version.', h: 'git --version', ok: () => ran(/^git (--)?version/) },
+      { t: 'Set your name (use your own).', h: 'git config --global user.name "Your Name"', ok: () => !!S.config['user.name'] },
+      { t: 'Set your email.', h: 'git config --global user.email "you@example.com"', ok: () => !!S.config['user.email'] },
+      { t: 'Turn this folder into a Git repository.', h: 'git init', ok: () => !!S.repo },
+      { t: 'Ask Git for the status. Notice notes.txt is listed as “untracked”: Git sees it but is not saving it yet.', h: 'git status', ok: () => S.repo && ran(/^git status/) },
+    ],
+  },
+},
+{
+  id: 'commit', title: 'Stage and commit changes',
+  body: `
+<p>Saving a snapshot in Git takes two steps. First you choose which changes go into the snapshot, then you save it. Git has three places your work can be:</p>
+<div class="flow">
+  <div class="box"><b>Working directory</b><span>The files on your disk, as you edit them.</span></div>
+  <div class="arrow">git add →</div>
+  <div class="box"><b>Staging area</b><span>Changes you have picked for the next commit.</span></div>
+  <div class="arrow">git commit →</div>
+  <div class="box"><b>Repository</b><span>Saved snapshots (commits). Permanent history.</span></div>
+</div>
+<p>Why two steps? Because you often change several things at once and want to save them as separate, meaningful commits. Staging lets you pick.</p>
+<div class="tablewrap"><table class="ref">
+<tr><th>Command</th><th>What it does</th></tr>
+<tr><td>${c('git add README.md')}</td><td>Stage one file</td></tr>
+<tr><td>${c('git add .')}</td><td>Stage every change in the folder (the dot means “here”)</td></tr>
+<tr><td>${c('git commit -m "Add README"')}</td><td>Save the staged changes as a commit with a message</td></tr>
+<tr><td>${c('git commit -am "Update README"')}</td><td>Shortcut: stage all changes to files Git already tracks, then commit. New files still need <code>git add</code>.</td></tr>
+</table></div>
+<h3>Writing files in the practice terminal</h3>
+<p>On your computer you would edit files in a text editor. Here, you create and change files with <code>echo</code>:</p>
+<pre class="block">echo "# Family Recipes" > README.md    # create or replace the file
+echo "Pancakes" >> README.md           # add a line at the end
+cat README.md                          # show the file
+ls                                     # list files</pre>
+<h3>Good commit messages</h3>
+<p>Write what the commit does, in the imperative, as if completing “This commit will…”: <em>Add pancake recipe</em>, <em>Fix typo in title</em>. Avoid <em>stuff</em>, <em>changes</em>, <em>asdf</em>. You will thank yourself when reading the history months later.</p>
+<p>Watch the panels next to the terminal: they show which area each file is in after every command.</p>`,
+  quiz: [
+    { q: 'You changed a file but did not run git add. What happens when you run git commit -m "..."?', o: ['The change is committed anyway', 'Nothing is committed: the change is not staged', 'Git deletes the change', 'Git commits only half the file'], a: 1, why: 'Only staged changes go into a commit. git status will show the change as “not staged”.' },
+    { q: 'Which is the best commit message?', o: ['update', 'Add opening hours to contact page', 'asdfgh', 'changes from tuesday'], a: 1 },
+  ],
+  lab: {
+    setup() { base(); initRepo(); },
+    tasks: [
+      { t: 'Create a file README.md with a title in it.', h: 'echo "# Family Recipes" > README.md', ok: () => has(S.files, 'README.md') },
+      { t: 'Run git status. README.md appears as untracked.', h: 'git status', ok: () => ran(/^git status/) && has(S.files, 'README.md') },
+      { t: 'Stage README.md.', h: 'git add README.md', ok: () => has(S.repo.index, 'README.md') },
+      { t: 'Commit it with a message.', h: 'git commit -m "Add README"', ok: () => !!headId() },
+      { t: 'Add a line to README.md, then stage and commit that change too.', h: 'echo "Recipes from our family" >> README.md  then  git add README.md  then  git commit -m "Describe the project"', ok: () => { const id = headId(); return id && S.objects[id].parents.length >= 1 && H()['README.md'] && H()['README.md'].split('\n').length > 2; } },
+      { t: 'Create two new files, pancakes.md and soup.md, and commit both in one commit using git add .', h: 'echo "Pancakes" > pancakes.md && echo "Soup" > soup.md && git add . && git commit -m "Add first recipes"', ok: () => has(H(), 'pancakes.md') && has(H(), 'soup.md') && clean() },
+    ],
+  },
+},
+{
+  id: 'history', title: 'Read history and see changes',
+  body: `
+<h3>git log: the list of commits</h3>
+<p>${c('git log')} lists commits, newest first. Each entry shows the commit hash, author, date and message. If the list is long, real Git opens a scrolling viewer: press <kbd>q</kbd> to leave it.</p>
+<p>${c('git log --oneline')} shows one commit per line, which is usually what you want. The labels in brackets, such as <code>(HEAD -> main)</code>, tell you which branch points at that commit. <b>HEAD</b> means “where you are now”.</p>
+<p>You will often see only the first 7 characters of a hash, like <code>a1b2c3d</code>. That is enough for Git to identify the commit.</p>
+<h3>git diff: what exactly changed</h3>
+<div class="tablewrap"><table class="ref">
+<tr><th>Command</th><th>Compares</th></tr>
+<tr><td>${c('git diff')}</td><td>Your files vs. the staging area. Shows changes you have <em>not</em> staged yet.</td></tr>
+<tr><td>${c('git diff --staged')}</td><td>The staging area vs. the last commit. Shows exactly what the next commit will contain.</td></tr>
+</table></div>
+<p>In the output, lines starting with <code>+</code> (green) were added and lines starting with <code>-</code> (red) were removed. Lines without a sign are unchanged context.</p>
+<pre class="block">diff --git a/pancakes.md b/pancakes.md
+--- a/pancakes.md
++++ b/pancakes.md
+ Pancakes
+ - 2 eggs
+-- 1 cup milk
++- 1.5 cups milk</pre>
+<p class="tip">A good habit: run <code>git diff --staged</code> right before every commit to check what you are about to save.</p>`,
+  quiz: [
+    { q: 'You staged a change. Which command shows it?', o: ['git diff', 'git diff --staged', 'git log', 'git status --diff'], a: 1, why: 'Plain git diff only shows unstaged changes. Once staged, use --staged.' },
+    { q: 'In git log --oneline you see  (HEAD -> main). What does it mean?', o: ['This commit is broken', 'You are on branch main, and main points at this commit', 'This is the first commit ever', 'This commit was pushed to GitHub'], a: 1 },
+  ],
+  lab: {
+    setup() { base(); initRepo(); cf({ 'README.md': README }, 'Add README'); cf({ 'pancakes.md': PANCAKES }, 'Add pancake recipe'); cf({ 'shopping.md': L('eggs', 'flour', 'milk') }, 'Add shopping list'); },
+    tasks: [
+      { t: 'Show the full history.', h: 'git log', ok: () => ran(/^git log(?!.*--oneline)/) },
+      { t: 'Show the history in the short one-line form.', h: 'git log --oneline', ok: () => ran(/^git log.*--oneline/) },
+      { t: 'Change pancakes.md, for example add an ingredient.', h: 'echo "- pinch of salt" >> pancakes.md', ok: () => S.files['pancakes.md'] !== H()['pancakes.md'] || S.repo.index['pancakes.md'] !== H()['pancakes.md'] },
+      { t: 'See the unstaged change with git diff.', h: 'git diff', ok: () => ran(/^git diff$/) && changes().unstaged.length > 0 },
+      { t: 'Stage the file, then view the staged change with git diff --staged.', h: 'git add pancakes.md  then  git diff --staged', ok: () => ran(/^git diff --(staged|cached)/) && changes().staged.length > 0 },
+      { t: 'Commit the change and confirm it is at the top of git log --oneline.', h: 'git commit -m "Add salt to pancakes"  then  git log --oneline', ok: () => clean() && ancestors(headId()).size >= 4 && ran(/^git log/) },
+    ],
+  },
+},
+{
+  id: 'undo', title: 'Undo mistakes and ignore files',
+  body: `
+<p>Mistakes are normal. Which command fixes one depends on <em>where</em> the mistake is.</p>
+<div class="tablewrap"><table class="ref">
+<tr><th>Situation</th><th>Command</th><th>Effect</th></tr>
+<tr><td>I edited a file and want the last committed version back</td><td>${c('git restore pancakes.md')}</td><td>Throws away the unstaged edits. They cannot be recovered.</td></tr>
+<tr><td>I staged a file by mistake</td><td>${c('git restore --staged passwords.txt')}</td><td>Unstages it. Your file on disk is not touched.</td></tr>
+<tr><td>I committed something I want to undo</td><td><code>git revert &lt;hash&gt;</code></td><td>Makes a <em>new</em> commit that reverses that commit. History stays intact, which is safe even after sharing.</td></tr>
+</table></div>
+<p class="tip">You may see older tutorials use <code>git checkout -- file</code> or <code>git reset HEAD file</code>. They do the same as the two restore commands above.</p>
+<h3>.gitignore: files Git should never track</h3>
+<p>Some files do not belong in a repository: passwords, API keys, large generated files, editor settings, <code>node_modules</code>. List them in a file named <code>.gitignore</code> at the top of the project, one pattern per line:</p>
+<pre class="block">passwords.txt      # one specific file
+*.log              # every file ending in .log
+node_modules/      # a whole folder</pre>
+<p>Ignored files disappear from <code>git status</code> and <code>git add .</code> skips them. Commit the <code>.gitignore</code> file itself so everyone on the project shares it.</p>
+<p class="tip">Files starting with a dot are hidden by <code>ls</code>. Use <code>ls -a</code> to see them.</p>`,
+  quiz: [
+    { q: 'You accidentally staged secrets.env. How do you unstage it without deleting it?', o: ['git restore secrets.env', 'git restore --staged secrets.env', 'rm secrets.env', 'git revert secrets.env'], a: 1 },
+    { q: 'Why is git revert safe to use on commits you already shared?', o: ['It deletes the commit from everyone\'s computer', 'It adds a new commit that undoes the old one, so history is not rewritten', 'It only works offline', 'It asks the other people for permission'], a: 1 },
+  ],
+  lab: {
+    setup() { base(); initRepo(); cf({ 'README.md': README }, 'Add README'); cf({ 'pancakes.md': PANCAKES }, 'Add pancake recipe'); cf({ 'toast.md': L('Burnt toast', 'Leave bread in the toaster for 20 minutes') }, 'Add toast recipe'); },
+    tasks: [
+      { t: 'Ruin pancakes.md by replacing its content.', h: 'echo "oops" > pancakes.md', ok: () => S.files['pancakes.md'] !== H()['pancakes.md'] },
+      { t: 'Bring back the committed version of pancakes.md.', h: 'git restore pancakes.md', ok: () => ran(/^git (restore|checkout)/) && S.files['pancakes.md'] === H()['pancakes.md'] },
+      { t: 'The last commit added a bad toast recipe. Find its hash with git log --oneline, then revert that commit.', h: 'git revert HEAD   (or git revert <hash>)', ok: () => !has(H(), 'toast.md') && S.objects[headId()].msg.startsWith('Revert') },
+      { t: 'Create passwords.txt and stage it (a mistake on purpose).', h: 'echo "hunter2" > passwords.txt && git add passwords.txt', ok: () => has(S.repo.index, 'passwords.txt') },
+      { t: 'Unstage passwords.txt without deleting the file.', h: 'git restore --staged passwords.txt', ok: () => !has(S.repo.index, 'passwords.txt') && has(S.files, 'passwords.txt') },
+      { t: 'Create a .gitignore that ignores passwords.txt. Then run git status: the file is no longer listed.', h: 'echo "passwords.txt" > .gitignore  then  git status', ok: () => isIgnored('passwords.txt') && ran(/^git status/) },
+      { t: 'Commit the .gitignore file.', h: 'git add .gitignore && git commit -m "Ignore passwords file"', ok: () => has(H(), '.gitignore') && !has(H(), 'passwords.txt') && clean() },
+    ],
+  },
+},
+{
+  id: 'branches', title: 'Work on branches',
+  body: `
+<p>A <strong>branch</strong> is a movable label that points at a commit. When you commit on a branch, the label moves forward to the new commit. The default branch is <code>main</code>.</p>
+<p>Branches let you work on a new feature or experiment without touching <code>main</code>. If the idea works, you merge it in (next lesson). If it does not, you delete the branch and <code>main</code> never knew about it.</p>
+<pre class="block">main:      A ── B
+                 \\
+add-soup:         C ── D     ← you work here; main stays at B</pre>
+<div class="tablewrap"><table class="ref">
+<tr><th>Command</th><th>What it does</th></tr>
+<tr><td>${c('git branch')}</td><td>List branches. The current one has a <code>*</code>.</td></tr>
+<tr><td><code>git branch fix-typo</code></td><td>Create a branch, but stay where you are</td></tr>
+<tr><td>${c('git switch -c add-soup')}</td><td>Create a branch and switch to it</td></tr>
+<tr><td>${c('git switch main')}</td><td>Switch to an existing branch</td></tr>
+<tr><td><code>git branch -d fix-typo</code></td><td>Delete a branch (Git refuses if its work is not merged yet)</td></tr>
+<tr><td>${c('git log --oneline --all')}</td><td>Show commits from every branch</td></tr>
+</table></div>
+<p>When you switch branches, Git changes the files in your folder to match that branch. Files that only exist on another branch disappear from the folder and come back when you switch back. Nothing is lost.</p>
+<p class="tip"><code>git checkout</code> is the older command for switching: <code>git checkout main</code> and <code>git checkout -b new-branch</code> do the same as the switch commands. Both work here.</p>
+<p>Commit or discard your changes before switching. Git refuses to switch if it would overwrite uncommitted work.</p>`,
+  quiz: [
+    { q: 'What is a branch in Git?', o: ['A full copy of the project folder', 'A movable label pointing at a commit', 'A backup on a server', 'A separate repository'], a: 1, why: 'Branches are cheap: creating one just creates a new label.' },
+    { q: 'Which command creates a branch called login AND switches to it?', o: ['git branch login', 'git switch login', 'git switch -c login', 'git new login'], a: 2 },
+  ],
+  lab: {
+    setup() { base(); initRepo(); cf({ 'README.md': README }, 'Add README'); cf({ 'pancakes.md': PANCAKES }, 'Add pancake recipe'); },
+    tasks: [
+      { t: 'List the branches.', h: 'git branch', ok: () => ran(/^git branch$/) },
+      { t: 'Create a branch called add-soup and switch to it.', h: 'git switch -c add-soup', ok: () => S.repo.head === 'add-soup' },
+      { t: 'On add-soup, create soup.md and commit it.', h: 'echo "Tomato soup" > soup.md && git add soup.md && git commit -m "Add soup recipe"', ok: () => S.repo.branches['add-soup'] && has(treeOf(S.repo.branches['add-soup']), 'soup.md') && clean() },
+      { t: 'Switch back to main. Look at the files panel (or run ls): soup.md is gone, because main does not have it.', h: 'git switch main', ok: () => S.repo.head === 'main' && !has(S.files, 'soup.md') },
+      { t: 'Show the commits of all branches in one-line form.', h: 'git log --oneline --all', ok: () => ran(/^git log.*--all/) },
+      { t: 'Create a branch called fix-typo without switching to it, then delete it.', h: 'git branch fix-typo  then  git branch -d fix-typo', ok: () => ran(/^git branch -[dD] fix-typo/) && !has(S.repo.branches, 'fix-typo') },
+    ],
+  },
+},
+{
+  id: 'merge', title: 'Merge branches and resolve conflicts',
+  body: `
+<p>Merging brings the commits from another branch into the branch you are on. First switch to the branch that should <em>receive</em> the work (usually <code>main</code>), then merge:</p>
+<pre class="block">git switch main
+git merge add-soup</pre>
+<h3>Two kinds of merge</h3>
+<p><b>Fast-forward.</b> If <code>main</code> has not moved since the branch was created, Git just slides the <code>main</code> label forward. No new commit is needed.</p>
+<p><b>Merge commit.</b> If both branches have new commits, Git combines them and creates a merge commit with two parents.</p>
+<h3>Conflicts</h3>
+<p>If both branches changed the same lines in different ways, Git cannot decide which version wins. It stops and marks the file:</p>
+<pre class="block">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+# Family Recipes             ← your branch's version
+=======
+# Grandma's Recipes          ← the other branch's version
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; change-title</pre>
+<p>A conflict is not an error. It is Git asking you a question. To answer it:</p>
+<ol>
+<li>Open the file and decide what the final text should be. It can be one side, the other, or a mix.</li>
+<li>Delete the marker lines (<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>, <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>) and save.</li>
+<li><code>git add</code> the file to mark it as resolved.</li>
+<li><code>git commit</code> to finish the merge.</li>
+</ol>
+<p>Changed your mind halfway? <code>git merge --abort</code> puts everything back to how it was before the merge.</p>
+<p class="tip">After a branch is merged you can delete it with <code>git branch -d</code>. Its commits stay in the history.</p>`,
+  quiz: [
+    { q: 'You want the work from feature-x in main. What do you run?', o: ['git switch feature-x, then git merge main', 'git switch main, then git merge feature-x', 'git merge main feature-x from anywhere', 'git push feature-x main'], a: 1, why: 'You merge INTO the branch you are on.' },
+    { q: 'After fixing the text in a conflicted file, what are the next two steps?', o: ['git add the file, then git commit', 'git merge again, then git push', 'git restore the file, then git commit', 'Delete the branch, then git commit'], a: 0 },
+  ],
+  lab: {
+    setup() {
+      base(); initRepo();
+      cf({ 'README.md': '# Recipes\n' }, 'Add README'); cf({ 'pancakes.md': PANCAKES }, 'Add pancake recipe');
+      sw('change-title'); cf({ 'README.md': "# Grandma's Recipes\n" }, 'Rename to Grandma\'s Recipes', 'Sam');
+      sw('main'); cf({ 'README.md': '# Family Recipes\n' }, 'Rename to Family Recipes');
+      sw('add-soup'); cf({ 'soup.md': L('Tomato soup', '- 6 tomatoes', '- 1 onion') }, 'Add soup recipe');
+      sw('main');
+    },
+    tasks: [
+      { t: 'You are on main. Merge the add-soup branch into it (this one is a fast-forward).', h: 'git merge add-soup', ok: () => S.repo.branches.main === S.repo.branches['add-soup'] || !has(S.repo.branches, 'add-soup') && has(H(), 'soup.md') },
+      { t: 'add-soup is merged. Delete the branch.', h: 'git branch -d add-soup', ok: () => !has(S.repo.branches, 'add-soup') },
+      { t: 'Now merge change-title. Both branches changed the title, so expect a conflict.', h: 'git merge change-title', ok: () => !!S.repo.merging || S.objects[headId()].parents.length === 2 },
+      { t: 'Look at README.md to see the conflict markers.', h: 'cat README.md', ok: () => ran(/^cat README\.md/) },
+      { t: 'Resolve it: replace the file with the title you want, without the markers.', h: 'echo "# Grandma\'s Family Recipes" > README.md', ok: () => !/^(<{7}|={7}|>{7})/m.test(S.files['README.md'] || '') },
+      { t: 'Mark the conflict as resolved by staging README.md.', h: 'git add README.md', ok: () => (S.repo.merging && !S.repo.merging.conflicts.length) || (!S.repo.merging && S.objects[headId()].parents.length === 2) },
+      { t: 'Finish the merge with a commit, then look at git log --oneline --all.', h: 'git commit -m "Merge change-title"  then  git log --oneline --all', ok: () => !S.repo.merging && S.objects[headId()].parents.length === 2 && ran(/^git log/) },
+    ],
+  },
+},
+{
+  id: 'remotes', title: 'Share work with remotes',
+  body: `
+<p>A <strong>remote</strong> is a copy of the repository on a server. By convention the main remote is called <code>origin</code>. GitHub, GitLab and Bitbucket all work the same way from Git's point of view.</p>
+<div class="tablewrap"><table class="ref">
+<tr><th>Command</th><th>What it does</th></tr>
+<tr><td><code>git clone &lt;url&gt;</code></td><td>Download a whole repository, with its history, and set up <code>origin</code> for you</td></tr>
+<tr><td>${c('git remote -v')}</td><td>Show which remotes are configured</td></tr>
+<tr><td>${c('git push')}</td><td>Upload your new commits to the remote</td></tr>
+<tr><td>${c('git pull')}</td><td>Download new commits from the remote and merge them into your branch</td></tr>
+<tr><td><code>git remote add origin &lt;url&gt;</code></td><td>Connect an existing local repository to a remote</td></tr>
+<tr><td><code>git push -u origin main</code></td><td>First push of a branch. <code>-u</code> remembers the connection so later you can just type <code>git push</code>.</td></tr>
+</table></div>
+<h3>The daily rhythm when working with others</h3>
+<pre class="block">git pull                     # get your teammates' work first
+# ...edit files...
+git add .
+git commit -m "Describe change"
+git push                     # share your work</pre>
+<p>If someone pushed before you, Git rejects your push with “fetch first”. That is a safety check, not a failure: run <code>git pull</code>, fix any conflicts, then <code>git push</code> again.</p>
+<h3>Putting your own project on GitHub</h3>
+<ol>
+<li>Create an account on github.com and click <b>New repository</b>. Leave it empty (no README).</li>
+<li>GitHub shows a URL like <code>https://github.com/you/recipes.git</code>.</li>
+<li>In your project: <code>git remote add origin https://github.com/you/recipes.git</code></li>
+<li>Then: <code>git push -u origin main</code></li>
+</ol>
+<p class="tip">When you push to GitHub for the first time, it asks you to sign in. A browser window usually handles this. GitHub does not accept your account password in the terminal; it uses a sign-in through the browser, a personal access token, or an SSH key.</p>`,
+  quiz: [
+    { q: 'What does git pull do?', o: ['Uploads your commits', 'Downloads new commits from the remote and merges them into your branch', 'Deletes the remote', 'Creates a new branch'], a: 1 },
+    { q: 'Your push is rejected with “fetch first”. What now?', o: ['Delete the repository and clone again', 'Run git pull, resolve any conflicts, then push again', 'Use a different branch name', 'Wait an hour and try again'], a: 1 },
+  ],
+  lab: {
+    setup() {
+      base(); const url = 'https://git.example.com/team/recipes.git';
+      initRepo(); cf({ 'README.md': README }, 'Add README', 'Sam'); cf({ 'pancakes.md': PANCAKES }, 'Add pancake recipe', 'Sam');
+      S.servers[url] = { branches: { main: headId() } }; S.repo = null; S.files = {};
+    },
+    tasks: [
+      { t: 'Clone the team repository: https://git.example.com/team/recipes.git', h: 'git clone https://git.example.com/team/recipes.git', ok: () => S.repo && has(S.repo.remotes, 'origin') },
+      { t: 'Check which remote is configured.', h: 'git remote -v', ok: () => ran(/^git remote -v/) },
+      { t: 'Change pancakes.md and commit it. Then run git status: it says you are ahead of origin/main.', h: 'echo "- 1 tbsp butter" >> pancakes.md && git commit -am "Add butter to pancakes"  then  git status', ok: () => { const ti = S.repo && trackInfo(); return ti && ti.ahead > 0 && ran(/^git status/); } },
+      { t: 'Push your commit to the remote.', h: 'git push', ok: () => S.servers['https://git.example.com/team/recipes.git'].branches.main === headId(),
+        after() {
+          const url = 'https://git.example.com/team/recipes.git', srv = S.servers[url], parent = srv.branches.main;
+          const tree = { ...treeOf(parent), 'waffles.md': L('Waffles', '- 2 eggs', '- 250 g flour', '- 400 ml milk') };
+          const id = mkCommit(tree, [parent], 'Add waffle recipe', 'Sam'); S.objects[id].email = 'sam@example.com'; srv.branches.main = id; S._teammate = id;
+          return 'Meanwhile, your teammate Sam pushed a new commit (“Add waffle recipe”) to origin/main.';
+        } },
+      { t: 'Bring Sam\'s commit into your copy.', h: 'git pull', ok: () => S._teammate && ancestors(headId()).has(S._teammate) },
+      { t: 'Check the history: both your commit and Sam\'s are there.', h: 'git log --oneline', ok: () => ran(/^git log/) && S._teammate && ancestors(headId()).has(S._teammate) },
+    ],
+  },
+},
+{
+  id: 'project', title: 'Final project: a full workflow',
+  body: `
+<p>Time to put it together without step-by-step commands. You are starting a small portfolio website. Your team has already created an empty repository for it on the server at:</p>
+<pre class="block">https://git.example.com/you/portfolio.git</pre>
+<p>Use everything from the course. If you get stuck, <code>git status</code> almost always tells you what to do next, and each task has a hint.</p>
+<p>When you finish, you will have done the full loop that most developers repeat every day: create, commit, branch, merge, push.</p>`,
+  lab: {
+    setup() { base(); S.servers['https://git.example.com/you/portfolio.git'] = { branches: {} }; },
+    tasks: [
+      { t: 'Turn the empty folder into a repository.', h: 'git init', ok: () => !!S.repo },
+      { t: 'Create index.html with some content and commit it on main.', h: 'echo "<h1>Hi, I am Ada</h1>" > index.html, then git add and git commit', ok: () => S.repo.branches.main && has(treeOf(S.repo.branches.main), 'index.html') },
+      { t: 'Start a branch called add-about and switch to it.', h: 'git switch -c add-about', ok: () => S.repo.head === 'add-about' },
+      { t: 'Create about.html and commit it on the add-about branch.', h: 'echo "<h1>About me</h1>" > about.html, then git add and git commit', ok: () => S.repo.branches['add-about'] && has(treeOf(S.repo.branches['add-about']), 'about.html') && clean() },
+      { t: 'Bring about.html into main.', h: 'git switch main, then git merge add-about', ok: () => S.repo.head === 'main' && has(treeOf(S.repo.branches.main), 'about.html') },
+      { t: 'Connect the repository to the server as origin.', h: 'git remote add origin https://git.example.com/you/portfolio.git', ok: () => has(S.repo.remotes, 'origin') },
+      { t: 'Push main to origin and remember the connection.', h: 'git push -u origin main', ok: () => S.repo.upstream.main === 'origin' && S.servers[S.repo.remotes.origin] && S.servers[S.repo.remotes.origin].branches.main === S.repo.branches.main },
+      { t: 'Confirm with git status that everything is committed and up to date.', h: 'git status', ok: () => ran(/^git status/) && clean() && trackInfo() && !trackInfo().ahead },
+    ],
+  },
+},
+];
+const CHEAT = {
+  id: 'cheatsheet', title: 'Cheat sheet',
+  body: `
+<p>Everything from the course on one page. Keep it open next to your terminal.</p>
+<div class="tablewrap"><table class="ref">
+<tr><th>Task</th><th>Command</th></tr>
+<tr><td colspan="2"><b>Setup (once per computer)</b></td></tr>
+<tr><td>Set your name / email</td><td><code>git config --global user.name "Name"</code><br><code>git config --global user.email "you@example.com"</code></td></tr>
+<tr><td colspan="2"><b>Start a project</b></td></tr>
+<tr><td>New repository in this folder</td><td><code>git init</code></td></tr>
+<tr><td>Copy an existing repository</td><td><code>git clone &lt;url&gt;</code></td></tr>
+<tr><td colspan="2"><b>Everyday work</b></td></tr>
+<tr><td>What changed?</td><td><code>git status</code></td></tr>
+<tr><td>Stage a file / everything</td><td><code>git add file</code> · <code>git add .</code></td></tr>
+<tr><td>Commit</td><td><code>git commit -m "Message"</code></td></tr>
+<tr><td>Stage tracked files and commit</td><td><code>git commit -am "Message"</code></td></tr>
+<tr><td>History</td><td><code>git log --oneline</code> · <code>git log --oneline --all</code></td></tr>
+<tr><td>Unstaged / staged changes</td><td><code>git diff</code> · <code>git diff --staged</code></td></tr>
+<tr><td colspan="2"><b>Undo</b></td></tr>
+<tr><td>Discard edits to a file</td><td><code>git restore file</code></td></tr>
+<tr><td>Unstage a file</td><td><code>git restore --staged file</code></td></tr>
+<tr><td>Undo a commit with a new commit</td><td><code>git revert &lt;hash&gt;</code></td></tr>
+<tr><td>Ignore files</td><td>list them in <code>.gitignore</code></td></tr>
+<tr><td colspan="2"><b>Branches</b></td></tr>
+<tr><td>List branches</td><td><code>git branch</code></td></tr>
+<tr><td>Create and switch</td><td><code>git switch -c name</code></td></tr>
+<tr><td>Switch</td><td><code>git switch name</code></td></tr>
+<tr><td>Merge a branch into the current one</td><td><code>git merge name</code></td></tr>
+<tr><td>Delete a merged branch</td><td><code>git branch -d name</code></td></tr>
+<tr><td>Cancel a merge with conflicts</td><td><code>git merge --abort</code></td></tr>
+<tr><td colspan="2"><b>Remotes</b></td></tr>
+<tr><td>Show remotes</td><td><code>git remote -v</code></td></tr>
+<tr><td>Connect to a remote</td><td><code>git remote add origin &lt;url&gt;</code></td></tr>
+<tr><td>First push of a branch</td><td><code>git push -u origin main</code></td></tr>
+<tr><td>Upload / download</td><td><code>git push</code> · <code>git pull</code></td></tr>
+</table></div>
+<h3>Where to go next</h3>
+<ul>
+<li>Create a free GitHub account and push one of your own projects.</li>
+<li>Learn <b>pull requests</b>: GitHub's way of proposing a branch for review before it is merged.</li>
+<li>Look at <code>git stash</code> (put changes aside temporarily) and <code>git reset</code> (move a branch back; be careful with shared history).</li>
+<li>The free book <em>Pro Git</em> on git-scm.com covers everything in depth.</li>
+</ul>`,
+};
+const ALL = [...LESSONS, CHEAT];
+
+/* ============================== UI ============================== */
+const nav = document.getElementById('nav'), main = document.getElementById('main');
+let current = 0, lab = null;
+const isDone = id => store.done.includes(id);
+function markDone(id) { if (!isDone(id)) { store.done.push(id); save(); renderNav(); } }
+function renderNav() {
+  nav.innerHTML = ALL.map((l, i) => `<li><a href="#${l.id}" ${i === current ? 'aria-current="page"' : ''}><span class="num">${i < LESSONS.length ? String(i + 1).padStart(2, '0') : '—'}</span><span>${esc(l.title.split(':')[0])}</span><span class="tick">${isDone(l.id) ? '✓' : ''}</span></a></li>`).join('');
+  const n = LESSONS.filter(l => isDone(l.id)).length;
+  document.getElementById('progtext').textContent = `${n} / ${LESSONS.length} lessons`;
+  document.getElementById('progbar').style.width = (n / LESSONS.length * 100) + '%';
+}
+function quizHTML(qs) {
+  return `<section class="quiz"><h2 style="margin:0">Check your understanding</h2>${qs.map((q, qi) => `<div class="q" data-q="${qi}"><p>${esc(q.q)}</p><div class="opts">${q.o.map((o, oi) => `<button class="opt" type="button" data-o="${oi}">${esc(o)}</button>`).join('')}</div><div class="qfb" aria-live="polite"></div></div>`).join('')}</section>`;
+}
+function render() {
+  const L0 = ALL[current]; renderNav();
+  const isLesson = current < LESSONS.length;
+  main.innerHTML = `
+  <p class="eyebrow">${isLesson ? `Lesson ${current + 1} of ${LESSONS.length}` : 'Reference'}</p>
+  <h1>${esc(L0.title)}</h1>
+  <div class="prose">${L0.body}</div>
+  ${L0.quiz ? quizHTML(L0.quiz) : ''}
+  ${L0.lab ? `<section class="lab"><div class="labhead"><h2>Practice</h2><button class="btn" id="hintbtn" type="button">Show hint</button><button class="btn" id="resetlab" type="button">Start over</button></div>
+    <ol class="tasks" id="tasks"></ol>
+    <div class="labgrid">
+      <div class="term"><div class="bar2"><i></i><i></i><i></i><span>Terminal · practice</span></div><div class="out" id="out" aria-live="polite"></div>
+        <div class="inrow"><span class="pr" id="prompt"></span><input id="cmd" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command"></div></div>
+      <div class="state" id="state"></div>
+    </div></section>` : ''}
+  <div id="donebox"></div>
+  <nav class="pager">${current > 0 ? `<a class="btn" href="#${ALL[current - 1].id}">← ${esc(ALL[current - 1].title.split(':')[0])}</a>` : '<span></span>'}${current < ALL.length - 1 ? `<a class="btn primary" href="#${ALL[current + 1].id}">${esc(ALL[current + 1].title.split(':')[0])} →</a>` : ''}</nav>`;
+  main.querySelectorAll('.pager a').forEach(a => a.style.textDecoration = 'none');
+  quizState = L0.quiz ? L0.quiz.map(() => false) : [];
+  main.querySelectorAll('.q').forEach(qel => qel.addEventListener('click', e => {
+    const b = e.target.closest('.opt'); if (!b) return;
+    const qi = +qel.dataset.q, q = L0.quiz[qi], oi = +b.dataset.o, fb = qel.querySelector('.qfb');
+    qel.querySelectorAll('.opt').forEach(x => x.classList.remove('wrong'));
+    if (oi === q.a) { b.classList.add('right'); fb.textContent = 'Correct. ' + (q.why || ''); fb.style.color = 'var(--ok)'; quizState[qi] = true; checkComplete(); }
+    else { b.classList.add('wrong'); fb.textContent = 'Not quite. Try another answer.'; fb.style.color = 'var(--bad)'; }
+  }));
+  main.querySelectorAll('code.cmd').forEach(el => el.addEventListener('click', () => fillCmd(el.textContent)));
+  if (L0.lab) startLab(L0); else { lab = null; outEl = null; }
+  if (!L0.lab && !L0.quiz && !isLesson) {}
+  checkComplete(true);
+  window.scrollTo(0, 0);
+}
+let quizState = [];
+function fillCmd(t) { const i = document.getElementById('cmd'); if (!i) return; i.value = t; i.focus(); }
+function startLab(L0) {
+  L0.lab.setup(); lastCmd = '';
+  lab = { def: L0.lab, idx: 0, hint: false, hist: [], hpos: 0 };
+  outEl = document.getElementById('out');
+  print('Practice terminal. Type a command and press Enter. Type help for the list of commands.', 'dim'); flush();
+  const input = document.getElementById('cmd');
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { const v = input.value; input.value = ''; exec(v); }
+    else if (e.key === 'ArrowUp') { if (lab.hpos > 0) { lab.hpos--; input.value = lab.hist[lab.hpos] || ''; } e.preventDefault(); }
+    else if (e.key === 'ArrowDown') { if (lab.hpos < lab.hist.length) { lab.hpos++; input.value = lab.hist[lab.hpos] || ''; } e.preventDefault(); }
+  });
+  document.querySelector('.term').addEventListener('click', e => { if (!e.target.closest('input') && !window.getSelection().toString()) input.focus(); });
+  document.getElementById('hintbtn').onclick = () => { lab.hint = !lab.hint; renderTasks(); };
+  document.getElementById('resetlab').onclick = () => { startLab(L0); };
+  renderTasks(); renderState();
+}
+function promptText() { return `you@laptop:~/project${S.repo ? ` (${S.repo.head}${S.repo.merging ? '|MERGING' : ''})` : ''}$`; }
+function exec(v) {
+  const line = v.trim();
+  const row = document.createElement('div'); row.className = 'l-cmd'; row.innerHTML = `<span class="pr">${esc(promptText())}</span> ${esc(v)}`; outEl.appendChild(row);
+  if (line) { lab.hist.push(line); lab.hpos = lab.hist.length; }
+  for (const part of splitAnd(line)) { let ok; try { ok = runOne(part); } catch (err) { print('Something went wrong in the practice terminal: ' + err.message, 'red'); ok = false; } flush(); if (!ok) break; checkTasks(); }
+  if (!line) flush();
+  checkTasks(); renderState();
+}
+function checkTasks() {
+  const tasks = lab.def.tasks; let moved = false;
+  while (lab.idx < tasks.length) {
+    let ok = false; try { ok = !!tasks[lab.idx].ok(); } catch (e) { ok = false; }
+    if (!ok) break;
+    const t = tasks[lab.idx]; lab.idx++; lab.hint = false; moved = true;
+    if (t.after) { const m = t.after(); if (m) print(m, 'event'); }
+  }
+  if (moved) { if (lab.idx >= tasks.length) print('All practice tasks done. Nice work.', 'good'); flush(); renderTasks(); checkComplete(); }
+}
+function renderTasks() {
+  const el = document.getElementById('tasks'); if (!el) return;
+  el.innerHTML = lab.def.tasks.map((t, i) => `<li class="${i < lab.idx ? 'done' : i === lab.idx ? 'cur' : ''}"><div>${esc(t.t)}${i === lab.idx && lab.hint ? `<div class="hint">Try: <code class="hintcmd">${esc(t.h)}</code></div>` : ''}</div></li>`).join('');
+  el.querySelectorAll('.hintcmd').forEach(c => c.addEventListener('click', () => { if (!/  then  |, then /.test(c.textContent)) fillCmd(c.textContent); }));
+  document.getElementById('hintbtn').textContent = lab.hint ? 'Hide hint' : 'Show hint';
+  document.getElementById('hintbtn').disabled = lab.idx >= lab.def.tasks.length;
+}
+const openPeek = new Set();
+function renderState() {
+  const el = document.getElementById('state'); if (!el) return;
+  document.getElementById('prompt').textContent = promptText();
+  const r = S.repo; const c = r ? changes() : null;
+  const files = Object.keys(S.files).sort();
+  const fileRow = p => {
+    let b = '';
+    if (r) {
+      if (c.conflicts.includes(p)) b = '<span class="badge b-con">conflict</span>';
+      else if (c.untracked.includes(p)) b = '<span class="badge b-unt">untracked</span>';
+      else if (isIgnored(p) && !has(r.index, p)) b = '<span class="badge b-unt">ignored</span>';
+      else if (c.unstaged.find(x => x.p === p)) b = '<span class="badge b-mod">modified</span>';
+    }
+    return `<li style="flex-direction:column;align-items:stretch;gap:0"><div style="display:flex;gap:8px;align-items:baseline"><button class="fname" type="button" data-f="${esc(p)}">${esc(p)}</button>${b}</div>${openPeek.has(p) ? `<div class="peek">${esc(S.files[p] || '(empty file)')}</div>` : ''}</li>`;
+  };
+  const deleted = r ? c.unstaged.filter(x => x.type === 'deleted').map(x => `<li><span style="text-decoration:line-through;color:var(--muted)">${esc(x.p)}</span><span class="badge b-del">deleted</span></li>`).join('') : '';
+  let html = `<div class="area"><h4>Working directory <em>${files.length} file${files.length === 1 ? '' : 's'}</em></h4>${files.length || deleted ? `<ul>${files.map(fileRow).join('')}${deleted}</ul>` : '<div class="empty">Empty folder</div>'}</div>`;
+  if (!r) {
+    html += `<div class="area"><h4>Staging area</h4><div class="empty">No repository yet. Git is not tracking this folder.</div></div><div class="area"><h4>Commits</h4><div class="empty">No repository yet.</div></div>`;
+  } else {
+    const badge = t => t === 'new file' ? '<span class="badge b-new">new</span>' : t === 'deleted' ? '<span class="badge b-del">deleted</span>' : '<span class="badge b-mod">modified</span>';
+    html += `<div class="area"><h4>Staging area <em>next commit</em></h4>${c.staged.length ? `<ul>${c.staged.map(x => `<li>${esc(x.p)} ${badge(x.type)}</li>`).join('')}</ul>` : '<div class="empty">Nothing staged</div>'}</div>`;
+    const starts = [...Object.values(r.branches), ...Object.values(r.tracking)].filter(Boolean);
+    const set = new Set(); starts.forEach(s => ancestors(s).forEach(x => set.add(x)));
+    const list = [...set].map(id => S.objects[id]).sort((a, b) => b.time - a.time);
+    html += `<div class="area"><h4>Commits <em>on ${esc(r.head)}${r.merging ? ' · merging' : ''}</em></h4>${list.length ? `<ul>${list.slice(0, 10).map(cm => {
+      const refs = decorations(cm.id).map(d => `<span class="ref ${d.k === 'head' ? 'head' : d.k === 'br' ? 'br' : ''}">${esc(d.t)}</span>`).join('') + (cm.parents.length > 1 ? '<span class="ref mg">merge</span>' : '');
+      return `<li class="commit"><span class="hash">${cm.id}</span><span class="msg">${esc(cm.msg.split('\n')[0])}</span>${refs ? `<span class="refs">${refs}</span>` : ''}</li>`;
+    }).join('')}</ul>${list.length > 10 ? `<div class="empty">+ ${list.length - 10} older</div>` : ''}` : '<div class="empty">No commits yet</div>'}</div>`;
+    const rem = Object.keys(r.remotes);
+    if (rem.length) html += `<div class="area"><h4>Remote <em>origin</em></h4><ul>${rem.map(n => { const s = S.servers[r.remotes[n]] || { branches: {} }; const bs = Object.keys(s.branches); return `<li style="flex-direction:column;align-items:stretch;gap:2px"><span style="overflow-wrap:anywhere;color:var(--muted)">${esc(r.remotes[n])}</span>${bs.length ? bs.map(b => `<span>${esc(b)} → <span style="color:var(--accent)">${s.branches[b]}</span></span>`).join('') : '<span class="empty">empty: nothing pushed yet</span>'}</li>`; }).join('')}</ul></div>`;
+  }
+  el.innerHTML = html;
+  el.querySelectorAll('.fname').forEach(b => b.addEventListener('click', () => { const f = b.dataset.f; openPeek.has(f) ? openPeek.delete(f) : openPeek.add(f); renderState(); }));
+}
+function checkComplete(silent) {
+  const L0 = ALL[current]; if (current >= LESSONS.length) return;
+  const quizOk = !L0.quiz || quizState.every(Boolean);
+  const labOk = !L0.lab || (lab && lab.idx >= L0.lab.tasks.length);
+  const box = document.getElementById('donebox');
+  if (quizOk && labOk) {
+    const already = isDone(L0.id); markDone(L0.id);
+    if (!silent || !already) {}
+    box.innerHTML = `<div class="donebox"><b>Lesson complete.</b> ${current === LESSONS.length - 1 ? 'You finished the course. You can now create repositories, commit, branch, merge, resolve conflicts and share work through a remote. Keep the cheat sheet handy.' : 'Move on to the next lesson when you are ready.'}</div>`;
+  } else if (isDone(L0.id)) {
+    box.innerHTML = `<div class="donebox" style="background:var(--surface);border-color:var(--line)">You already completed this lesson. Feel free to practise again.</div>`;
+  } else {
+    const parts = []; if (L0.quiz && !quizOk) parts.push('answer the questions'); if (L0.lab && !labOk) parts.push('finish the practice tasks');
+    box.innerHTML = `<p class="tip" style="margin-top:20px">To complete this lesson: ${parts.join(' and ')}.</p>`;
+  }
+}
+function route() { const id = location.hash.slice(1); const i = ALL.findIndex(l => l.id === id); current = i >= 0 ? i : 0; render(); }
+window.addEventListener('hashchange', route);
+document.getElementById('resetall').addEventListener('click', e => {
+  const b = e.currentTarget;
+  if (b.dataset.arm) { store = { done: [], config: null }; save(); b.textContent = 'Reset progress'; delete b.dataset.arm; render(); }
+  else { b.dataset.arm = '1'; b.textContent = 'Click again to confirm'; setTimeout(() => { if (b.dataset.arm) { delete b.dataset.arm; b.textContent = 'Reset progress'; } }, 3000); }
+});
+route();
+})();
+</script>
+
+</body>
+</html>
