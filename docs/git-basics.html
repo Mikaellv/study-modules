@@ -81,6 +81,14 @@ code { font-family: var(--font-mono); font-size: 0.86em; background: var(--surfa
 .drow .btn { flex: none; }
 .dfb { font-size: 0.86rem; margin-top: 6px; min-height: 1em; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .dfb .bad { color: var(--bad); } .dfb .good { color: var(--ok); font-weight: 600; }
+.lvl { display: inline-block; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 1px 7px; border-radius: 10px; vertical-align: 2px; margin-right: 4px; border: 1px solid var(--line); color: var(--muted); }
+.lvl2 { border-color: var(--accent); color: var(--accent); }
+.lvl3 { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.navlevel { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); padding: 10px 8px 2px; font-weight: 600; }
+.nav .lock { color: var(--muted); font-size: 0.75rem; }
+.nav a.locked { color: var(--muted); }
+.lockbox { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; max-width: 70ch; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+.lockbox p { margin: 0; }
 .dfb .answer { font-family: var(--font-mono); background: var(--surface-2); border-radius: 5px; padding: 1px 6px; }
 pre.block { font-family: var(--font-mono); font-size: 0.85rem; background: var(--term-bg); color: var(--term-fg); padding: 12px 14px; border-radius: 8px; overflow-x: auto; line-height: 1.5; }
 .tablewrap { overflow-x: auto; margin: 12px 0 16px; }
@@ -167,6 +175,7 @@ table.ref th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.
   .side { position: static; }
   .nav { flex-direction: row; overflow-x: auto; padding-bottom: 4px; }
   .nav a { grid-template-columns: auto auto auto; white-space: nowrap; }
+  .navlevel { display: none; }
   .labgrid { grid-template-columns: minmax(0, 1fr); }
   .term { height: 380px; }
   .bar { width: 80px; }
@@ -850,6 +859,7 @@ ls                                     # list files</pre>
 <h3>git log: the list of commits</h3>
 <p>${c('git log')} lists commits, newest first. Each entry shows the commit hash, author, date and message. If the list is long, real Git opens a scrolling viewer: press <kbd>q</kbd> to leave it.</p>
 <p>${c('git log --oneline')} shows one commit per line, which is usually what you want. The labels in brackets, such as <code>(HEAD -> main)</code>, tell you which branch points at that commit. <b>HEAD</b> means “where you are now”.</p>
+<p>Add a number to see only the newest commits: <code>git log --oneline -3</code> shows the last 3.</p>
 <p>You will often see only the first 7 characters of a hash, like <code>a1b2c3d</code>. That is enough for Git to identify the commit.</p>
 <h3>git diff: what exactly changed</h3>
 <div class="tablewrap"><table class="ref">
@@ -950,6 +960,7 @@ add-soup:         C ── D     ← you work here; main stays at B</pre>
       { t: 'Switch back to main. Look at the files panel (or run ls): soup.md is gone, because main does not have it.', h: 'git switch main', ok: () => S.repo.head === 'main' && !has(S.files, 'soup.md') },
       { t: 'Show the commits of all branches in one-line form.', h: 'git log --oneline --all', ok: () => ran(/^git log.*--all/) },
       { t: 'Create a branch called fix-typo without switching to it, then delete it.', h: 'git branch fix-typo  then  git branch -d fix-typo', ok: () => ran(/^git branch -[dD] fix-typo/) && !has(S.repo.branches, 'fix-typo') },
+      { lv: 3, t: 'On a new branch called fix-pancakes, add a line to pancakes.md and commit it. Then go back to main. main must still have the old pancakes.md, and nothing may be left uncommitted.', h: 'git switch -c fix-pancakes, echo "- 1 tsp sugar" >> pancakes.md, git commit -am "Add sugar", git switch main', ok: () => { const f = S.repo.branches['fix-pancakes']; return f && S.repo.head === 'main' && treeOf(f)['pancakes.md'] !== treeOf(S.repo.branches.main)['pancakes.md'] && clean(); } },
     ],
   },
 },
@@ -1052,28 +1063,35 @@ git push                     # share your work</pre>
           return 'Meanwhile, your teammate Sam pushed a new commit (“Add waffle recipe”) to origin/main.';
         } },
       { t: 'Bring Sam\'s commit into your copy.', h: 'git pull', ok: () => S._teammate && ancestors(headId()).has(S._teammate) },
-      { t: 'Check the history: both your commit and Sam\'s are there.', h: 'git log --oneline', ok: () => ran(/^git log/) && S._teammate && ancestors(headId()).has(S._teammate) },
+      { t: 'Check the history: both your commit and Sam\'s are there.', h: 'git log --oneline', ok: () => ran(/^git log/) && S._teammate && ancestors(headId()).has(S._teammate),
+        after() {
+          const url = 'https://git.example.com/team/recipes.git', srv = S.servers[url], parent = srv.branches.main;
+          const id = mkCommit({ ...treeOf(parent), 'crepes.md': L('Crêpes', '- 2 eggs', '- 125 g flour', '- 250 ml milk') }, [parent], 'Add crêpe recipe', 'Sam');
+          S.objects[id].email = 'sam@example.com'; srv.branches.main = id; S._teammate2 = id; return null;
+        } },
+      { lv: 3, t: 'Add a line to waffles.md, commit it and get it onto the server. Read every message Git prints: things may have changed on the server since you last looked.', h: 'Commit, then git push. If the push is rejected: git pull, then git push again.', ok: () => S._teammate2 && S.servers['https://git.example.com/team/recipes.git'].branches.main === headId() && ancestors(headId()).has(S._teammate2) && S.files['waffles.md'] !== treeOf(S._teammate2)['waffles.md'] },
     ],
   },
 },
 {
   id: 'project', title: 'Final project: a full workflow',
   body: `
-<p>Time to put it together without step-by-step commands. You are starting a small portfolio website. Your team has already created an empty repository for it on the server at:</p>
+<p>Time to put it together without step-by-step commands. You are starting a small portfolio website. The folder already contains a <code>debug.log</code> file from your editor; it must never end up in the history. Your team has created an empty repository on the server at:</p>
 <pre class="block">https://git.example.com/you/portfolio.git</pre>
-<p>Use everything from the course. If you get stuck, <code>git status</code> almost always tells you what to do next, and each task has a hint.</p>
-<p>When you finish, you will have done the full loop that most developers repeat every day: create, commit, branch, merge, push.</p>`,
+<p>The tasks describe <em>what</em> to achieve, not which commands to type. Along the way you will hit a merge conflict on purpose. If you get stuck, <code>git status</code> almost always tells you what to do next. Hints for the challenge tasks unlock after you have tried at least one command.</p>
+<p>When you finish, you will have done the full loop that developers repeat every day: ignore, commit, branch, merge, resolve, push.</p>`,
   lab: {
-    setup() { base(); S.servers['https://git.example.com/you/portfolio.git'] = { branches: {} }; },
+    setup() { base(); S.files['debug.log'] = 'error: something broke at 09:14\n'; S.servers['https://git.example.com/you/portfolio.git'] = { branches: {} }; },
     tasks: [
-      { t: 'Turn the empty folder into a repository.', h: 'git init', ok: () => !!S.repo },
-      { t: 'Create index.html with some content and commit it on main.', h: 'echo "<h1>Hi, I am Ada</h1>" > index.html, then git add and git commit', ok: () => S.repo.branches.main && has(treeOf(S.repo.branches.main), 'index.html') },
-      { t: 'Start a branch called add-about and switch to it.', h: 'git switch -c add-about', ok: () => S.repo.head === 'add-about' },
-      { t: 'Create about.html and commit it on the add-about branch.', h: 'echo "<h1>About me</h1>" > about.html, then git add and git commit', ok: () => S.repo.branches['add-about'] && has(treeOf(S.repo.branches['add-about']), 'about.html') && clean() },
-      { t: 'Bring about.html into main.', h: 'git switch main, then git merge add-about', ok: () => S.repo.head === 'main' && has(treeOf(S.repo.branches.main), 'about.html') },
-      { t: 'Connect the repository to the server as origin.', h: 'git remote add origin https://git.example.com/you/portfolio.git', ok: () => has(S.repo.remotes, 'origin') },
-      { t: 'Push main to origin and remember the connection.', h: 'git push -u origin main', ok: () => S.repo.upstream.main === 'origin' && S.servers[S.repo.remotes.origin] && S.servers[S.repo.remotes.origin].branches.main === S.repo.branches.main },
-      { t: 'Confirm with git status that everything is committed and up to date.', h: 'git status', ok: () => ran(/^git status/) && clean() && trackInfo() && !trackInfo().ahead },
+      { t: 'Turn the folder into a repository.', h: 'git init', ok: () => !!S.repo },
+      { t: 'Make Git ignore every .log file, and make that rule your first commit. debug.log must not be committed.', h: 'echo "*.log" > .gitignore, then stage and commit only .gitignore', ok: () => has(H(), '.gitignore') && isIgnored('debug.log') && !has(H(), 'debug.log') },
+      { t: 'Create index.html with a heading and commit it on main.', h: 'echo "<h1>Hi, I am Ada</h1>" > index.html, then add and commit', ok: () => S.repo.branches.main && has(treeOf(S.repo.branches.main), 'index.html') },
+      { lv: 3, t: 'On a new branch called add-about, create about.html and also change the heading in index.html. Commit both.', h: 'git switch -c add-about, write both files with echo, then git add . and git commit', ok: () => { const a = S.repo.branches['add-about'], m = S.repo.branches.main; if (!a || !m) return false; const b = mergeBase(a, m); return has(treeOf(a), 'about.html') && treeOf(a)['index.html'] !== treeOf(b)['index.html'] && clean(); } },
+      { lv: 3, t: 'Your client wants a different heading on main. Go back to main, change the heading in index.html to something else and commit it (do not merge yet).', h: 'git switch main, echo "<h1>Ada Lovelace, developer</h1>" > index.html, git commit -am "Change heading"', ok: () => { const a = S.repo.branches['add-about'], m = S.repo.branches.main; if (!a || S.repo.head !== 'main' || ancestors(m).has(a)) return false; const b = mergeBase(a, m), ix = p => treeOf(p)['index.html']; return ix(m) !== ix(b) && ix(m) !== ix(a); } },
+      { lv: 3, t: 'Merge add-about into main. Both branches changed index.html, so resolve the conflict and finish the merge.', h: 'git merge add-about, fix index.html with echo, git add index.html, git commit', ok: () => { const m = S.repo.branches.main; return S.repo.head === 'main' && !S.repo.merging && S.objects[m].parents.length === 2 && has(treeOf(m), 'about.html') && !/^(<{7}|={7}|>{7})/m.test(treeOf(m)['index.html'] || ''); } },
+      { t: 'add-about is merged. Clean up the branch.', h: 'git branch -d add-about', ok: () => !has(S.repo.branches, 'add-about') },
+      { t: 'Connect the repository to https://git.example.com/you/portfolio.git as origin and push main so that a plain git push works next time.', h: 'git remote add origin <url>, then git push -u origin main', ok: () => S.repo.upstream.main === 'origin' && S.servers[S.repo.remotes.origin] && S.servers[S.repo.remotes.origin].branches.main === S.repo.branches.main },
+      { t: 'Confirm with git status that everything is committed and up to date.', h: 'git status', ok: () => ran(/^git status/) && clean() && trackInfo() && !trackInfo().ahead && ![...ancestors(headId())].some(id => has(treeOf(id), 'debug.log')) },
     ],
   },
 },
@@ -1090,46 +1108,58 @@ const DRILLS = {
     { q: 'Set your Git email to ada@example.com for every project on this computer.', a: [R('git config --global user\\.email "?ada@example\\.com"?')], show: 'git config --global user.email "ada@example.com"' },
     { q: 'Turn the current folder into a Git repository.', a: [R('git init')], show: 'git init' },
     { q: 'Ask Git which files have changed and what it suggests doing next.', a: [R('git status')], show: 'git status' },
+    { lv: 3, q: 'Make every new repository on this computer start with a branch called main. (The setting is init.defaultBranch.)', a: [R('git config --global init\\.defaultBranch "?main"?')], show: 'git config --global init.defaultBranch main' },
   ],
   commit: [
     { q: 'Stage only the file index.html.', a: [R('git add index\\.html')], show: 'git add index.html' },
     { q: 'Stage every change in the project folder.', a: [R('git add (\\.|-A|--all)')], show: 'git add .' },
     { q: 'Commit the staged changes with the message Add contact page.', a: [R('git commit -m "Add contact page"')], show: 'git commit -m "Add contact page"' },
     { q: 'In one command, stage all changes to tracked files and commit them with the message Fix typo.', a: [R('git commit (-am|-a -m|-m "Fix typo" -a) ?("Fix typo")?'), R('git commit -a -m "Fix typo"')], test: v => /^git commit /.test(v) && /(^| )-a(m)?( |$)/.test(v) && /"Fix typo"/.test(v), show: 'git commit -am "Fix typo"' },
+    { lv: 3, q: 'On one line, stage every change in the folder and then commit it with the message Add recipes. Join the two commands with &&.', a: [R('git add (\\.|-A|--all) && git commit -m "Add recipes"')], show: 'git add . && git commit -m "Add recipes"' },
   ],
   history: [
     { q: 'Show the commit history with one commit per line.', a: [R('git log --oneline')], show: 'git log --oneline' },
     { q: 'Show the changes you have made but not staged yet.', a: [R('git diff')], show: 'git diff' },
     { q: 'Show exactly what is staged for the next commit.', a: [R('git diff --(staged|cached)')], show: 'git diff --staged' },
     { q: 'Show the commits of all branches, one per line.', a: [R('git log (--oneline --all|--all --oneline)')], show: 'git log --oneline --all' },
+    { lv: 3, q: 'Show only the 3 newest commits, one per line.', a: [R('git log (--oneline (-3|-n 3)|(-3|-n 3) --oneline)')], show: 'git log --oneline -3' },
   ],
   undo: [
     { q: 'You edited menu.md and want the last committed version back. Discard your edits.', a: [R('git restore menu\\.md'), R('git checkout -- menu\\.md')], show: 'git restore menu.md' },
     { q: 'You staged secrets.env by mistake. Unstage it without deleting the file.', a: [R('git restore --staged secrets\\.env'), R('git reset (HEAD )?secrets\\.env')], show: 'git restore --staged secrets.env' },
     { q: 'Undo the commit a1b2c3d by making a new commit that reverses it.', a: [R('git revert a1b2c3d')], show: 'git revert a1b2c3d' },
     { q: 'Type the line you would put in .gitignore to ignore every file ending in .log.', a: [R('\\*\\.log')], show: '*.log' },
+    { lv: 3, q: 'You staged notes.md and then edited it again. Throw both changes away: unstage it, then bring back the committed version. One line, joined with &&.', a: [R('git restore --staged notes\\.md && git restore notes\\.md'), R('git restore (--staged --worktree|--worktree --staged|-SW|-WS) notes\\.md')], show: 'git restore --staged notes.md && git restore notes.md' },
   ],
   branches: [
     { q: 'List all branches.', a: [R('git branch')], show: 'git branch' },
     { q: 'Create a branch called login and switch to it, in one command.', a: [R('git switch -c login'), R('git checkout -b login')], show: 'git switch -c login' },
     { q: 'Switch back to the main branch.', a: [R('git switch main'), R('git checkout main')], show: 'git switch main' },
     { q: 'The login branch is merged. Delete it.', a: [R('git branch -d login'), R('git branch --delete login')], show: 'git branch -d login' },
+    { lv: 3, q: 'You have uncommitted edits to the tracked file soup.md and Git refuses to switch to main. On one line: commit all tracked changes with the message WIP soup, then switch to main.', a: [], test: v => /^(git add (\.|-A|--all|soup\.md) && )?git commit (-am|-a -m|-m "WIP soup" -a|-m) "WIP soup"( -a)? && git (switch|checkout) main$/.test(v) && (/-a/.test(v) || /^git add/.test(v)), show: 'git commit -am "WIP soup" && git switch main' },
   ],
   merge: [
     { q: 'You are on main. Bring the work from the branch feature-x into it.', a: [R('git merge feature-x')], show: 'git merge feature-x' },
     { q: 'You fixed the conflict in README.md. Mark it as resolved.', a: [R('git add (README\\.md|\\.)')], show: 'git add README.md' },
     { q: 'The merge has conflicts and you want to go back to how things were before. Cancel it.', a: [R('git merge --abort')], show: 'git merge --abort' },
+    { lv: 3, q: 'You are on your branch feature-x and want the newest commits from main inside your branch (not the other way round). Type the command.', a: [R('git merge main')], show: 'git merge main' },
   ],
   remotes: [
     { q: 'Download the repository at https://github.com/team/shop.git to your computer.', a: [R('git clone https://github\\.com/team/shop\\.git')], show: 'git clone https://github.com/team/shop.git' },
     { q: 'Connect your local repository to https://github.com/you/notes.git under the name origin.', a: [R('git remote add origin https://github\\.com/you/notes\\.git')], show: 'git remote add origin https://github.com/you/notes.git' },
     { q: 'Push main to origin for the first time and remember the connection.', a: [R('git push (-u|--set-upstream) origin main')], show: 'git push -u origin main' },
     { q: 'Download your teammates\' new commits and merge them into your branch.', a: [R('git pull'), R('git pull origin main')], show: 'git pull' },
+    { lv: 3, q: 'Your push was rejected with “fetch first”. On one line, get the new commits and then push again.', a: [R('git pull( origin main)? && git push( origin main)?')], show: 'git pull && git push' },
   ],
 };
-LESSONS.forEach(l => { if (DRILLS[l.id]) l.drills = DRILLS[l.id]; });
+LESSONS.forEach(l => { if (DRILLS[l.id]) l.drills = DRILLS[l.id].map((d, i) => ({ lv: i === 0 ? 1 : 2, ...d })); });
+/* Lessons are grouped into three levels; each lesson unlocks when the previous one is complete */
+const LEVELS = { 1: 'Foundations', 2: 'Building up', 3: 'Putting it together' };
+const LESSON_LEVEL = { intro: 1, setup: 1, commit: 1, history: 2, undo: 2, branches: 2, merge: 3, remotes: 3, project: 3 };
+const TAG = { 1: 'Warm-up', 2: 'Core', 3: 'Challenge' };
+const tagHTML = lv => `<span class="lvl lvl${lv}">${TAG[lv]}</span>`;
 function drillsHTML(L0) {
-  return `<section class="drills"><h2 style="margin:0">Type the command</h2><p class="tip">Write each command from memory and press Enter. Single or double quotes both work. After two tries you can reveal the answer, but you still type it in.</p>${L0.drills.map((d, i) => `<div class="drill" data-d="${i}"><p>${esc(d.q)}</p><div class="drow"><span class="dpr">$</span><input id="drill-${L0.id}-${i}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Your command"><button class="btn dcheck" type="button">Check</button></div><div class="dfb" aria-live="polite"></div></div>`).join('')}</section>`;
+  return `<section class="drills"><h2 style="margin:0">Type the command</h2><p class="tip">Write each command from memory and press Enter. Single or double quotes both work. The answer can be revealed after 2 tries (4 for challenges), but you still type it in.</p>${L0.drills.map((d, i) => `<div class="drill" data-d="${i}"><p>${tagHTML(d.lv)} ${esc(d.q)}</p><div class="drow"><span class="dpr">$</span><input id="drill-${L0.id}-${i}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Your command"><button class="btn dcheck" type="button">Check</button></div><div class="dfb" aria-live="polite"></div></div>`).join('')}</section>`;
 }
 function drillWrongMsg(d, v) {
   if (/^Git /.test(v)) return 'Commands are case sensitive: write git in lowercase.';
@@ -1150,7 +1180,7 @@ function wireDrills(L0) {
         checkComplete(); return;
       }
       tries++;
-      fb.innerHTML = `<span class="bad">${esc(drillWrongMsg(d, v))}</span>${tries >= 2 ? '<button class="linkbtn reveal" type="button">Show answer</button>' : ''}`;
+      fb.innerHTML = `<span class="bad">${esc(drillWrongMsg(d, v))}</span>${tries >= (d.lv === 3 ? 4 : 2) ? '<button class="linkbtn reveal" type="button">Show answer</button>' : ''}`;
       const rv = fb.querySelector('.reveal'); if (rv) rv.onclick = () => { fb.innerHTML = `<span>Answer: <span class="answer">${esc(d.show)}</span>. Now type it in yourself.</span>`; input.value = ''; input.focus(); };
     };
     btn.addEventListener('click', check);
@@ -1210,8 +1240,13 @@ const nav = document.getElementById('nav'), main = document.getElementById('main
 let current = 0, lab = null;
 const isDone = id => store.done.includes(id);
 function markDone(id) { if (!isDone(id)) { store.done.push(id); save(); renderNav(); } }
+const isLocked = i => i > 0 && i < LESSONS.length && !isDone(LESSONS[i - 1].id) && !isDone(LESSONS[i].id) && !(store.open || {})[LESSONS[i].id];
 function renderNav() {
-  nav.innerHTML = ALL.map((l, i) => `<li><a href="#${l.id}" ${i === current ? 'aria-current="page"' : ''}><span class="num">${i < LESSONS.length ? String(i + 1).padStart(2, '0') : '—'}</span><span>${esc(l.title.split(':')[0])}</span><span class="tick">${isDone(l.id) ? '✓' : ''}</span></a></li>`).join('');
+  nav.innerHTML = ALL.map((l, i) => {
+    const lv = LESSON_LEVEL[l.id], head = lv && (i === 0 || LESSON_LEVEL[ALL[i - 1].id] !== lv) ? `<li class="navlevel">Level ${lv} · ${LEVELS[lv]}</li>` : (i === LESSONS.length ? '<li class="navlevel">Reference</li>' : '');
+    const locked = isLocked(i);
+    return `${head}<li><a href="#${l.id}" class="${locked ? 'locked' : ''}" ${i === current ? 'aria-current="page"' : ''}><span class="num">${i < LESSONS.length ? String(i + 1).padStart(2, '0') : '—'}</span><span>${esc(l.title.split(':')[0])}</span><span class="tick">${isDone(l.id) ? '✓' : locked ? '<svg class="lock" width="11" height="13" viewBox="0 0 11 13" aria-label="Locked"><rect x="1" y="5.5" width="9" height="7" rx="1.5" fill="currentColor"/><path d="M3 5.5V4a2.5 2.5 0 0 1 5 0v1.5" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>' : ''}</span></a></li>`;
+  }).join('');
   const n = LESSONS.filter(l => isDone(l.id)).length;
   document.getElementById('progtext').textContent = `${n} / ${LESSONS.length} lessons`;
   document.getElementById('progbar').style.width = (n / LESSONS.length * 100) + '%';
@@ -1222,8 +1257,15 @@ function quizHTML(qs) {
 function render() {
   const L0 = ALL[current]; renderNav();
   const isLesson = current < LESSONS.length;
+  const eyebrow = isLesson ? `Lesson ${current + 1} of ${LESSONS.length} · Level ${LESSON_LEVEL[L0.id]}: ${LEVELS[LESSON_LEVEL[L0.id]]}` : 'Reference';
+  if (isLocked(current)) {
+    const prev = LESSONS[current - 1];
+    main.innerHTML = `<p class="eyebrow">${eyebrow}</p><h1>${esc(L0.title)}</h1><div class="lockbox"><p><b>This lesson is locked.</b> It unlocks when you finish “${esc(prev.title)}”.</p><p class="tip">Each lesson builds on the ones before it, and the exercises get harder as you go. Challenges in later lessons expect you to remember earlier commands without help.</p><div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><a class="btn primary" style="text-decoration:none" href="#${prev.id}">Go to lesson ${current}</a><button class="linkbtn" id="openanyway" type="button">Open it anyway</button></div></div>`;
+    document.getElementById('openanyway').onclick = () => { store.open = store.open || {}; store.open[L0.id] = true; save(); render(); };
+    lab = null; outEl = null; window.scrollTo(0, 0); return;
+  }
   main.innerHTML = `
-  <p class="eyebrow">${isLesson ? `Lesson ${current + 1} of ${LESSONS.length}` : 'Reference'}</p>
+  <p class="eyebrow">${eyebrow}</p>
   <h1>${esc(L0.title)}</h1>
   <div class="prose">${L0.body}</div>
   ${L0.quiz ? quizHTML(L0.quiz) : ''}
@@ -1257,7 +1299,7 @@ let quizState = [];
 function fillCmd(t) { const i = document.getElementById('cmd'); if (!i) return; i.value = t; i.focus(); }
 function startLab(L0) {
   L0.lab.setup(); lastCmd = '';
-  lab = { def: L0.lab, idx: 0, hint: false, hist: [], hpos: 0 };
+  lab = { def: L0.lab, idx: 0, hint: false, hist: [], hpos: 0, tries: 0 };
   outEl = document.getElementById('out');
   print('Practice terminal. Type a command and press Enter. Type help for the list of commands.', 'dim'); flush();
   const input = document.getElementById('cmd');
@@ -1275,26 +1317,28 @@ function promptText() { return `you@laptop:~/project${S.repo ? ` (${S.repo.head}
 function exec(v) {
   const line = v.trim();
   const row = document.createElement('div'); row.className = 'l-cmd'; row.innerHTML = `<span class="pr">${esc(promptText())}</span> ${esc(v)}`; outEl.appendChild(row);
-  if (line) { lab.hist.push(line); lab.hpos = lab.hist.length; }
+  if (line) { lab.hist.push(line); lab.hpos = lab.hist.length; lab.tries++; }
   for (const part of splitAnd(line)) { let ok; try { ok = runOne(part); } catch (err) { print('Something went wrong in the practice terminal: ' + err.message, 'red'); ok = false; } flush(); if (!ok) break; checkTasks(); }
   if (!line) flush();
-  checkTasks(); renderState();
+  checkTasks(); renderTasks(); renderState();
 }
 function checkTasks() {
   const tasks = lab.def.tasks; let moved = false;
   while (lab.idx < tasks.length) {
     let ok = false; try { ok = !!tasks[lab.idx].ok(); } catch (e) { ok = false; }
     if (!ok) break;
-    const t = tasks[lab.idx]; lab.idx++; lab.hint = false; moved = true;
+    const t = tasks[lab.idx]; lab.idx++; lab.hint = false; lab.tries = 0; moved = true;
     if (t.after) { const m = t.after(); if (m) print(m, 'event'); }
   }
   if (moved) { if (lab.idx >= tasks.length) print('All practice tasks done. Nice work.', 'good'); flush(); renderTasks(); checkComplete(); }
 }
 function renderTasks() {
   const el = document.getElementById('tasks'); if (!el) return;
-  el.innerHTML = lab.def.tasks.map((t, i) => `<li class="${i < lab.idx ? 'done' : i === lab.idx ? 'cur' : ''}"><div>${esc(t.t)}${i === lab.idx && lab.hint ? `<div class="hint">Try: <code class="hintcmd">${esc(t.h)}</code></div>` : ''}</div></li>`).join('');
-  document.getElementById('hintbtn').textContent = lab.hint ? 'Hide hint' : 'Show hint';
-  document.getElementById('hintbtn').disabled = lab.idx >= lab.def.tasks.length;
+  el.innerHTML = lab.def.tasks.map((t, i) => `<li class="${i < lab.idx ? 'done' : i === lab.idx ? 'cur' : ''}"><div>${t.lv === 3 ? tagHTML(3) : ''}${esc(t.t)}${i === lab.idx && lab.hint ? `<div class="hint">Try: <code class="hintcmd">${esc(t.h)}</code></div>` : ''}</div></li>`).join('');
+  const hb = document.getElementById('hintbtn'), cur = lab.def.tasks[lab.idx];
+  const gated = cur && cur.lv === 3 && lab.tries < 1 && !lab.hint;
+  hb.textContent = lab.hint ? 'Hide hint' : gated ? 'Hint unlocks after your first try' : 'Show hint';
+  hb.disabled = lab.idx >= lab.def.tasks.length || gated;
 }
 const openPeek = new Set();
 function renderState() {
@@ -1352,7 +1396,7 @@ function route() { const id = location.hash.slice(1); const i = ALL.findIndex(l 
 window.addEventListener('hashchange', route);
 document.getElementById('resetall').addEventListener('click', e => {
   const b = e.currentTarget;
-  if (b.dataset.arm) { store = { done: [], config: null }; save(); b.textContent = 'Reset progress'; delete b.dataset.arm; render(); }
+  if (b.dataset.arm) { store = { done: [], config: null, open: {} }; save(); b.textContent = 'Reset progress'; delete b.dataset.arm; render(); }
   else { b.dataset.arm = '1'; b.textContent = 'Click again to confirm'; setTimeout(() => { if (b.dataset.arm) { delete b.dataset.arm; b.textContent = 'Reset progress'; } }, 3000); }
 });
 route();

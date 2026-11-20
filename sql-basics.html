@@ -118,6 +118,14 @@ details.schemabox summary { cursor: pointer; font-weight: 600; font-size: 0.9rem
 .exnum { font-family: var(--font-mono); font-size: 0.75rem; width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; color: var(--muted); }
 .ex.solved .exnum { background: var(--ok); border-color: var(--ok); color: var(--surface); font-weight: 700; }
 .exq { margin: 2px 0 10px; }
+.lvl { display: inline-block; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 1px 7px; border-radius: 10px; vertical-align: 2px; margin-right: 4px; border: 1px solid var(--line); color: var(--muted); }
+.lvl2 { border-color: var(--accent); color: var(--accent); }
+.lvl3 { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.navlevel { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); padding: 10px 8px 2px; font-weight: 600; }
+.nav .lock { color: var(--muted); }
+.nav a.locked { color: var(--muted); }
+.lockbox { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; max-width: 70ch; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+.lockbox p { margin: 0; }
 textarea.sql { width: 100%; min-height: 88px; resize: vertical; font-family: var(--font-mono); font-size: 0.88rem; line-height: 1.5; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--code-bg); color: var(--ink); tab-size: 2; }
 textarea.sql:focus { outline: 2px solid var(--accent); outline-offset: 0; border-color: transparent; }
 .exbtns { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; align-items: center; }
@@ -137,6 +145,7 @@ textarea.sql:focus { outline: 2px solid var(--accent); outline-offset: 0; border
   .side { position: static; }
   .nav { flex-direction: row; overflow-x: auto; padding-bottom: 4px; }
   .nav a { grid-template-columns: auto auto auto; white-space: nowrap; }
+  .navlevel { display: none; }
   .bar { width: 80px; }
   .exbtns .kbd { display: none; }
 }
@@ -349,6 +358,8 @@ ${ex('SELECT name, born FROM authors WHERE born IS NULL;')}`,
     { q: 'Show the title of every book whose title contains the word “of”.', sol: "SELECT title FROM books WHERE title LIKE '%of%';", hint: "LIKE with % on both sides: '%of%'" },
     { q: 'Show the name of every customer who has no city recorded.', sol: 'SELECT name FROM customers WHERE city IS NULL;', hint: 'Missing values are NULL. Use IS NULL, not = NULL.' },
     { q: 'Show the title and genre of books in the genres Horror, Satire or Children. Use IN.', sol: "SELECT title, genre FROM books WHERE genre IN ('Horror', 'Satire', 'Children');", hint: "genre IN ('Horror', 'Satire', 'Children')" },
+    { lv: 3, q: 'Show the title, genre and price of books that are Magical Realism or cost more than 15, but only those in stock (in_stock above 0).', sol: "SELECT title, genre, price FROM books WHERE (genre = 'Magical Realism' OR price > 15) AND in_stock > 0;", hint: 'Mixing OR and AND: put brackets around the OR part.' },
+    { lv: 3, q: 'Show the name and birth year of authors born from 1900 to 1999 who are not from the United Kingdom.', sol: "SELECT name, born FROM authors WHERE born BETWEEN 1900 AND 1999 AND country <> 'United Kingdom';", hint: "BETWEEN for the years, <> for “not equal”." },
   ],
 },
 {
@@ -378,6 +389,7 @@ ${ex('SELECT title, price, price * 1.24 AS price_with_tax FROM books;')}
     { q: 'List every genre once, in alphabetical order.', sol: 'SELECT DISTINCT genre FROM books ORDER BY genre;', ordered: true, hint: 'SELECT DISTINCT genre … ORDER BY genre' },
     { q: 'For each book, show the title and the value of its stock (price × in_stock) named stock_value, highest value first.', sol: 'SELECT title, price * in_stock AS stock_value FROM books ORDER BY stock_value DESC;', ordered: true, orderKey: [1], names: [null, 'stock_value'], hint: 'price * in_stock AS stock_value, then ORDER BY stock_value DESC' },
     { q: 'Show the id and order_date of the 5 most recent orders, newest first.', sol: 'SELECT id, order_date FROM orders ORDER BY order_date DESC LIMIT 5;', ordered: true, hint: 'Dates written as YYYY-MM-DD sort correctly as text.' },
+    { lv: 3, q: 'Show the title and price of the 3 cheapest Literary books that are in stock, cheapest first.', sol: "SELECT title, price FROM books WHERE genre = 'Literary' AND in_stock > 0 ORDER BY price LIMIT 3;", ordered: true, hint: 'WHERE (two conditions), then ORDER BY, then LIMIT.' },
   ],
 },
 {
@@ -393,6 +405,8 @@ ${ex('SELECT title, price, price * 1.24 AS price_with_tax FROM books;')}
 <tr><td><code>MIN(column)</code> / <code>MAX(column)</code></td><td>smallest / largest value</td></tr>
 </table></div>
 ${ex('SELECT COUNT(*) AS number_of_orders, SUM(quantity) AS copies_sold FROM orders;')}
+<p><code>COUNT(DISTINCT column)</code> counts how many <em>different</em> values a column has, for example how many different books were ever ordered:</p>
+${ex('SELECT COUNT(DISTINCT book_id) AS different_books FROM orders;')}
 <p>Combine them with <code>WHERE</code> to summarize only some rows. The filter happens first, then the counting:</p>
 ${ex("SELECT COUNT(*) AS romance_books, AVG(price) AS avg_price FROM books WHERE genre = 'Romance';")}
 <p><code>ROUND(value, 2)</code> rounds to 2 decimals, which helps with averages and money:</p>
@@ -408,6 +422,9 @@ ${ex('SELECT ROUND(AVG(pages), 1) AS avg_pages FROM books;')}
     { q: 'How many copies does the shop have in stock in total (all books together)?', sol: 'SELECT SUM(in_stock) FROM books;', hint: 'SUM of the in_stock column.' },
     { q: 'In one row, show the publication year of the oldest book and of the newest book.', sol: 'SELECT MIN(year), MAX(year) FROM books;', hint: 'SELECT MIN(year), MAX(year) FROM books;' },
     { q: 'How many customers have a city recorded?', sol: 'SELECT COUNT(city) FROM customers;', hint: 'COUNT(column) ignores NULL values.' },
+    { q: 'How many different customers have placed at least one order?', sol: 'SELECT COUNT(DISTINCT customer_id) FROM orders;', hint: 'COUNT(DISTINCT customer_id) on the orders table.' },
+    { lv: 3, q: 'What is the total value of everything in stock (price × in_stock for every book, added up), rounded to 2 decimals?', sol: 'SELECT ROUND(SUM(price * in_stock), 2) FROM books;', hint: 'You can calculate inside an aggregate: SUM(price * in_stock).' },
+    { lv: 3, q: 'How many orders were placed in March 2025?', sol: "SELECT COUNT(*) FROM orders WHERE order_date BETWEEN '2025-03-01' AND '2025-03-31';", hint: "Filter order_date with BETWEEN '2025-03-01' AND '2025-03-31' (or LIKE '2025-03%'), then COUNT." },
   ],
 },
 {
@@ -431,6 +448,8 @@ ${ex('SELECT customer_id, SUM(quantity) AS copies\nFROM orders\nGROUP BY custome
     { q: 'Show only the genres that have more than 2 books, with their count.', sol: 'SELECT genre, COUNT(*) FROM books GROUP BY genre HAVING COUNT(*) > 2;', hint: 'Add HAVING COUNT(*) > 2 after GROUP BY.' },
     { q: 'For each book_id in orders, show the book_id and the total quantity ordered, largest total first.', sol: 'SELECT book_id, SUM(quantity) AS total FROM orders GROUP BY book_id ORDER BY total DESC;', ordered: true, orderKey: [1], hint: 'GROUP BY book_id, SUM(quantity), ORDER BY … DESC' },
     { q: 'Show each genre with its average price rounded to 2 decimals, most expensive genre first.', sol: 'SELECT genre, ROUND(AVG(price), 2) AS avg_price FROM books GROUP BY genre ORDER BY avg_price DESC;', ordered: true, hint: 'ROUND(AVG(price), 2) AS avg_price … ORDER BY avg_price DESC' },
+    { lv: 3, q: 'For each customer_id, show the number of orders (named orders) and the total copies (named copies). Only customers with at least 3 orders, most copies first.', sol: 'SELECT customer_id, COUNT(*) AS orders, SUM(quantity) AS copies FROM orders GROUP BY customer_id HAVING COUNT(*) >= 3 ORDER BY copies DESC;', ordered: true, orderKey: [2], names: [null, 'orders', 'copies'], hint: 'Two aggregates in SELECT, HAVING on COUNT(*), ORDER BY copies DESC.' },
+    { lv: 3, q: 'For each genre, how many books published after 1950 are in stock? Show genre and the count, genres in alphabetical order.', sol: 'SELECT genre, COUNT(*) FROM books WHERE year > 1950 AND in_stock > 0 GROUP BY genre ORDER BY genre;', ordered: true, hint: 'WHERE filters the books first, then GROUP BY genre, then ORDER BY genre.' },
   ],
 },
 {
@@ -458,7 +477,8 @@ ${ex('SELECT a.name, b.title\nFROM authors a\nLEFT JOIN books b ON b.author_id =
     { q: 'Show every order as: customer name, book title, quantity.', sol: 'SELECT c.name, b.title, o.quantity FROM orders o JOIN customers c ON o.customer_id = c.id JOIN books b ON o.book_id = b.id;', hint: 'Start FROM orders and join customers and books.' },
     { q: 'Show every author\'s name with the titles of their books, including authors who have no books.', sol: 'SELECT a.name, b.title FROM authors a LEFT JOIN books b ON b.author_id = a.id;', hint: 'authors LEFT JOIN books' },
     { q: 'Show the names of customers who have never placed an order.', sol: 'SELECT c.name FROM customers c LEFT JOIN orders o ON o.customer_id = c.id WHERE o.id IS NULL;', hint: 'customers LEFT JOIN orders, then WHERE o.id IS NULL' },
-    { q: 'Show each customer\'s name and how much they spent in total (quantity × price), named total_spent, biggest spender first.', sol: 'SELECT c.name, SUM(o.quantity * b.price) AS total_spent FROM orders o JOIN customers c ON o.customer_id = c.id JOIN books b ON o.book_id = b.id GROUP BY c.id, c.name ORDER BY total_spent DESC;', ordered: true, orderKey: [1], names: [null, 'total_spent'], hint: 'Join orders, customers and books; SUM(o.quantity * b.price); GROUP BY the customer.' },
+    { lv: 3, q: 'Show each customer\'s name and how much they spent in total (quantity × price), named total_spent, biggest spender first.', sol: 'SELECT c.name, SUM(o.quantity * b.price) AS total_spent FROM orders o JOIN customers c ON o.customer_id = c.id JOIN books b ON o.book_id = b.id GROUP BY c.id, c.name ORDER BY total_spent DESC;', ordered: true, orderKey: [1], names: [null, 'total_spent'], hint: 'Join orders, customers and books; SUM(o.quantity * b.price); GROUP BY the customer.' },
+    { lv: 3, q: 'How many copies has each author sold? Show the author\'s name and copies, only authors with at least 3 copies sold, most first.', sol: 'SELECT a.name, SUM(o.quantity) AS copies FROM orders o JOIN books b ON o.book_id = b.id JOIN authors a ON b.author_id = a.id GROUP BY a.id, a.name HAVING SUM(o.quantity) >= 3 ORDER BY copies DESC;', ordered: true, orderKey: [1], hint: 'orders → books → authors, GROUP BY the author, HAVING SUM(o.quantity) >= 3.' },
   ],
 },
 {
@@ -485,6 +505,8 @@ ${ex('DELETE FROM orders WHERE order_date < \'2025-02-01\';\nSELECT COUNT(*) AS 
     { q: 'Raise the price of every Romance book by 1.00.', sol: "UPDATE books SET price = price + 1 WHERE genre = 'Romance';", check: 'SELECT id, price FROM books ORDER BY id;', hint: 'SET price = price + 1 with a WHERE on the genre.' },
     { q: 'Order 20 was cancelled. Delete it.', sol: 'DELETE FROM orders WHERE id = 20;', check: 'SELECT id FROM orders ORDER BY id;', hint: 'DELETE FROM orders WHERE id = 20;' },
     { q: 'Restock: add 10 copies to every book that currently has 0 in stock.', sol: 'UPDATE books SET in_stock = in_stock + 10 WHERE in_stock = 0;', check: 'SELECT id, in_stock FROM books ORDER BY id;', hint: 'UPDATE books SET in_stock = in_stock + 10 WHERE in_stock = 0;' },
+    { lv: 3, q: 'All books by George Orwell get a 10% discount (multiply their price by 0.9). Look up his author id first if you need it.', sol: 'UPDATE books SET price = price * 0.9 WHERE author_id = 2;', check: 'SELECT id, price FROM books ORDER BY id;', hint: 'Run SELECT id FROM authors WHERE name = \'George Orwell\'; first, then UPDATE books … WHERE author_id = that id.' },
+    { lv: 3, q: 'Diego Ramos cancelled all his orders. Delete every one of them.', sol: 'DELETE FROM orders WHERE customer_id = 4;', check: 'SELECT id FROM orders ORDER BY id;', hint: 'Find his id in customers, then DELETE FROM orders WHERE customer_id = …' },
   ],
 },
 {
@@ -525,19 +547,25 @@ ${ex('ALTER TABLE customers ADD COLUMN email TEXT;\nSELECT * FROM customers LIMI
       check: db => columnsOf(db, 'reviews').some(r => String(r[0]).toLowerCase() === 'reviewer') ? null : 'The reviews table has no column called reviewer yet.', hint: 'ALTER TABLE reviews ADD COLUMN reviewer TEXT;' },
     { q: 'The shop decided against reviews. Delete the whole reviews table.', pre: 'CREATE TABLE reviews (id INTEGER PRIMARY KEY, book_id INTEGER NOT NULL, stars INTEGER, comment TEXT);', sol: 'DROP TABLE reviews;',
       check: db => columnsOf(db, 'reviews').length ? 'The reviews table still exists.' : (columnsOf(db, 'books').length ? null : 'The books table is gone. Only drop reviews.'), hint: 'DROP TABLE reviews;' },
+    { lv: 3, q: "In one run: create a table wishlist with the columns customer_id (INTEGER, required), book_id (INTEGER, required) and added (TEXT). Then add two rows: customer 8 wants books 5 and 10, both added on '2025-06-10'.", sol: "CREATE TABLE wishlist (customer_id INTEGER NOT NULL, book_id INTEGER NOT NULL, added TEXT);\nINSERT INTO wishlist (customer_id, book_id, added) VALUES (8, 5, '2025-06-10'), (8, 10, '2025-06-10');",
+      check: db => { const c = columnsOf(db, 'wishlist'); if (!c.length) return 'There is no table called wishlist yet.'; const names = c.map(r => String(r[0]).toLowerCase()); if (names.join() !== 'customer_id,book_id,added') return `Expected the columns customer_id, book_id, added. Your table has: ${names.join(', ')}.`; if (!c[0][2] || !c[1][2]) return 'customer_id and book_id should both be NOT NULL.'; let rows; try { rows = runAll(db, 'SELECT customer_id, book_id, added FROM wishlist ORDER BY book_id').results[0]; } catch (e) { return e.message; } const got = JSON.stringify(rows ? rows.values : []); return got === JSON.stringify([[8, 5, '2025-06-10'], [8, 10, '2025-06-10']]) ? null : 'The table is right, but its rows are not. Expected (8, 5, \'2025-06-10\') and (8, 10, \'2025-06-10\').'; },
+      hint: 'Two statements separated by a semicolon: CREATE TABLE … ; INSERT INTO … VALUES (…), (…);' },
   ],
 },
 {
   id: 'final', title: 'Final challenge: answer the shop\'s questions',
   body: `
 <p>The shop owner has questions. Each one needs several things you have learned. Write each query from scratch; the hints are there if you need them.</p>
-<p>Before you start: work in small steps. Write the <code>FROM</code> and <code>JOIN</code> part first and run it with <code>SELECT *</code>. When the rows look right, add <code>WHERE</code>, then <code>GROUP BY</code>, then the final columns and <code>ORDER BY</code>. Professionals build queries this way too.</p>`,
+<p>Before you start: work in small steps. Write the <code>FROM</code> and <code>JOIN</code> part first and run it with <code>SELECT *</code>. When the rows look right, add <code>WHERE</code>, then <code>GROUP BY</code>, then the final columns and <code>ORDER BY</code>. Professionals build queries this way too.</p>
+<p>The last question needs one new function: <code>substr(text, start, length)</code> cuts out part of a text. <code>substr('2025-03-15', 1, 7)</code> gives <code>'2025-03'</code>.</p>
+<p class="tip">Every question here is a challenge: hints unlock after your first attempt, the solution after your third.</p>`,
   exercises: [
     { q: 'Who are the 3 best customers? Show name and total_spent (quantity × price), highest first.', sol: 'SELECT c.name, SUM(o.quantity * b.price) AS total_spent FROM orders o JOIN customers c ON o.customer_id = c.id JOIN books b ON o.book_id = b.id GROUP BY c.id, c.name ORDER BY total_spent DESC LIMIT 3;', ordered: true, orderKey: [1], names: [null, 'total_spent'], hint: 'Same as the joins lesson, plus LIMIT 3.' },
     { q: 'Which books have never been ordered? Show their titles.', sol: 'SELECT b.title FROM books b LEFT JOIN orders o ON o.book_id = b.id WHERE o.id IS NULL;', hint: 'books LEFT JOIN orders … WHERE o.id IS NULL' },
     { q: 'For each author country, how many books does the shop carry? Show country and book_count, most books first.', sol: 'SELECT a.country, COUNT(*) AS book_count FROM books b JOIN authors a ON b.author_id = a.id GROUP BY a.country ORDER BY book_count DESC;', ordered: true, orderKey: [1], hint: 'Join books to authors, GROUP BY a.country.' },
     { q: 'Which different book titles were bought by customers from London?', sol: "SELECT DISTINCT b.title FROM orders o JOIN customers c ON o.customer_id = c.id JOIN books b ON o.book_id = b.id WHERE c.city = 'London';", hint: "Join all three tables, WHERE c.city = 'London', and DISTINCT." },
     { q: 'What is the revenue (quantity × price) per genre? Show genre and revenue, highest first.', sol: 'SELECT b.genre, SUM(o.quantity * b.price) AS revenue FROM orders o JOIN books b ON o.book_id = b.id GROUP BY b.genre ORDER BY revenue DESC;', ordered: true, orderKey: [1], hint: 'Join orders and books, GROUP BY b.genre, SUM(o.quantity * b.price).' },
+    { q: 'Revenue per month: show month (as YYYY-MM) and revenue (quantity × price), in date order.', sol: 'SELECT substr(o.order_date, 1, 7) AS month, SUM(o.quantity * b.price) AS revenue FROM orders o JOIN books b ON o.book_id = b.id GROUP BY month ORDER BY month;', ordered: true, hint: 'substr(o.order_date, 1, 7) AS month, then GROUP BY month and ORDER BY month.' },
   ],
 },
 ];
@@ -599,8 +627,20 @@ const nav = document.getElementById('nav'), main = document.getElementById('main
 let current = 0, quizState = [], playDb = null;
 const isDone = id => store.done.includes(id);
 const exKey = (lid, i) => `${lid}:${i}`;
+/* Lessons are grouped into three levels; each unlocks when the previous lesson is complete */
+const LEVELS = { 1: 'Foundations', 2: 'Building up', 3: 'Putting it together' };
+const LESSON_LEVEL = { 'first-query': 1, where: 1, sort: 1, aggregate: 2, group: 2, joins: 2, modify: 3, create: 3, final: 3 };
+const TAG = { 1: 'Warm-up', 2: 'Core', 3: 'Challenge' };
+const tagHTML = lv => `<span class="lvl lvl${lv}">${TAG[lv]}</span>`;
+LESSONS.forEach(l => l.exercises.forEach((e, i) => { if (!e.lv) e.lv = l.id === 'final' ? 3 : i === 0 ? 1 : 2; }));
+const isLocked = i => i > 0 && i < LESSONS.length && !isDone(LESSONS[i - 1].id) && !isDone(LESSONS[i].id) && !(store.open || {})[LESSONS[i].id];
+const LOCK_SVG = '<svg class="lock" width="11" height="13" viewBox="0 0 11 13" aria-label="Locked"><rect x="1" y="5.5" width="9" height="7" rx="1.5" fill="currentColor"/><path d="M3 5.5V4a2.5 2.5 0 0 1 5 0v1.5" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>';
 function renderNav() {
-  nav.innerHTML = ALL.map((l, i) => `<li><a href="#${l.id}" ${i === current ? 'aria-current="page"' : ''}><span class="num">${i < LESSONS.length ? String(i + 1).padStart(2, '0') : '—'}</span><span>${esc(l.title.split(':')[0])}</span><span class="tick">${isDone(l.id) ? '✓' : ''}</span></a></li>`).join('');
+  nav.innerHTML = ALL.map((l, i) => {
+    const lv = LESSON_LEVEL[l.id], head = lv && (i === 0 || LESSON_LEVEL[ALL[i - 1].id] !== lv) ? `<li class="navlevel">Level ${lv} · ${LEVELS[lv]}</li>` : (i === LESSONS.length ? '<li class="navlevel">Practice and reference</li>' : '');
+    const locked = isLocked(i);
+    return `${head}<li><a href="#${l.id}" class="${locked ? 'locked' : ''}" ${i === current ? 'aria-current="page"' : ''}><span class="num">${i < LESSONS.length ? String(i + 1).padStart(2, '0') : '—'}</span><span>${esc(l.title.split(':')[0])}</span><span class="tick">${isDone(l.id) ? '✓' : locked ? LOCK_SVG : ''}</span></a></li>`;
+  }).join('');
   const n = LESSONS.filter(l => isDone(l.id)).length;
   document.getElementById('progtext').textContent = `${n} / ${LESSONS.length} lessons`;
   document.getElementById('progbar').style.width = (n / LESSONS.length * 100) + '%';
@@ -609,7 +649,7 @@ function exerciseHTML(L0) {
   return `<section><h2>Exercises</h2><details class="schemabox"><summary>Show the tables</summary>${schemaHTML()}</details><div class="exs">${L0.exercises.map((e, i) => {
     const k = exKey(L0.id, i), solved = !!store.solved[k];
     return `<div class="ex ${solved ? 'solved' : ''}" data-i="${i}">
-      <div class="exhead"><span class="exnum">${solved ? '✓' : i + 1}</span><div style="min-width:0"><p class="exq">${esc(e.q)}</p>
+      <div class="exhead"><span class="exnum">${solved ? '✓' : i + 1}</span><div style="min-width:0"><p class="exq">${tagHTML(e.lv)} ${esc(e.q)}</p>
       <textarea class="sql" id="ed-${L0.id}-${i}" spellcheck="false" aria-label="SQL for exercise ${i + 1}" placeholder="Write your SQL here">${esc(store.drafts[k] || '')}</textarea>
       <div class="exbtns"><button class="btn primary run" type="button">Run and check</button><button class="btn hintb" type="button">Hint</button><button class="btn solb" type="button">Show solution</button><span class="kbd">Ctrl + Enter runs</span></div>
       <div class="reveal" hidden></div><div class="fbx"></div><div class="res"></div></div></div></div>`;
@@ -618,8 +658,15 @@ function exerciseHTML(L0) {
 function render() {
   const L0 = ALL[current]; renderNav();
   const isLesson = current < LESSONS.length;
+  const eyebrow = isLesson ? `Lesson ${current + 1} of ${LESSONS.length} · Level ${LESSON_LEVEL[L0.id]}: ${LEVELS[LESSON_LEVEL[L0.id]]}` : 'Reference';
+  if (isLocked(current)) {
+    const prev = LESSONS[current - 1];
+    main.innerHTML = `<p class="eyebrow">${eyebrow}</p><h1>${esc(L0.title)}</h1><div class="lockbox"><p><b>This lesson is locked.</b> It unlocks when you finish “${esc(prev.title)}”.</p><p class="tip">Each lesson builds on the ones before it, and the exercises get harder as you go. Challenges in later lessons combine what you learned earlier.</p><div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><a class="btn primary" href="#${prev.id}">Go to lesson ${current}</a><button class="linkbtn" id="openanyway" type="button">Open it anyway</button></div></div>`;
+    document.getElementById('openanyway').onclick = () => { store.open = store.open || {}; store.open[L0.id] = true; save(); render(); };
+    window.scrollTo(0, 0); return;
+  }
   main.innerHTML = `
-  <p class="eyebrow">${isLesson ? `Lesson ${current + 1} of ${LESSONS.length}` : 'Reference'}</p>
+  <p class="eyebrow">${eyebrow}</p>
   <h1>${esc(L0.title)}</h1>
   <div class="prose">${L0.body}</div>
   ${L0.quiz ? `<section class="quiz"><h2 style="margin:0">Check your understanding</h2>${L0.quiz.map((q, qi) => `<div class="q" data-q="${qi}"><p>${esc(q.q)}</p><div class="opts">${q.o.map((o, oi) => `<button class="opt" type="button" data-o="${oi}">${esc(o)}</button>`).join('')}</div><div class="qfb" aria-live="polite"></div></div>`).join('')}</section>` : ''}
@@ -669,10 +716,19 @@ function wireExercise(L0, el) {
   el.querySelector('.run').addEventListener('click', run);
   ta.addEventListener('keydown', ev => { if (ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey)) { ev.preventDefault(); run(); } });
   ta.addEventListener('input', () => { store.drafts[k] = ta.value; save(); });
-  el.querySelector('.hintb').addEventListener('click', () => { rev.hidden = false; rev.innerHTML = `<b>Hint:</b> ${esc(e.hint)}`; });
-  const solb = el.querySelector('.solb');
-  if (!store.solved[k]) { solb.disabled = true; solb.title = 'Run your own attempt first'; }
-  el.querySelector('.run').addEventListener('click', () => { if (ta.value.trim()) { solb.disabled = false; solb.title = ''; } });
+  const hintb = el.querySelector('.hintb'), solb = el.querySelector('.solb');
+  // Challenges give less help: hint after 1 attempt, solution after 3. Other exercises: hint anytime, solution after 1.
+  const need = e.lv === 3 ? { hint: 1, sol: 3 } : { hint: 0, sol: 1 };
+  let attempts = 0;
+  const gate = () => {
+    const free = !!store.solved[k];
+    hintb.disabled = !free && attempts < need.hint; hintb.textContent = hintb.disabled ? 'Hint (after 1 try)' : 'Hint';
+    solb.disabled = !free && attempts < need.sol; solb.textContent = solb.disabled ? `Show solution (after ${need.sol - attempts} more ${need.sol - attempts === 1 ? 'try' : 'tries'})` : 'Show solution';
+  };
+  gate();
+  el.querySelector('.run').addEventListener('click', () => { if (ta.value.trim()) { attempts++; gate(); } });
+  ta.addEventListener('keydown', ev => { if (ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey) && ta.value.trim()) { attempts++; gate(); } });
+  hintb.addEventListener('click', () => { rev.hidden = false; rev.innerHTML = `<b>Hint:</b> ${esc(e.hint)}`; });
   solb.addEventListener('click', () => { rev.hidden = false; rev.innerHTML = `<b>One possible solution</b> (other correct queries exist). Type it into the editor yourself:<pre>${hl(e.sol)}</pre>`; });
 }
 function wirePlayground() {
@@ -703,7 +759,7 @@ function checkComplete() {
 function route() { const id = location.hash.slice(1); const i = ALL.findIndex(l => l.id === id); current = i >= 0 ? i : 0; render(); }
 document.getElementById('resetall').addEventListener('click', e => {
   const b = e.currentTarget;
-  if (b.dataset.arm) { store = { done: [], solved: {}, drafts: {} }; save(); b.textContent = 'Reset progress'; delete b.dataset.arm; render(); }
+  if (b.dataset.arm) { store = { done: [], solved: {}, drafts: {}, open: {} }; save(); b.textContent = 'Reset progress'; delete b.dataset.arm; render(); }
   else { b.dataset.arm = '1'; b.textContent = 'Click again to confirm'; setTimeout(() => { if (b.dataset.arm) { delete b.dataset.arm; b.textContent = 'Reset progress'; } }, 3000); }
 });
 if (typeof initSqlJs !== 'function') { main.innerHTML = '<p class="err">The SQL engine could not be loaded. Check your internet connection and reload the page.</p>'; return; }
