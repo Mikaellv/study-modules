@@ -1,0 +1,186 @@
+{
+ "chapter": "2",
+ "title": "The electron gas",
+ "scope": "Secs. 2.1 (lattice and jellium, non-interacting, finite T) and 2.2 (first and second order perturbation theory). Excluded: 2.3 (electron gases in 3, 2, 1, 0 dimensions, Eqs. 2.50-2.55); its exercises are used here only as 2D and 1D analogues of Sec. 2.1.2.",
+ "sections": [
+  {
+   "id": "2.1",
+   "title": "The non-interacting electron gas",
+   "keyResults": [
+    {
+     "name": "Full electron-ion Hamiltonian",
+     "latex": "$$H=(T_{ion}+V^{ion}_{ion})+(T_{el}+V^{el}_{el})+V^{el}_{ion}$$",
+     "note": "Eqs. (2.1)-(2.4). Each term is written in second quantization, with no double counting in the electron-ion term."
+    }
+   ]
+  },
+  {
+   "id": "2.1.1",
+   "title": "Bloch theory of electrons in a static ion lattice",
+   "keyResults": [
+    {
+     "name": "Bloch theorem",
+     "latex": "$$\\psi_{n\\mathbf k\\sigma}(\\mathbf r)=u_{n\\mathbf k}(\\mathbf r)\\,e^{i\\mathbf k\\cdot\\mathbf r}\\chi_\\sigma,\\qquad u_{n\\mathbf k}(\\mathbf r+\\mathbf R)=u_{n\\mathbf k}(\\mathbf r)$$",
+     "note": "Eqs. (2.7)-(2.15). The reciprocal lattice is in Eqs. (2.7)-(2.10), and k is taken in the first Brillouin zone."
+    },
+    {
+     "name": "Effective mass approximation",
+     "latex": "$$\\psi_{n\\mathbf k\\sigma}\\to e^{i\\mathbf k\\cdot\\mathbf r}\\chi_\\sigma\\ \\text{with}\\ m\\to m^*$$",
+     "note": "Eq. (2.16). Bloch electrons are treated as plane waves with an effective mass."
+    }
+   ]
+  },
+  {
+   "id": "2.1.2",
+   "title": "Non-interacting electrons in the jellium model",
+   "keyResults": [
+    {
+     "name": "Jellium kinetic Hamiltonian",
+     "latex": "$$\\hat H_{jel}=\\sum_{\\mathbf k\\sigma}\\frac{\\hbar^2k^2}{2m}\\,c^\\dagger_{\\mathbf k\\sigma}c_{\\mathbf k\\sigma}$$",
+     "note": "Eqs. (2.17)-(2.19). The ion jellium and the homogeneous electron background are neutral, so only T_el remains."
+    },
+    {
+     "name": "Fermi wavenumber and density",
+     "latex": "$$k_F=\\frac{\\sqrt{2m\\varepsilon_F}}{\\hbar},\\qquad k_F^3=3\\pi^2n,\\qquad v_F=\\frac{\\hbar k_F}{m}$$",
+     "note": "Eqs. (2.23), (2.26). Spin degeneracy 2 is included."
+    },
+    {
+     "name": "Ground state energy",
+     "latex": "$$E^{(0)}=\\tfrac35\\,N\\varepsilon_F$$",
+     "note": "Eq. (2.28). Each electron gets the average of the Fermi-sea kinetic energy."
+    },
+    {
+     "name": "Density of states (both spins)",
+     "latex": "$$D(\\varepsilon)=\\frac{\\mathcal V}{2\\pi^2}\\left(\\frac{2m}{\\hbar^2}\\right)^{3/2}\\sqrt{\\varepsilon}\\,\\theta(\\varepsilon)$$",
+     "note": "Eqs. (2.29)-(2.31). Per unit volume it is d(eps) = D/V."
+    }
+   ]
+  },
+  {
+   "id": "2.1.3",
+   "title": "Non-interacting electrons at finite temperature",
+   "keyResults": [
+    {
+     "name": "Fermi-Dirac occupation and low-T limit",
+     "latex": "$$n_F(\\varepsilon_k)=\\frac{1}{e^{\\beta(\\varepsilon_k-\\mu)}+1}\\ \\xrightarrow{T\\to0}\\ \\theta(\\mu-\\varepsilon_k)$$",
+     "note": "Eq. (2.32). The chemical potential equals eps_F at T = 0 and changes only weakly with T."
+    }
+   ]
+  },
+  {
+   "id": "2.2",
+   "title": "Electron interactions in perturbation theory",
+   "keyResults": [
+    {
+     "name": "Wigner-Seitz radius",
+     "latex": "$$r_s=\\frac{(9\\pi/4)^{1/3}}{a_0k_F}$$",
+     "note": "Eq. (2.37). Defined by (4 pi/3)(r_s a_0)^3 n = 1."
+    },
+    {
+     "name": "Coulomb interaction without the q = 0 term",
+     "latex": "$$\\hat V^{el}_{el}=\\frac{1}{2\\mathcal V}\\sum_{\\sigma_1\\sigma_2}\\sum_{k_1k_2q}{}'\\,\\frac{4\\pi e_0^2}{q^2}\\,c^\\dagger_{k_1+q\\sigma_1}c^\\dagger_{k_2-q\\sigma_2}c_{k_2\\sigma_2}c_{k_1\\sigma_1}$$",
+     "note": "Eq. (2.34). The prime removes q = 0, which the positive background cancels. Here e_0^2 = e^2/(4 pi epsilon_0) is the Coulomb constant of Eq. (1.100b)."
+    }
+   ]
+  },
+  {
+   "id": "2.2.1",
+   "title": "Electron interactions in first-order perturbation theory",
+   "keyResults": [
+    {
+     "name": "First-order energy per particle",
+     "latex": "$$\\frac{E^{(0)}+E^{(1)}}{N}=\\frac{2.21}{r_s^2}-\\frac{0.916}{r_s}\\ \\text{Ry}$$",
+     "note": "Eqs. (2.38), (2.42)-(2.43). The 2.21 Ry is the kinetic term and 0.916 Ry is the exchange term."
+    },
+    {
+     "name": "Equilibrium density",
+     "latex": "$$r_s^*=4.83,\\qquad \\frac{E^*}{N}\\approx-0.095\\ \\text{Ry}\\approx-1.29\\ \\text{eV}$$",
+     "note": "Eq. (2.44). The book lists Na (r_s = 3.96, -0.083 Ry, -1.13 eV) as the experimental comparison."
+    }
+   ]
+  },
+  {
+   "id": "2.2.2",
+   "title": "Electron interactions in second-order perturbation theory",
+   "keyResults": [
+    {
+     "name": "Divergent direct second-order term",
+     "latex": "$$E^{(2)}_{dir}\\propto\\int\\frac{dq}{q}\\ \\to\\ \\infty$$",
+     "note": "Eqs. (2.46)-(2.49). The exchange term stays finite. The divergence is removed only at infinite order (Chap. 14)."
+    }
+   ]
+  }
+ ],
+ "questions": [
+  {
+   "id": "ch02-E1",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "In 3D, the Fermi wavenumber in terms of the electron density $n$ (spin 1/2) is",
+   "choices": [
+    "$(3\\pi^2 n)^{1/3}$",
+    "$(6\\pi^2 n)^{1/3}$",
+    "$(2\\pi n)^{1/2}$",
+    "$\\pi n/2$"
+   ],
+   "answerIndex": 0,
+   "solution": "Counting states in $k$ space with spin 2 gives $n=k_F^3/(3\\pi^2)$, Eq. (2.26). The option $(6\\pi^2 n)^{1/3}$ forgets the spin factor 2.",
+   "source": "Sec. 2.1.2, Eq. (2.26)"
+  },
+  {
+   "id": "ch02-E2",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "Show that $E^{(0)}/N=\\tfrac35\\varepsilon_F$ for the free electron gas at $T=0$.",
+   "solution": "Sum the kinetic energy over the Fermi sphere with spin 2:\n$$E^{(0)}=2\\frac{\\mathcal V}{(2\\pi)^3}\\int_{k<k_F}4\\pi k^2dk\\,\\frac{\\hbar^2k^2}{2m}=\\frac{\\mathcal V\\hbar^2k_F^5}{10\\pi^2m}.$$\nWith $N=\\mathcal Vk_F^3/(3\\pi^2)$,\n$$\\frac{E^{(0)}}{N}=\\frac{3\\hbar^2k_F^2}{10m}=\\frac35\\cdot\\frac{\\hbar^2k_F^2}{2m}=\\frac35\\varepsilon_F.$$",
+   "source": "Sec. 2.1.2, Eq. (2.28)"
+  },
+  {
+   "id": "ch02-E3",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "At small Wigner-Seitz radius $r_s$ (high density) in the jellium gas:",
+   "choices": [
+    "The kinetic energy dominates, because it scales as $r_s^{-2}$ and the Coulomb term scales as $r_s^{-1}$",
+    "The kinetic energy dominates, because it scales as $r_s^{2}$",
+    "The Coulomb energy dominates, because it scales as $r_s^{-2}$",
+    "Neither dominates, because both scale as $r_s^{-1}$"
+   ],
+   "answerIndex": 0,
+   "solution": "Eq. (2.38) gives $E^{(0)}/N\\propto r_s^{-2}$ and Eq. (2.42) gives $E^{(1)}/N\\propto r_s^{-1}$. The ratio is $\\propto r_s$, so the kinetic term wins at small $r_s$.",
+   "source": "Sec. 2.2, Eqs. (2.35)-(2.38), (2.42)"
+  },
+  {
+   "id": "ch02-E4",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "Why is there no direct first-order (Hartree, $q=0$) energy in jellium, and what sign does the exchange term have?",
+   "solution": "The $q=0$ Coulomb term is cancelled by the uniform positive background, so the prime in Eq. (2.34) removes it.\n\nThe exchange term from Eq. (2.42) is $E^{(1)}/N=-0.916/r_s$ Ry, which is negative. It lowers the energy and binds the gas, because the Pauli principle keeps same-spin electrons apart.",
+   "source": "Sec. 2.2.1, Eqs. (2.34), (2.42)-(2.43)"
+  },
+  {
+   "id": "ch02-H1",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Derive $k_F$ and the density of states per area $d(\\varepsilon)$ for a 2D electron gas, in analogy with Sec. 2.1.2 (Book Exercise 2.4).",
+   "solution": "Book Exercise 2.4. With spin 2 and area $A$, the number of states inside a disk of radius $k_F$ is\n$$N=2A\\frac{\\pi k_F^2}{(2\\pi)^2}\\quad\\Rightarrow\\quad n=\\frac{k_F^2}{2\\pi},\\qquad k_F=\\sqrt{2\\pi n}.$$\nThe energy in terms of $n$ is $\\varepsilon=\\hbar^2k^2/2m$, so the number of states per area below $\\varepsilon$ is\n$$n(\\varepsilon)=\\frac{k^2}{2\\pi}=\\frac{m\\varepsilon}{\\pi\\hbar^2}.$$\nDifferentiating gives the density of states per area\n$$d(\\varepsilon)=\\frac{m}{\\pi\\hbar^2}\\,\\theta(\\varepsilon),$$\nwhich is constant in energy (spin included).",
+   "source": "Ex. 2.4; method of Sec. 2.1.2, Eqs. (2.23), (2.29)-(2.31)"
+  },
+  {
+   "id": "ch02-H2",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Same as H1 for a 1D electron gas: find $k_F$ and the density of states per length (Book Exercise 2.5).",
+   "solution": "Book Exercise 2.5. With spin 2 and length $L$, the occupied states are $|k|<k_F$, with $k=2\\pi n/L$. Then\n$$N=2\\,L\\frac{2k_F}{2\\pi}\\quad\\Rightarrow\\quad n=\\frac{2k_F}{\\pi},\\qquad k_F=\\frac{\\pi n}{2}.$$\nThe number of states per length below energy $\\varepsilon$ is $n(\\varepsilon)=\\frac{2}{\\pi}k(\\varepsilon)$ with $k=\\sqrt{2m\\varepsilon}/\\hbar$. Therefore\n$$d(\\varepsilon)=\\frac{dn}{d\\varepsilon}=\\frac{1}{\\pi\\hbar}\\sqrt{\\frac{2m}{\\varepsilon}}\\,\\theta(\\varepsilon),$$\nwhich diverges as $\\varepsilon^{-1/2}$ at the band edge.",
+   "source": "Ex. 2.5; method of Sec. 2.1.2"
+  },
+  {
+   "id": "ch02-H3",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Minimize the first-order energy $E/N=2.21/r_s^2-0.916/r_s$ Ry to find $r_s^*$ and $E^*/N$, and compare with Na.",
+   "solution": "Set $\\partial_{r_s}(E/N)=0$:\n$$-\\frac{2\\cdot2.21}{r_s^3}+\\frac{0.916}{r_s^2}=0\\quad\\Rightarrow\\quad r_s^*=\\frac{2\\cdot2.21}{0.916}\\approx4.83.$$\nAt this point\n$$\\frac{E^*}{N}=\\frac{2.21}{r_s^{*2}}-\\frac{0.916}{r_s^*}=-\\frac{0.916^2}{4\\cdot2.21}\\approx-0.095\\ \\text{Ry}\\approx-1.29\\ \\text{eV}.$$\nFor comparison, the book's experimental value for Na is $r_s=3.96$ and $-0.083$ Ry, which is $-1.13$ eV (Eq. 2.44). The first-order formula at $r_s=3.96$ gives about $-0.090$ Ry, so the approximation is close but not exact.",
+   "source": "Sec. 2.2.1, Eqs. (2.43)-(2.44)"
+  }
+ ]
+}

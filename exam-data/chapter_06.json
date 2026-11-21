@@ -1,0 +1,166 @@
+{
+ "chapter": "6",
+ "title": "Linear response theory",
+ "scope": "Secs. 6.1 to 6.4 (Kubo formula, frequency domain, conductivity, conductance, dielectric function, conductivity-dielectric relation). Sec. 6.5 is a summary.",
+ "sections": [
+  {
+   "id": "6.1",
+   "title": "The general Kubo formula",
+   "keyResults": [
+    {
+     "name": "Kubo formula",
+     "latex": "$$\\delta\\langle A\\rangle(t)=\\int_{t_0}^\\infty dt'\\,C^R_{AH'}(t,t'),\\qquad C^R_{AH'}(t,t')=-i\\theta(t-t')\\langle[\\hat A(t),\\hat H'(t')]\\rangle_0$$",
+     "note": "Eqs. (6.6)-(6.8). The expectation value is taken in the unperturbed equilibrium state."
+    }
+   ]
+  },
+  {
+   "id": "6.1.1",
+   "title": "Kubo formula in the frequency domain",
+   "keyResults": [
+    {
+     "name": "Response to a c-number perturbation",
+     "latex": "$$H'(t)=B\\,f(t)\\ \\Rightarrow\\ \\delta\\langle A\\rangle(\\omega)=C^R_{AB}(\\omega)\\,f(\\omega)$$",
+     "note": "Eqs. (6.9)-(6.12). The response depends only on the time difference, so the convolution becomes a product."
+    }
+   ]
+  },
+  {
+   "id": "6.2",
+   "title": "Kubo formula for conductivity",
+   "keyResults": [
+    {
+     "name": "Conductivity tensor",
+     "latex": "$$\\sigma^{\\alpha\\beta}(\\mathbf r,\\mathbf r',\\omega)=\\frac{ie^2}{\\omega}\\,\\Pi^R_{\\alpha\\beta}(\\mathbf r,\\mathbf r',\\omega)+\\frac{ie^2n(\\mathbf r)}{\\omega m}\\,\\delta(\\mathbf r-\\mathbf r')\\,\\delta_{\\alpha\\beta}$$",
+     "note": "Eqs. (6.22)-(6.24). Pi^R is the retarded current-current function of the equilibrium current. The second term is the diamagnetic term (from J^A in Eq. 1.98c)."
+    },
+    {
+     "name": "Retarded current-current function",
+     "latex": "$$\\Pi^R_{\\alpha\\beta}(\\mathbf r,\\mathbf r',t-t')=-i\\theta(t-t')\\langle[\\hat J^\\alpha_0(\\mathbf r,t),\\hat J^\\beta_0(\\mathbf r',t')]\\rangle$$",
+     "note": "Eq. (6.25), used in Eqs. (6.23)-(6.24). Finding the conductivity reduces to this correlation function."
+    }
+   ]
+  },
+  {
+   "id": "6.3",
+   "title": "Kubo formula for conductance",
+   "keyResults": [
+    {
+     "name": "Conductance from the current correlation function",
+     "latex": "$$G=\\lim_{\\omega\\to0}\\mathrm{Re}\\!\\left[\\frac{ie^2}{\\omega}\\,C^R_{II}(\\omega)\\right],\\qquad C^R_{II}(t-t')=-i\\theta(t-t')\\langle[\\hat I(t),\\hat I(t')]\\rangle$$",
+     "note": "Eqs. (6.29)-(6.31). I is the total particle current through any cross-section. The 1/omega factor is the one consistent with Eq. (6.24)."
+    }
+   ]
+  },
+  {
+   "id": "6.4",
+   "title": "Kubo formula for the dielectric function",
+   "keyResults": [
+    {
+     "name": "Polarizability",
+     "latex": "$$\\chi^R_e(\\mathbf rt,\\mathbf r't')=-i\\theta(t-t')\\langle[\\hat\\rho_e(\\mathbf r,t),\\hat\\rho_e(\\mathbf r',t')]\\rangle$$",
+     "note": "Eqs. (6.37a)-(6.37b). Induced charge response to the external potential."
+    },
+    {
+     "name": "Inverse dielectric function",
+     "latex": "$$\\varepsilon^{-1}(\\mathbf rt,\\mathbf r't')=\\delta(\\mathbf r-\\mathbf r')\\delta(t-t')+\\int d\\mathbf r''\\,V_c(\\mathbf r-\\mathbf r'')\\,\\chi^R_e(\\mathbf r''t,\\mathbf r't')$$",
+     "note": "Eq. (6.40). V_c is the Coulomb interaction, V_c(r) = 1/(4 pi epsilon_0 r)."
+    }
+   ]
+  },
+  {
+   "id": "6.4.1",
+   "title": "Dielectric function for translation-invariant system",
+   "keyResults": [
+    {
+     "name": "Dielectric function in momentum space",
+     "latex": "$$\\varepsilon^{-1}(q,\\omega)=1+V_c(q)\\,\\chi^R_e(q,\\omega)$$",
+     "note": "Eqs. (6.41)-(6.42). Both Eqs. (6.35) become convolutions after Fourier transformation."
+    }
+   ]
+  },
+  {
+   "id": "6.4.2",
+   "title": "Relation between dielectric function and conductivity",
+   "keyResults": [
+    {
+     "name": "Dielectric function from the conductivity",
+     "latex": "$$\\varepsilon^{-1}(q,\\omega)=1-\\frac{iq^2}{\\omega}\\,V_c(q)\\,\\sigma(q,\\omega)$$",
+     "note": "Eq. (6.46). From Eqs. (6.42)-(6.45): the continuity equation (6.44) with J = -i sigma q phi_ext gives chi = -i q^2 sigma/omega."
+    }
+   ]
+  }
+ ],
+ "questions": [
+  {
+   "id": "ch06-E1",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "The Kubo formula expresses the linear response through",
+   "choices": [
+    "an equal-time expectation value in the perturbed state",
+    "a retarded commutator correlation function in the unperturbed equilibrium state, $-i\\theta(t-t')\\langle[\\hat A(t),\\hat H'(t')]\\rangle_0$",
+    "a time-ordered product in the perturbed state",
+    "an anticommutator of the unperturbed Hamiltonian with the observable"
+   ],
+   "answerIndex": 1,
+   "solution": "Eq. (6.8). The average is over the unperturbed equilibrium state, and the time dependence of the states is hidden in the commutator. The other options are not the Kubo form.",
+   "source": "Sec. 6.1, Eq. (6.8)"
+  },
+  {
+   "id": "ch06-E2",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "Why does a convolution in time become a product in frequency? And why is the transform of the retarded function defined with $\\omega+i\\eta$?",
+   "solution": "The retarded function depends only on the time difference, Eq. (6.10), so $\\delta\\langle A\\rangle(t)$ is a convolution in time, Eq. (6.11). The convolution theorem turns it into the product $C^R_{AB}(\\omega)f(\\omega)$, Eq. (6.12).\n\nThe response function does not decay in general, so the transform needs the convergence factor $e^{-\\eta t}$ in Eq. (5.46). This is the $\\omega\\to\\omega+i\\eta$ prescription used for all retarded functions.",
+   "source": "Sec. 6.1.1, Eqs. (6.10)-(6.12); Sec. 5.8, Eq. (5.46)"
+  },
+  {
+   "id": "ch06-E3",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "Name the two terms in the Kubo conductivity and where each comes from.",
+   "solution": "The conductivity, Eq. (6.24), has two terms:\n\n1. The paramagnetic term $\\frac{ie^2}{\\omega}\\Pi^R$, a retarded current-current correlation function. It comes from the response of the equilibrium current $\\hat J$ to the external vector potential.\n2. The diamagnetic term $\\frac{ie^2n}{\\omega m}\\delta(\\mathbf r-\\mathbf r')$. It comes from the explicit $A$-dependence of the current operator, Eq. (1.98c), which is linear in $A$ and contributes without any correlation function.",
+   "source": "Sec. 6.2, Eqs. (6.20), (6.24); Sec. 1.4.3, Eq. (1.98)"
+  },
+  {
+   "id": "ch06-E4",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "For a translation-invariant system, the inverse dielectric function $\\varepsilon^{-1}(q,\\omega)$ equals",
+   "choices": [
+    "$1+V_c(q)\\,\\chi^R(q,\\omega)$",
+    "$1-V_c(q)\\,\\chi^R(q,\\omega)$",
+    "$V_c(q)\\,\\chi^R(q,\\omega)$",
+    "$1/(1+\\chi^R(q,\\omega))$"
+   ],
+   "answerIndex": 0,
+   "solution": "Eq. (6.42). The sign is positive because $\\phi_{tot}=\\phi_{ext}+\\phi_{ind}$ and $\\phi_{ind}=V_c\\,\\rho_{ind}=V_c\\chi^R\\phi_{ext}$ (Eqs. 6.38-6.39). The response $\\chi^R$ itself is negative at low frequency, which makes $\\varepsilon^{-1}<1$ (screening). The option $1/(1+\\chi^R)$ is not the form, because the inverse dielectric function is linear in $\\chi^R$.",
+   "source": "Sec. 6.4.1, Eq. (6.42)"
+  },
+  {
+   "id": "ch06-H1",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "For a translation- and rotation-invariant system, relate $\\sigma(q,\\omega)$ to the current-current correlation function of $\\hat J(q)$ (Book Exercise 6.3).",
+   "solution": "Book Exercise 6.3. With isotropy, $\\sigma_{\\alpha\\beta}(\\mathbf r,\\mathbf r')=\\delta_{\\alpha\\beta}\\sigma(\\mathbf r-\\mathbf r')$. Fourier transform in $\\mathbf r-\\mathbf r'$ and write $\\hat{\\mathbf J}(\\mathbf q)=\\int d\\mathbf r\\,e^{-i\\mathbf q\\cdot\\mathbf r}\\hat{\\mathbf J}(\\mathbf r)$. Then Eq. (6.24) gives\n$$\\sigma(\\mathbf q,\\omega)=\\frac{ie^2}{\\omega}\\left[\\frac{1}{\\mathcal V}\\,C^R_{J_\\alpha(\\mathbf q)J_\\alpha(-\\mathbf q)}(\\omega)+\\frac{n}{m}\\right].$$\nThe factor $1/\\mathcal V$ comes from the normalization of the translation-invariant correlation function (the sum over the volume). The diamagnetic term is $q$-independent and gives the constant $n/m$.\n\nThis is the $q$-space version of Eq. (6.24). It shows that the dc conductivity is set by the current-current correlation at momentum $\\mathbf q$, plus the diamagnetic constant.",
+   "source": "Ex. 6.3; Sec. 6.2, Eq. (6.24)"
+  },
+  {
+   "id": "ch06-H2",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Non-interacting gas at $q\\to0$: derive the current operator, check its time dependence, and find the conductivity. Then discuss the interacting translation-invariant case (Book Exercise 6.4 parts a, b and d; part c, the Drude comparison, is not used here).",
+   "solution": "Book Exercise 6.4. (a) For free electrons the velocity is $\\mathbf v_k=\\mathbf k/m$. Taking $q\\to0$ in the current operator gives\n$$\\hat{\\mathbf J}(0)=\\frac1m\\sum_{k\\sigma}\\mathbf k\\,c^\\dagger_{k\\sigma}c_{k\\sigma}.$$\n\n(b) The operator $\\hat{\\mathbf J}(0)$ is diagonal in $k$, like $H_0=\\sum_k\\varepsilon_kc^\\dagger_kc_k$. Hence $[H_0,\\hat{\\mathbf J}(0)]=0$ and $\\hat{\\mathbf J}(0,t)=\\hat{\\mathbf J}(0)$. The retarded correlation function is then time-independent with zero commutator, so $\\Pi^R(0,\\omega)=0$. Eq. (6.24) gives\n$$\\sigma(0,\\omega)=\\frac{ie^2n}{m\\omega}.$$\n\nDissipative part: with $\\omega\\to\\omega+i\\eta$, $\\frac{i}{\\omega+i\\eta}=\\mathcal P\\frac{i}{\\omega}+\\pi\\delta(\\omega)$, so\n$$\\mathrm{Re}\\,\\sigma(0,\\omega)=\\frac{\\pi e^2n}{m}\\,\\delta(\\omega).$$\nThere is no absorption at finite frequency: the electrons accelerate freely.\n\n(d) With interactions, the total momentum $\\mathbf P=\\sum_k\\mathbf k\\,n_k$ still commutes with $H$, because the interaction depends only on differences of positions. So $\\hat{\\mathbf J}(0)=\\mathbf P/m$ commutes with $H$ and the same results follow: $\\Pi^R(0,\\omega)=0$ and the $\\delta(\\omega)$ weight is $\\pi e^2n/m$. The conclusion does not change at $q=0$.",
+   "source": "Ex. 6.4 (a), (b), (d); Sec. 6.2, Eq. (6.24)"
+  },
+  {
+   "id": "ch06-H3",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Show the symmetry $G(\\xi,\\xi',\\omega)=G(\\xi',\\xi,\\omega)$ of the dc conductance function (the Lehmann argument of Book Exercise 6.5).",
+   "solution": "Book Exercise 6.5. Insert eigenstates of $H_0$ with weights $\\rho_n=e^{-\\beta E_n}/Z$ into the time-domain function $-i\\theta(t)\\langle[\\hat A(t),\\hat B]\\rangle$ and Fourier transform. The time integral gives the Lehmann representation\n$$C^R_{AB}(\\omega)=\\sum_{nn'}\\frac{(\\rho_n-\\rho_{n'})\\,A_{nn'}B_{n'n}}{\\omega+E_n-E_{n'}+i\\eta},\\qquad A_{nn'}=\\langle n|A|n'\\rangle.$$\n\nUse $1/(x+i\\eta)=\\mathcal P(1/x)-i\\pi\\delta(x)$. The delta-function (absorptive) part is\n$$-\\pi\\sum_{nn'}(\\rho_n-\\rho_{n'})A_{nn'}B_{n'n}\\,\\delta(\\omega+E_n-E_{n'})=-\\tfrac12\\int dt\\,e^{i\\omega t}\\langle[A(t),B(0)]\\rangle,$$\nwhich is the identity of part (a). It is the part that sets the dc dissipation and is the quantity entering $G$ in the book's hint. With $A=\\hat I(\\xi)$ and $B=\\hat I(\\xi')$ this gives\n$$G(\\xi,\\xi',\\omega)=\\frac{e^2}{2\\omega}\\int dt\\,e^{i\\omega t}\\langle[\\hat I(\\xi,t),\\hat I(\\xi',0)]\\rangle.$$\n\nPart (b). Time-translation invariance of the equilibrium average gives $\\langle[A(t),B(0)]\\rangle=\\langle[A(0),B(-t)]\\rangle=-\\langle[B(-t),A(0)]\\rangle$. Substituting $t\\to-t$,\n$$G_{AB}(\\omega)=-\\frac{e^2}{2\\omega}\\int dt\\,e^{-i\\omega t}\\langle[B(t),A(0)]\\rangle=G_{BA}(-\\omega).$$\nAt $\\omega\\to0$ the limit is the derivative, $G_{AB}(0)=\\frac{ie^2}{2}\\int dt\\,t\\,\\langle[A(t),B(0)]\\rangle$. The same substitution shows this integral is unchanged under $A\\leftrightarrow B$, so $G(\\xi,\\xi',0)=G(\\xi',\\xi,0)$.\n\nOnly the dc limit is shown, which is what the book needs.",
+   "source": "Ex. 6.5; Sec. 6.3, Eqs. (6.28)-(6.31)"
+  }
+ ]
+}

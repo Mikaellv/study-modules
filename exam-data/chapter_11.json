@@ -1,0 +1,268 @@
+{
+ "chapter": "11",
+ "title": "Imaginary-time Green's functions",
+ "scope": "Chapter introduction (Eqs. 11.1-11.19) and Secs. 11.1-11.7; the summary in Sec. 11.8 is left out.",
+ "sections": [
+  {
+   "id": "intro",
+   "title": "Imaginary-time formalism (chapter introduction)",
+   "keyResults": [
+    {
+     "name": "Imaginary-time Heisenberg operator",
+     "latex": "$$A(\\tau)=e^{\\tau H}\\,A\\,e^{-\\tau H}$$",
+     "note": "Eq. (11.5); the Greek argument marks imaginary time."
+    },
+    {
+     "name": "Matsubara function",
+     "latex": "$$\\mathcal C_{AB}(\\tau,\\tau')=-\\langle T_\\tau A(\\tau)B(\\tau')\\rangle$$",
+     "note": "Eqs. (11.20)-(11.21); the time ordering carries + for bosons and - for fermions."
+    },
+    {
+     "name": "Imaginary-time evolution operator",
+     "latex": "$$\\hat U(\\tau,\\tau')=T_\\tau\\exp\\Big[-\\int_{\\tau'}^{\\tau}d\\tau_1\\,\\hat V(\\tau_1)\\Big]$$",
+     "note": "Eq. (11.12); combined with Eq. (11.13) it gives e^{-beta H} as one time-ordered exponential."
+    }
+   ]
+  },
+  {
+   "id": "11.1",
+   "title": "Definitions of Matsubara Green's functions",
+   "keyResults": [
+    {
+     "name": "Periodicity in tau",
+     "latex": "$$\\mathcal C_{AB}(\\tau-\\beta)=\\pm\\,\\mathcal C_{AB}(\\tau),\\qquad \\text{upper sign: bosons, lower sign: fermions}$$",
+     "note": "Eqs. (11.22)-(11.24); follows from the cyclic property of the trace."
+    },
+    {
+     "name": "Matsubara frequencies",
+     "latex": "$$\\omega_n=\\frac{2n\\pi}{\\beta}\\ \\text{(bosons)},\\qquad \\omega_n=\\frac{(2n+1)\\pi}{\\beta}\\ \\text{(fermions)}$$",
+     "note": "Eq. (11.28); beta = 1/k_B T enters only through the frequencies."
+    },
+    {
+     "name": "Fourier transform on [0, beta]",
+     "latex": "$$\\mathcal C_{AB}(i\\omega_n)=\\int_0^\\beta d\\tau\\,e^{i\\omega_n\\tau}\\,\\mathcal C_{AB}(\\tau)$$",
+     "note": "Eq. (11.28); a delta function at tau = 0 is placed at 0^+."
+    }
+   ]
+  },
+  {
+   "id": "11.1.1",
+   "title": "Fourier transform of Matsubara Green's functions",
+   "keyResults": []
+  },
+  {
+   "id": "11.2",
+   "title": "Connection between Matsubara and retarded functions",
+   "keyResults": [
+    {
+     "name": "Analytic continuation to the retarded function",
+     "latex": "$$\\mathcal C^R_{AB}(\\omega)=\\mathcal C_{AB}(i\\omega_n\\to\\omega+i\\eta)$$",
+     "note": "Eq. (11.33); valid when the Matsubara function is written as a rational function analytic in the upper half plane."
+    }
+   ]
+  },
+  {
+   "id": "11.2.1",
+   "title": "Advanced functions",
+   "keyResults": [
+    {
+     "name": "Advanced function",
+     "latex": "$$\\mathcal C^A_{AB}(\\omega)=\\mathcal C_{AB}(i\\omega_n\\to\\omega-i\\eta)$$",
+     "note": "Eq. (11.34); continuation from the lower half plane."
+    }
+   ]
+  },
+  {
+   "id": "11.3",
+   "title": "Single-particle Matsubara Green's function",
+   "keyResults": [
+    {
+     "name": "Single-particle Matsubara function",
+     "latex": "$$\\mathcal G(\\nu,\\tau)=-\\langle T_\\tau\\, c_\\nu(\\tau)\\,c^\\dagger_\\nu\\rangle$$",
+     "note": "Eq. (11.36b)."
+    }
+   ]
+  },
+  {
+   "id": "11.3.1",
+   "title": "Matsubara Green's function for non-interacting particles",
+   "keyResults": [
+    {
+     "name": "Free function in imaginary time",
+     "latex": "$$\\mathcal G_0(\\nu,\\tau)=-\\big(1-n_F(\\xi_\\nu)\\big)e^{-\\xi_\\nu\\tau},\\qquad 0<\\tau<\\beta$$",
+     "note": "Eq. (11.40)."
+    },
+    {
+     "name": "Free function in Matsubara frequency",
+     "latex": "$$\\mathcal G_0(\\nu,i\\omega_n)=\\frac{1}{i\\omega_n-\\xi_\\nu}$$",
+     "note": "Eq. (11.42); fermionic omega_n."
+    },
+    {
+     "name": "Free retarded function",
+     "latex": "$$G^R_0(\\nu,\\omega)=\\frac{1}{\\omega-\\xi_\\nu+i\\eta}$$",
+     "note": "Eq. (11.44); agrees with Eq. (8.55)."
+    }
+   ]
+  },
+  {
+   "id": "11.4",
+   "title": "Evaluation of Matsubara sums",
+   "keyResults": []
+  },
+  {
+   "id": "11.4.1",
+   "title": "Summations over functions with simple poles",
+   "keyResults": [
+    {
+     "name": "Fermionic Matsubara sum",
+     "latex": "$$\\frac1\\beta\\sum_{i\\omega_n}g(i\\omega_n)\\,e^{i\\omega_n\\tau}=\\sum_j \\mathrm{Res}_{z=z_j}\\!\\big[g(z)e^{z\\tau}\\big]\\,n_F(z_j)$$",
+     "note": "Eq. (11.57); sum over fermionic frequencies with the poles z_j of g."
+    },
+    {
+     "name": "Bosonic Matsubara sum",
+     "latex": "$$\\frac1\\beta\\sum_{i\\omega_n}g(i\\omega_n)\\,e^{i\\omega_n\\tau}=-\\sum_j \\mathrm{Res}_{z=z_j}\\!\\big[g(z)e^{z\\tau}\\big]\\,n_B(z_j)$$",
+     "note": "Eq. (11.58); the minus sign is the difference from the fermion case."
+    }
+   ]
+  },
+  {
+   "id": "11.4.2",
+   "title": "Summations over functions with known branch cuts",
+   "keyResults": [
+    {
+     "name": "Occupation from the spectral function",
+     "latex": "$$\\langle n_\\nu\\rangle=\\int\\frac{d\\omega}{2\\pi}\\,A(\\nu,\\omega)\\,n_F(\\omega)$$",
+     "note": "Eq. (11.62); agrees with Eq. (8.62)."
+    }
+   ]
+  },
+  {
+   "id": "11.5",
+   "title": "Equation of motion",
+   "keyResults": [
+    {
+     "name": "Free equation of motion",
+     "latex": "$$\\left(-\\partial_\\tau-\\xi_\\nu\\right)\\mathcal G_0(\\nu,\\tau)=\\delta(\\tau)$$",
+     "note": "Eq. (11.66); with the boundary condition G_0(tau + beta) = -G_0(tau) it fixes G_0 (Eq. 11.67)."
+    }
+   ]
+  },
+  {
+   "id": "11.6",
+   "title": "Wick's theorem",
+   "keyResults": [
+    {
+     "name": "Wick's theorem for free particles",
+     "latex": "$$\\mathcal G^{(n)}_0=\\det\\big[\\mathcal G_0(i,j')\\big]\\ \\text{(fermions)},\\qquad \\mathcal G^{(n)}_0=\\mathrm{perm}\\big[\\mathcal G_0(i,j')\\big]\\ \\text{(bosons)}$$",
+     "note": "Eq. (11.82); the n-particle function is a sum over all pairings of single-particle functions."
+    }
+   ]
+  },
+  {
+   "id": "11.7",
+   "title": "Example: polarizability of free electrons",
+   "keyResults": [
+    {
+     "name": "Free Matsubara polarizability",
+     "latex": "$$\\chi_0(q,iq_n)=\\frac1{\\mathcal V}\\sum_{k\\sigma}\\frac{n_F(\\xi_k)-n_F(\\xi_{k+q})}{iq_n+\\xi_k-\\xi_{k+q}}$$",
+     "note": "Eq. (11.88); continuing iq_n to omega + i eta gives the retarded form of Eq. (8.85)."
+    }
+   ]
+  }
+ ],
+ "questions": [
+  {
+   "id": "ch11-E1",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "Which set gives the fermionic Matsubara frequencies $\\omega_n$ at inverse temperature $\\beta$?",
+   "choices": [
+    "$\\omega_n=2n\\pi/\\beta$",
+    "$\\omega_n=(2n+1)\\pi/\\beta$",
+    "$\\omega_n=n\\pi/\\beta$",
+    "$\\omega_n=(2n+1)\\pi\\beta$"
+   ],
+   "answerIndex": 1,
+   "solution": "Fermionic functions are antiperiodic in $\\tau$, so $e^{i\\omega_n\\beta}=-1$, which requires odd multiples of $\\pi/\\beta$ (Eq. 11.28). The set $2n\\pi/\\beta$ is the bosonic one. The last option has the wrong dimension.",
+   "source": "Sec. 11.1.1, Eq. (11.28)"
+  },
+  {
+   "id": "ch11-E2",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "For fermions and bosons alike, the Matsubara function obeys $\\mathcal C_{AB}(\\tau-\\beta)=\\pm\\mathcal C_{AB}(\\tau)$ for $0<\\tau<\\beta$. Show this and state the sign for each statistics.",
+   "solution": "Write $\\mathcal C_{AB}(\\tau)=-\\langle T_\\tau A(\\tau)B\\rangle$ with $\\langle X\\rangle=\\mathrm{Tr}[e^{-\\beta H}X]/Z$. Let $\\varepsilon=+1$ for bosons and $\\varepsilon=-1$ for fermions.\n\nFor $\\tau-\\beta<0$ the time ordering puts $B$ first, so $T_\\tau[A(\\tau-\\beta)B]=\\varepsilon\\,B\\,A(\\tau-\\beta)$ and\n$$\\mathcal C_{AB}(\\tau-\\beta)=-\\varepsilon\\,\\langle B\\,A(\\tau-\\beta)\\rangle .$$\nCyclicity of the trace gives $\\mathrm{Tr}[e^{-\\beta H}B\\,A(\\tau-\\beta)]=\\mathrm{Tr}[A(\\tau-\\beta)\\,e^{-\\beta H}B]$. Since $e^{\\beta H}A(\\tau-\\beta)e^{-\\beta H}=A(\\tau)$, this equals $\\mathrm{Tr}[e^{-\\beta H}A(\\tau)B]$. Hence $\\langle B\\,A(\\tau-\\beta)\\rangle=\\langle A(\\tau)B\\rangle=-\\mathcal C_{AB}(\\tau)$ for $0<\\tau<\\beta$, and\n$$\\mathcal C_{AB}(\\tau-\\beta)=\\varepsilon\\,\\mathcal C_{AB}(\\tau).$$\nSo the sign is $+$ for bosons and $-$ for fermions.",
+   "source": "Sec. 11.1, Eqs. (11.22)-(11.24)"
+  },
+  {
+   "id": "ch11-E3",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "How is the retarded function $\\mathcal C^R_{AB}(\\omega)$ obtained from the Matsubara function $\\mathcal C_{AB}(i\\omega_n)$?",
+   "choices": [
+    "Replace $i\\omega_n\\to\\omega-i\\eta$, which gives the advanced function",
+    "Take the real part of $\\mathcal C_{AB}(i\\omega_n)$ and set $\\omega_n=\\omega$",
+    "Integrate $\\mathcal C_{AB}(\\tau)$ over $\\tau$ with weight $e^{-i\\omega\\tau}$",
+    "Replace $i\\omega_n\\to\\omega+i\\eta$ and continue analytically"
+   ],
+   "answerIndex": 3,
+   "solution": "The Matsubara function is the restriction of an analytic function $\\mathcal C_{AB}(z)$ to $z=i\\omega_n$. Approaching the real axis from above gives $\\mathcal C^R_{AB}$ (Eq. 11.33). The $-i\\eta$ continuation gives the advanced function (Eq. 11.34). A naive real-part or Fourier integral is not an analytic continuation.",
+   "source": "Sec. 11.2, Eq. (11.33)"
+  },
+  {
+   "id": "ch11-E4",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "For a single fermionic level, $\\mathcal G_0(\\nu,\\tau)=-(1-n_F(\\xi_\\nu))e^{-\\xi_\\nu\\tau}$ on $0<\\tau<\\beta$. Compute $\\mathcal G_0(\\nu,i\\omega_n)=\\int_0^\\beta d\\tau\\,e^{i\\omega_n\\tau}\\mathcal G_0(\\nu,\\tau)$ for fermionic $\\omega_n$.",
+   "solution": "Use $e^{i\\omega_n\\beta}=-1$:\n$$\\int_0^\\beta d\\tau\\,e^{(i\\omega_n-\\xi_\\nu)\\tau}=\\frac{e^{(i\\omega_n-\\xi_\\nu)\\beta}-1}{i\\omega_n-\\xi_\\nu}=\\frac{-e^{-\\beta\\xi_\\nu}-1}{i\\omega_n-\\xi_\\nu}.$$\nTherefore $\\mathcal G_0=(1-n_F)(1+e^{-\\beta\\xi_\\nu})/(i\\omega_n-\\xi_\\nu)$. With $1-n_F(\\xi)=e^{\\beta\\xi}/(e^{\\beta\\xi}+1)$ the prefactor equals 1, giving\n$$\\mathcal G_0(\\nu,i\\omega_n)=\\frac{1}{i\\omega_n-\\xi_\\nu}.$$",
+   "source": "Sec. 11.3.1, Eqs. (11.40)-(11.42)"
+  },
+  {
+   "id": "ch11-E5",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "Wick's theorem is applied to $\\langle T_\\tau c_1 c_2 c^\\dagger_{2'} c^\\dagger_{1'}\\rangle_0$ for non-interacting fermions. How many full pairings (terms) appear?",
+   "choices": [
+    "1",
+    "4",
+    "2",
+    "24"
+   ],
+   "answerIndex": 2,
+   "solution": "Two annihilation and two creation operators give $2!=2$ pairings: $(1,1')(2,2')$ with sign $+$ and $(1,2')(2,1')$ with sign $-$. This is the determinant of Eq. (11.82). The value 24 counts all orderings of the four operators, which is not the number of pairings.",
+   "source": "Sec. 11.6, Eq. (11.82)"
+  },
+  {
+   "id": "ch11-H1",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Book Exercise 11.1. Derive $\\langle c^\\dagger_\\nu c_\\nu\\rangle=n_F(\\xi_\\nu)$ from the Matsubara function. Use $\\langle c^\\dagger_\\nu c_\\nu\\rangle=\\mathcal G_0(\\nu,\\tau=0^-)$, the inverse transform $\\mathcal G_0(\\nu,\\tau)=\\frac1\\beta\\sum_n e^{-i\\omega_n\\tau}\\mathcal G_0(\\nu,i\\omega_n)$, and $\\mathcal G_0(\\nu,i\\omega_n)=1/(i\\omega_n-\\xi_\\nu)$.",
+   "solution": "Setting $\\tau=0^-$ in the inverse transform gives\n$$\\langle c^\\dagger_\\nu c_\\nu\\rangle=\\frac1\\beta\\sum_{i\\omega_n}\\frac{e^{i\\omega_n0^+}}{i\\omega_n-\\xi_\\nu}.$$\nApply Eq. (11.57) with $g(z)=1/(z-\\xi_\\nu)$. The only pole of $g$ is $z=\\xi_\\nu$, with residue 1. The convergence factor $e^{z0^+}\\to1$ at that pole, so\n$$\\langle c^\\dagger_\\nu c_\\nu\\rangle=\\mathrm{Res}_{z=\\xi_\\nu}\\!\\Big[\\frac{1}{z-\\xi_\\nu}\\Big]\\,n_F(\\xi_\\nu)=n_F(\\xi_\\nu)=\\frac{1}{e^{\\beta\\xi_\\nu}+1}.$$",
+   "source": "Ex. 11.1; Sec. 11.4.1, Eq. (11.57)"
+  },
+  {
+   "id": "ch11-H2",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Book Exercise 11.2 (redo of Exercise 8.5 in the Matsubara formalism). For a free one-dimensional electron gas with spin, write the current-current Matsubara function in Wick-paired form, evaluate the Matsubara sum with Eq. (11.57), continue $iq_n\\to\\omega+i\\eta$, and take the small-$\\omega$ limit of the conductance. Show that the result is $G=2e^2/h$.",
+   "solution": "Outline of the worked answer.\n\n1. The current operator of free electrons is $I(q)=\\sum_{k\\sigma}v_k\\,c^\\dagger_{k+q\\sigma}c_{k\\sigma}$ with $v_k=k/m$. The Kubo formula of Sec. 6.3 relates the conductance to the retarded current-current function.\n2. Wick's theorem (Eqs. 11.83-11.86) pairs the operators into a single loop, so the Matsubara function is a sum of products $\\mathcal G_0(k,\\tau)\\mathcal G_0(k+q,-\\tau)$ weighted by $v_kv_{k+q}$.\n3. Fourier transforming and using Eq. (11.57) gives the same structure as Eq. (11.88), with the velocity factors in the numerator.\n4. Continue $iq_n\\to\\omega+i\\eta$. Taking $q\\to0$ first and then $\\omega\\to0$ leaves the Fermi-surface term $\\propto\\sum_{k\\sigma}v_k^2\\,\\delta(\\xi_k)$. The two Fermi points and the spin sum give $G=2e^2/h$, the Landauer value for one spin-degenerate channel (Ex. 8.5).\n\n[UNVERIFIED: this is an outline only. The order of limits ($q\\to0$ then $\\omega\\to0$), the spin factor and the $\\hbar$ factors were not checked against the full solution of Exercise 8.5.]",
+   "source": "Ex. 11.2; Sec. 11.7, Eqs. (11.83)-(11.88); Ex. 8.5"
+  },
+  {
+   "id": "ch11-H3",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Book Exercise 11.3. Starting from $(-\\partial_\\tau-\\xi)\\mathcal G_0(\\tau)=\\delta(\\tau)$ with $\\mathcal G_0(\\tau)=-\\mathcal G_0(\\tau+\\beta)$, show that $\\mathcal G_0(i\\omega_n)=1/(i\\omega_n-\\xi)$ by Fourier transforming the equation.",
+   "solution": "Multiply the equation by $e^{i\\omega_n\\tau}$ and integrate over $(0^+,\\beta^-)$. The delta function at $\\tau=0$ sits outside this interval, so the right side is zero there. Integrating by parts,\n$$-\\int_{0^+}^{\\beta^-}d\\tau\\,e^{i\\omega_n\\tau}\\partial_\\tau\\mathcal G_0=-\\Big[e^{i\\omega_n\\tau}\\mathcal G_0\\Big]_{0^+}^{\\beta^-}+i\\omega_n\\,\\mathcal G_0(i\\omega_n).$$\nWith $e^{i\\omega_n\\beta}=-1$ and antiperiodicity, $e^{i\\omega_n\\beta}\\mathcal G_0(\\beta^-)=\\mathcal G_0(0^-)$. The bracket $[e^{i\\omega_n\\tau}\\mathcal G_0]_{0^+}^{\\beta^-}$ equals $\\mathcal G_0(0^-)-\\mathcal G_0(0^+)$. Using $\\mathcal G_0(0^-)=n_F$ and $\\mathcal G_0(0^+)=-(1-n_F)$, the bracket is 1 and the boundary term $-[\\cdots]$ is $-1$. Hence\n$$-1+(i\\omega_n-\\xi)\\mathcal G_0(i\\omega_n)=0\\quad\\Rightarrow\\quad \\mathcal G_0(i\\omega_n)=\\frac{1}{i\\omega_n-\\xi}.$$",
+   "source": "Ex. 11.3; Sec. 11.5, Eq. (11.66)"
+  },
+  {
+   "id": "ch11-H4",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Derive the free Matsubara polarizability $\\chi_0(q,iq_n)$ from $\\chi_0(q,\\tau)=-\\frac1{\\mathcal V}\\langle T_\\tau\\rho(q,\\tau)\\rho(-q,0)\\rangle_0$, with $\\rho(q)=\\sum_{k\\sigma}c^\\dagger_{k\\sigma}c_{k+q\\sigma}$ and $\\mathcal G_0(k,i\\omega_n)=1/(i\\omega_n-\\xi_k)$. Show that the Matsubara sum gives the Lindhard form with the $n_F$ difference.",
+   "solution": "1. Wick's theorem (Eq. 11.82) keeps only the single-loop pairing. Contracting $c_{k+q}(\\tau)$ with $c^\\dagger_{k+q}(0)$ and $c^\\dagger_k(\\tau)$ with $c_k(0)$ gives $\\langle T\\rho\\rho\\rangle_0=-\\sum_{k\\sigma}\\mathcal G_0(k+q,\\tau)\\,\\mathcal G_0(k,-\\tau)$, so\n$$\\chi_0(q,\\tau)=\\frac1{\\mathcal V}\\sum_{k\\sigma}\\mathcal G_0(k+q,\\tau)\\,\\mathcal G_0(k,-\\tau).$$\n2. The Fourier transform of this product is a convolution, so $\\chi_0(q,iq_n)=\\frac1{\\mathcal V}\\sum_{k\\sigma}\\frac1\\beta\\sum_{ik_n}\\mathcal G_0(k,ik_n)\\,\\mathcal G_0(k+q,ik_n+iq_n)$, with bosonic $iq_n$ and fermionic $ik_n$.\n3. The summand is $g(z)=1/[(z-\\xi_k)(z+iq_n-\\xi_{k+q})]$. Its poles are $z=\\xi_k$ and $z=\\xi_{k+q}-iq_n$. Eq. (11.57) at $\\tau=0$ gives\n$$\\frac{n_F(\\xi_k)}{\\xi_k+iq_n-\\xi_{k+q}}+\\frac{n_F(\\xi_{k+q}-iq_n)}{\\xi_{k+q}-iq_n-\\xi_k}.$$\nBecause $e^{i\\beta q_n}=1$, $n_F(\\xi_{k+q}-iq_n)=n_F(\\xi_{k+q})$. Hence\n$$\\chi_0(q,iq_n)=\\frac1{\\mathcal V}\\sum_{k\\sigma}\\frac{n_F(\\xi_k)-n_F(\\xi_{k+q})}{iq_n+\\xi_k-\\xi_{k+q}}.$$",
+   "source": "Sec. 11.7, Eqs. (11.83)-(11.88)"
+  }
+ ]
+}

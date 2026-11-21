@@ -1,0 +1,186 @@
+{
+ "chapter": "5",
+ "title": "Time dependence in quantum theory",
+ "scope": "Secs. 5.1 to 5.6 and 5.8 (Schrodinger, Heisenberg and interaction pictures, linear response time evolution, time-dependent operators, Fermi's golden rule, Fourier transforms of retarded and advanced functions). Excluded: 5.7 (T-matrix and generalized golden rule, Eqs. 5.35-5.41), 5.9 is a summary.",
+ "sections": [
+  {
+   "id": "5.1",
+   "title": "The Schrodinger picture",
+   "keyResults": [
+    {
+     "name": "Schrodinger time evolution",
+     "latex": "$$|\\psi(t)\\rangle=e^{-iHt}|\\psi(0)\\rangle,\\qquad i\\partial_t|\\psi(t)\\rangle=H|\\psi(t)\\rangle$$",
+     "note": "Eqs. (5.1)-(5.3). Energies are measured in frequency units (hbar = 1)."
+    }
+   ]
+  },
+  {
+   "id": "5.2",
+   "title": "The Heisenberg picture",
+   "keyResults": [
+    {
+     "name": "Heisenberg operators and equation of motion",
+     "latex": "$$A(t)=e^{iHt}Ae^{-iHt},\\qquad \\dot A(t)=i[H,A](t)+(\\partial_tA)(t)$$",
+     "note": "Eqs. (5.4)-(5.6)."
+    }
+   ]
+  },
+  {
+   "id": "5.3",
+   "title": "The interaction picture",
+   "keyResults": [
+    {
+     "name": "Interaction-picture operators and states",
+     "latex": "$$\\hat A(t)=e^{iH_0t}Ae^{-iH_0t},\\qquad i\\partial_t\\hat\\psi(t)=\\hat V(t)\\hat\\psi(t)$$",
+     "note": "Eqs. (5.7)-(5.10). The fast H_0 phase is pulled out, so only V(t) drives the states."
+    },
+    {
+     "name": "Time-ordered evolution operator",
+     "latex": "$$\\hat U(t,t_0)=\\mathcal T_t\\exp\\!\\left[-i\\int_{t_0}^t dt'\\,\\hat V(t')\\right]$$",
+     "note": "Eqs. (5.11)-(5.18). Solves i d/dt U = V U with U(t0,t0) = 1; the n-th order term has the prefactor (-i)^n/n!."
+    }
+   ]
+  },
+  {
+   "id": "5.4",
+   "title": "Time-evolution in linear response",
+   "keyResults": [
+    {
+     "name": "First-order evolution operator",
+     "latex": "$$\\hat U(t,t_0)\\approx1-i\\int_{t_0}^t dt'\\,\\hat V(t')$$",
+     "note": "Eq. (5.19). Starting point of the Kubo formula in Chap. 6."
+    }
+   ]
+  },
+  {
+   "id": "5.5",
+   "title": "Time-dependent creation and annihilation operators",
+   "keyResults": [
+    {
+     "name": "Free time dependence",
+     "latex": "$$a_\\nu(t)=e^{-i\\varepsilon_\\nu t}a_\\nu,\\qquad a^\\dagger_\\nu(t)=e^{i\\varepsilon_\\nu t}a^\\dagger_\\nu$$",
+     "note": "Eqs. (5.22)-(5.25)."
+    },
+    {
+     "name": "Two-time (anti)commutator for free operators",
+     "latex": "$$[a_{\\nu_1}(t_1),a^\\dagger_{\\nu_2}(t_2)]_{\\mp}=e^{-i\\varepsilon_{\\nu_1}(t_1-t_2)}\\,\\delta_{\\nu_1\\nu_2}$$",
+     "note": "Eq. (5.26)."
+    },
+    {
+     "name": "Equation of motion with interaction",
+     "latex": "$$\\dot a_\\nu(t)=-i\\varepsilon_\\nu a_\\nu(t)+\\text{(three-operator terms)}$$",
+     "note": "Eqs. (5.30)-(5.31). The three-operator terms generate a chain of higher products, so the hierarchy does not close."
+    }
+   ]
+  },
+  {
+   "id": "5.6",
+   "title": "Fermi's golden rule",
+   "keyResults": [
+    {
+     "name": "Transition rate",
+     "latex": "$$\\Gamma_{f\\leftarrow i}=2\\pi\\,|\\langle f|V|i\\rangle|^2\\,\\delta(E_f-E_i)$$",
+     "note": "Eqs. (5.32)-(5.34). Valid for many-body states too (used in Chap. 10). hbar = 1."
+    }
+   ]
+  },
+  {
+   "id": "5.8",
+   "title": "Fourier transforms of advanced and retarded functions",
+   "keyResults": [
+    {
+     "name": "Retarded function and its time-translation invariance",
+     "latex": "$$C^R_{AB}(t,t')=-i\\theta(t-t')\\langle[A(t),B(t')]_{\\mp}\\rangle=C^R_{AB}(t-t')$$",
+     "note": "Eqs. (5.42)-(5.43). Commutator for bosons, anticommutator for fermions."
+    },
+    {
+     "name": "Fourier transform with convergence factor",
+     "latex": "$$C^R_{AB}(\\omega)=\\int dt\\,e^{i\\omega t}e^{-\\eta t}C^R_{AB}(t),\\qquad \\eta\\to0^+$$",
+     "note": "Eqs. (5.44)-(5.46). Equivalent to the real-frequency transform with omega + i eta."
+    },
+    {
+     "name": "Inverse transform",
+     "latex": "$$C^R_{AB}(t)=\\int\\frac{d\\omega}{2\\pi}\\,e^{-i\\omega t}\\,C^R_{AB}(\\omega)$$",
+     "note": "Eq. (5.47). Standard inverse, applied after eta goes to 0."
+    },
+    {
+     "name": "Advanced function",
+     "latex": "$$C^A_{AB}(t,t')=i\\theta(t'-t)\\langle[A(t),B(t')]_{\\mp}\\rangle$$",
+     "note": "Eq. (5.48). Fourier transform is taken with omega - i eta."
+    }
+   ]
+  }
+ ],
+ "questions": [
+  {
+   "id": "ch05-E1",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "Show $[AB,C]=A[B,C]+[A,C]B$ and $[AB,C]=A\\{B,C\\}-\\{A,C\\}B$.",
+   "solution": "For the first identity, add and subtract $ACB$:\n$$[AB,C]=ABC-CAB=ABC-ACB+ACB-CAB=A[B,C]+[A,C]B.$$\nFor the second, add and subtract $ACB$ with the other sign:\n$$[AB,C]=ABC-CAB=ABC+ACB-ACB-CAB=A\\{B,C\\}-\\{A,C\\}B.$$\nThe first form suits bosons and the second suits fermions.",
+   "source": "Ex. 5.4, Eqs. (E.5.3)-(E.5.4); Sec. 5.5, footnote 19 (used in Eqs. 5.23 and 5.31)"
+  },
+  {
+   "id": "ch05-E2",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "For $\\hat H=\\sum_\\nu\\varepsilon_\\nu a^\\dagger_\\nu a_\\nu$, the Heisenberg-picture operator $a_\\nu(t)$ is",
+   "choices": [
+    "$a_\\nu e^{i\\varepsilon_\\nu t}$",
+    "$a_\\nu e^{-i\\varepsilon_\\nu t}$",
+    "$a_\\nu$",
+    "$a^\\dagger_\\nu e^{-i\\varepsilon_\\nu t}$"
+   ],
+   "answerIndex": 1,
+   "solution": "From $\\dot a_\\nu=i[H,a_\\nu]=-i\\varepsilon_\\nu a_\\nu$, Eq. (5.23). The option $a_\\nu e^{+i\\varepsilon t}$ has the wrong sign in the exponent, and $a^\\dagger$ is the creation operator, not the annihilation operator.",
+   "source": "Sec. 5.5, Eqs. (5.22)-(5.25)"
+  },
+  {
+   "id": "ch05-E3",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "Fermi's golden rule for the transition rate between $|i\\rangle$ and $|f\\rangle$ is",
+   "choices": [
+    "$2\\pi|V_{fi}|^2\\,\\delta(E_f-E_i)$",
+    "$|V_{fi}|^2/\\hbar$",
+    "$2\\pi|V_{fi}|\\,\\delta(E_f-E_i)$",
+    "$\\pi|V_{fi}|^2$"
+   ],
+   "answerIndex": 0,
+   "solution": "Eq. (5.34) with $\\hbar=1$. The rate is quadratic in the matrix element, and the delta function enforces energy conservation.",
+   "source": "Sec. 5.6, Eq. (5.34)"
+  },
+  {
+   "id": "ch05-E4",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "What does the interaction picture split off, and why is it useful for perturbation theory?",
+   "solution": "The interaction picture moves the trivial $H_0$ evolution into the operators, $\\hat A(t)=e^{iH_0t}Ae^{-iH_0t}$. The states then evolve only with $\\hat V(t)$, through $\\hat U(t,t_0)$, Eq. (5.11).\n\nExpanding $\\hat U$ in powers of $\\hat V$ gives a perturbation series, Eq. (5.18). Each order contains only the interaction, and the free phases are already in the operators.",
+   "source": "Sec. 5.3, Eqs. (5.7)-(5.11)"
+  },
+  {
+   "id": "ch05-H1",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Show that the third-order term of $\\hat U(t,t_0)$ equals $\\frac{(-i)^3}{3!}\\int\\!\\!\\int\\!\\!\\int \\mathcal T_t[\\hat V(t_1)\\hat V(t_2)\\hat V(t_3)]$ (Book Exercise 5.2).",
+   "solution": "Book Exercise 5.2. Iterating $\\hat U=1-i\\int\\hat V\\,\\hat U$ (Eq. 5.14) gives the ordered term\n$$\\hat U_3=(-i)^3\\int_{t_0}^t dt_1\\int_{t_0}^{t_1}dt_2\\int_{t_0}^{t_2}dt_3\\,\\hat V(t_1)\\hat V(t_2)\\hat V(t_3),$$\nwhere the integration region is $t_1>t_2>t_3$.\n\nThe time-ordered product $\\mathcal T_t[\\hat V(t_1)\\hat V(t_2)\\hat V(t_3)]$ is the same for every ordering of the three times, once the operators are placed in time order (Eq. 5.17). Over the full cube $[t_0,t]^3$ each of the $3!=6$ orderings contributes the same integral after relabeling. So the ordered integral is $1/3!$ of the unrestricted integral of the time-ordered product.\n\nHence\n$$\\hat U_3=\\frac{(-i)^3}{3!}\\int\\!\\!\\int\\!\\!\\int_{t_0}^t\\mathcal T_t[\\hat V(t_1)\\hat V(t_2)\\hat V(t_3)],$$\nwhich is the n = 3 term of the exponential in Eq. (5.18).",
+   "source": "Ex. 5.2; Sec. 5.3, Eqs. (5.15)-(5.18)"
+  },
+  {
+   "id": "ch05-H2",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Show that $\\int dx\\,\\frac{f(x)}{x+i\\eta}=\\mathcal P\\!\\!\\int dx\\,\\frac{f(x)}{x}-i\\pi f(0)$ for $\\eta\\to0^+$ (Book Exercise 5.7).",
+   "solution": "Book Exercise 5.7. Split the denominator into real and imaginary parts:\n$$\\frac{1}{x+i\\eta}=\\frac{x}{x^2+\\eta^2}-i\\frac{\\eta}{x^2+\\eta^2}.$$\nAs $\\eta\\to0^+$, the first term tends to the principal value $\\mathcal P(1/x)$ in the distributional sense. The second term is a Lorentzian of width $\\eta$ and weight $\\pi$, so $\\frac{\\eta}{x^2+\\eta^2}\\to\\pi\\delta(x)$. Therefore\n$$\\int dx\\,\\frac{f(x)}{x+i\\eta}\\to\\mathcal P\\!\\!\\int dx\\,\\frac{f(x)}{x}-i\\pi f(0).$$",
+   "source": "Ex. 5.7; Sec. 5.8"
+  },
+  {
+   "id": "ch05-H3",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "For $f^R(t)=-i\\theta(t)e^{-i\\varepsilon t}$, compute $f^R(\\omega)$ with Eq. (5.46) and invert it with Eq. (5.47) (Book Exercise 5.8).",
+   "solution": "Book Exercise 5.8. With the convergence factor,\n$$f^R(\\omega)=\\int_0^\\infty dt\\,e^{i\\omega t}e^{-\\eta t}(-i)e^{-i\\varepsilon t}=-i\\int_0^\\infty dt\\,e^{i(\\omega-\\varepsilon+i\\eta)t}=\\frac{1}{\\omega-\\varepsilon+i\\eta},$$\nusing $\\int_0^\\infty e^{iat}dt=i/a$ for $\\mathrm{Im}\\,a>0$.\n\nInverse transform:\n$$f^R(t)=\\int\\frac{d\\omega}{2\\pi}e^{-i\\omega t}\\frac{1}{\\omega-\\varepsilon+i\\eta}.$$\nFor $t>0$, close the contour in the lower half plane, where $e^{-i\\omega t}$ decays. The only pole is at $\\omega=\\varepsilon-i\\eta$, enclosed clockwise, so\n$$f^R(t)=\\frac{1}{2\\pi}(-2\\pi i)\\,e^{-i\\varepsilon t}e^{-\\eta t}\\to-i\\,e^{-i\\varepsilon t}.$$\nFor $t<0$, close in the upper half plane. There is no pole, so $f^R(t)=0$.\nResult: $f^R(t)=-i\\theta(t)e^{-i\\varepsilon t}$, as required.",
+   "source": "Ex. 5.8; Sec. 5.8, Eqs. (5.46)-(5.47)"
+  }
+ ]
+}

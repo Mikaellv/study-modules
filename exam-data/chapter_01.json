@@ -1,0 +1,336 @@
+{
+ "chapter": "1",
+ "title": "First and second quantization",
+ "scope": "Secs. 1.1 to 1.5 (includes 1.4.1, 1.4.3, 1.4.4, 1.4.5). Excluded: 1.4.2 (electromagnetic field, Eqs. 1.78-1.87) and the 1.6 summary.",
+ "sections": [
+  {
+   "id": "1.1",
+   "title": "First quantization, single-particle systems",
+   "keyResults": [
+    {
+     "name": "Completeness of a single-particle basis",
+     "latex": "$$\\sum_\\nu |\\nu\\rangle\\langle\\nu| = 1$$",
+     "note": "Eq. (1.7). Follows from requiring that a particle is found somewhere in the basis with probability one."
+    }
+   ]
+  },
+  {
+   "id": "1.2",
+   "title": "First quantization, many-particle systems",
+   "keyResults": []
+  },
+  {
+   "id": "1.2.1",
+   "title": "Permutation symmetry and indistinguishability",
+   "keyResults": [
+    {
+     "name": "Exchange symmetry",
+     "latex": "$$\\psi(\\dots,r_j,\\dots,r_k,\\dots)=\\pm\\,\\psi(\\dots,r_k,\\dots,r_j,\\dots)$$",
+     "note": "Eqs. (1.15)-(1.16). Plus sign for bosons, minus for fermions. Two exchanges give lambda squared = 1."
+    }
+   ]
+  },
+  {
+   "id": "1.2.2",
+   "title": "The single-particle states as basis states",
+   "keyResults": [
+    {
+     "name": "Slater determinant and permanent (fermions, bosons)",
+     "latex": "$$\\psi_{\\nu_1\\cdots\\nu_N}(r_1,\\dots,r_N)=\\frac{1}{\\sqrt{N!}}\\sum_{p\\in S_N}\\mathrm{sign}(p)\\prod_j\\psi_{\\nu_j}(r_{p(j)})$$",
+     "note": "Eqs. (1.23)-(1.26). Fermions: determinant (sign of the permutation). Bosons: permanent (no sign). The fermion version vanishes when two labels coincide (Pauli). The 1/sqrt(N!) prefactor is for normalized states with all labels different. In general (footnote 2) the normalization is 1/(sqrt(N!) prod_nu sqrt(n_nu!)), where n_nu counts how often state nu appears. For fermions n_nu! = 1, and for bosons the factor is needed when a state is multiply occupied."
+    }
+   ]
+  },
+  {
+   "id": "1.2.3",
+   "title": "Operators in first quantization",
+   "keyResults": [
+    {
+     "name": "Typical N-particle Hamiltonian",
+     "latex": "$$H=\\sum_{j}T_j+\\sum_{j>k}V_{jk}$$",
+     "note": "Eqs. (1.31)-(1.33). One-particle operators act on each coordinate; two-particle operators act on each pair."
+    }
+   ]
+  },
+  {
+   "id": "1.3",
+   "title": "Second quantization, basic concepts",
+   "keyResults": []
+  },
+  {
+   "id": "1.3.1",
+   "title": "The occupation number representation",
+   "keyResults": [
+    {
+     "name": "Occupation number eigenvalues",
+     "latex": "$$\\hat n_\\nu|n_\\nu\\rangle=n_\\nu|n_\\nu\\rangle,\\qquad n_\\nu\\in\\{0,1\\}\\ \\text{(fermions)},\\quad n_\\nu\\in\\{0,1,2,\\dots\\}\\ \\text{(bosons)}$$",
+     "note": "Eqs. (1.36)-(1.37). Fock space is the direct sum over particle numbers N."
+    }
+   ]
+  },
+  {
+   "id": "1.3.2",
+   "title": "The boson creation and annihilation operators",
+   "keyResults": [
+    {
+     "name": "Boson algebra",
+     "latex": "$$[b_\\nu,b^\\dagger_{\\nu'}]=\\delta_{\\nu\\nu'},\\qquad [b_\\nu,b_{\\nu'}]=[b^\\dagger_\\nu,b^\\dagger_{\\nu'}]=0$$",
+     "note": "Eq. (1.41)."
+    },
+    {
+     "name": "Boson ladder action",
+     "latex": "$$b^\\dagger_\\nu|n_\\nu\\rangle=\\sqrt{n_\\nu+1}\\,|n_\\nu+1\\rangle,\\qquad b_\\nu|n_\\nu\\rangle=\\sqrt{n_\\nu}\\,|n_\\nu-1\\rangle,\\qquad b^\\dagger_\\nu b_\\nu=\\hat n_\\nu$$",
+     "note": "Eqs. (1.45)-(1.46)."
+    }
+   ]
+  },
+  {
+   "id": "1.3.3",
+   "title": "The fermion creation and annihilation operators",
+   "keyResults": [
+    {
+     "name": "Fermion algebra",
+     "latex": "$$\\{c_\\nu,c^\\dagger_{\\nu'}\\}=\\delta_{\\nu\\nu'},\\qquad \\{c_\\nu,c_{\\nu'}\\}=\\{c^\\dagger_\\nu,c^\\dagger_{\\nu'}\\}=0,\\qquad (c^\\dagger_\\nu)^2=0$$",
+     "note": "Eqs. (1.52)-(1.53)."
+    },
+    {
+     "name": "Fermion occupation",
+     "latex": "$$\\hat n_\\nu=c^\\dagger_\\nu c_\\nu,\\qquad \\hat n_\\nu^2=\\hat n_\\nu,\\qquad n_\\nu\\in\\{0,1\\}$$",
+     "note": "Eqs. (1.54)-(1.57). The operator c-dagger raises n by one and c lowers it by one."
+    }
+   ]
+  },
+  {
+   "id": "1.3.4",
+   "title": "The general form for second quantization operators",
+   "keyResults": [
+    {
+     "name": "One-body operator",
+     "latex": "$$\\hat T=\\sum_{\\nu\\mu}T_{\\nu\\mu}\\,a^\\dagger_\\nu a_\\mu$$",
+     "note": "Eq. (1.61). Valid for bosons and fermions, with a-dagger standing for b-dagger or c-dagger."
+    },
+    {
+     "name": "Two-body operator",
+     "latex": "$$\\hat V=\\frac12\\sum_{\\nu_i\\nu_j\\nu_k\\nu_l}V_{\\nu_i\\nu_j,\\nu_k\\nu_l}\\,a^\\dagger_{\\nu_i}a^\\dagger_{\\nu_j}a_{\\nu_l}a_{\\nu_k}$$",
+     "note": "Eq. (1.62). The order of the annihilators carries the fermion sign."
+    }
+   ]
+  },
+  {
+   "id": "1.3.5",
+   "title": "Change of basis in second quantization",
+   "keyResults": [
+    {
+     "name": "Creation and annihilation operators under a basis change",
+     "latex": "$$a^\\dagger_\\mu=\\sum_\\nu\\langle\\nu|\\mu\\rangle\\,a^\\dagger_\\nu,\\qquad a_\\mu=\\sum_\\nu\\langle\\mu|\\nu\\rangle\\,a_\\nu$$",
+     "note": "Eq. (1.65). Preserves the commutation or anticommutation rules and the particle number (Eqs. 1.67-1.68)."
+    }
+   ]
+  },
+  {
+   "id": "1.3.6",
+   "title": "Quantum field operators and their Fourier transforms",
+   "keyResults": [
+    {
+     "name": "Field operators",
+     "latex": "$$\\Psi^\\dagger(r)=\\sum_\\nu\\psi_\\nu^*(r)\\,a^\\dagger_\\nu,\\qquad \\Psi(r)=\\sum_\\nu\\psi_\\nu(r)\\,a_\\nu$$",
+     "note": "Eq. (1.69)."
+    },
+    {
+     "name": "Field (anti)commutator",
+     "latex": "$$[\\Psi(r_1),\\Psi^\\dagger(r_2)]=\\delta(r_1-r_2)\\ \\text{(bosons)},\\qquad \\{\\Psi(r_1),\\Psi^\\dagger(r_2)\\}=\\delta(r_1-r_2)\\ \\text{(fermions)}$$",
+     "note": "Eqs. (1.70a)-(1.70b). Boson case is 1.70a, fermion case is 1.70b."
+    },
+    {
+     "name": "Plane-wave field operators",
+     "latex": "$$\\Psi^\\dagger(r)=\\frac{1}{\\sqrt{\\mathcal V}}\\sum_k e^{-ik\\cdot r}a^\\dagger_k,\\qquad \\Psi(r)=\\frac{1}{\\sqrt{\\mathcal V}}\\sum_k e^{ik\\cdot r}a_k$$",
+     "note": "Eq. (1.72). Inverse: a-dagger_q = (1/sqrt(V)) times the integral of e^{iq.r} Psi-dagger(r), Eq. (1.73)."
+    }
+   ]
+  },
+  {
+   "id": "1.4",
+   "title": "Second quantization, specific operators",
+   "keyResults": []
+  },
+  {
+   "id": "1.4.1",
+   "title": "The harmonic oscillator in second quantization",
+   "keyResults": [
+    {
+     "name": "Ladder operator and Hamiltonian",
+     "latex": "$$a=\\tfrac{1}{\\sqrt2}\\left(\\frac{x}{\\ell}+i\\frac{\\ell p}{\\hbar}\\right),\\qquad \\hat H=\\hbar\\omega\\left(a^\\dagger a+\\tfrac12\\right),\\qquad \\ell=\\sqrt{\\hbar/m\\omega}$$",
+     "note": "Eqs. (1.74)-(1.76). Here [p, x] = -i hbar."
+    }
+   ]
+  },
+  {
+   "id": "1.4.3",
+   "title": "Operators for kinetic energy, spin, density and current",
+   "keyResults": [
+    {
+     "name": "Kinetic energy",
+     "latex": "$$\\hat T=\\sum_{k\\sigma}\\frac{\\hbar^2k^2}{2m}\\,c^\\dagger_{k\\sigma}c_{k\\sigma}$$",
+     "note": "Eq. (1.89)."
+    },
+    {
+     "name": "Spin operator",
+     "latex": "$$\\hat{\\mathbf S}=\\frac{\\hbar}{2}\\sum_{\\mu\\sigma\\sigma'}c^\\dagger_{\\mu\\sigma}\\,\\boldsymbol\\tau_{\\sigma\\sigma'}\\,c_{\\mu\\sigma'}$$",
+     "note": "Eq. (1.92). Pauli matrices tau. The factor hbar/2 is the usual spin-1/2 normalization (s = hbar tau/2)."
+    },
+    {
+     "name": "Density Fourier component",
+     "latex": "$$\\hat\\rho_\\sigma(q)=\\sum_{k}c^\\dagger_{k\\sigma}c_{k+q\\,\\sigma}$$",
+     "note": "Eqs. (1.94)-(1.95). Momentum transfer q couples k to k+q."
+    },
+    {
+     "name": "Paramagnetic current density",
+     "latex": "$$\\hat J^{\\nabla}_\\sigma(r)=\\frac{\\hbar}{2mi}\\left[\\Psi^\\dagger_\\sigma\\nabla\\Psi_\\sigma-(\\nabla\\Psi^\\dagger_\\sigma)\\Psi_\\sigma\\right]$$",
+     "note": "Eq. (1.98a). The diamagnetic part, proportional to A(r) times the density (Eq. 1.98c), is added in the presence of a vector potential."
+    }
+   ]
+  },
+  {
+   "id": "1.4.4",
+   "title": "The Coulomb interaction in second quantization",
+   "keyResults": [
+    {
+     "name": "Coulomb interaction in k-space",
+     "latex": "$$\\hat V=\\frac{1}{2\\mathcal V}\\sum_{\\sigma_1\\sigma_2}\\sum_{k_1k_2q}V_q\\,c^\\dagger_{k_1+q\\,\\sigma_1}c^\\dagger_{k_2-q\\,\\sigma_2}c_{k_2\\sigma_2}c_{k_1\\sigma_1}$$",
+     "note": "Eq. (1.103). Built from Eq. (1.100a) with the Fourier transform of Eq. (1.102)."
+    },
+    {
+     "name": "Fourier transform of the Coulomb potential",
+     "latex": "$$V_q=\\frac{4\\pi e_0^2}{q^2}=\\frac{e^2}{\\epsilon_0 q^2},\\qquad e_0^2=\\frac{e^2}{4\\pi\\epsilon_0}$$",
+     "note": "Eqs. (1.100b), (1.102). Yukawa version (Ex. 1.6): V_q = 4 pi e_0^2/(q^2 + k_s^2)."
+    }
+   ]
+  },
+  {
+   "id": "1.4.5",
+   "title": "Basis states for systems with different kinds of particles",
+   "keyResults": []
+  },
+  {
+   "id": "1.5",
+   "title": "Second quantization and statistical mechanics",
+   "keyResults": [
+    {
+     "name": "Grand canonical density matrix and potential",
+     "latex": "$$\\rho_G=\\frac{e^{-\\beta(\\hat H-\\mu\\hat N)}}{Z_G},\\qquad Z_G=\\mathrm{Tr}\\,e^{-\\beta(\\hat H-\\mu\\hat N)},\\qquad \\Omega=-k_BT\\ln Z_G$$",
+     "note": "Eqs. (1.117)-(1.121). Z_G = exp(-beta Omega)."
+    }
+   ]
+  },
+  {
+   "id": "1.5.1",
+   "title": "The distribution function for non-interacting fermions",
+   "keyResults": [
+    {
+     "name": "Fermi-Dirac distribution",
+     "latex": "$$n_F(\\varepsilon)=\\frac{1}{e^{\\beta(\\varepsilon-\\mu)}+1},\\qquad \\xi_k=\\varepsilon_k-\\mu$$",
+     "note": "Eqs. (1.125)-(1.126)."
+    }
+   ]
+  },
+  {
+   "id": "1.5.2",
+   "title": "The distribution function for non-interacting bosons",
+   "keyResults": [
+    {
+     "name": "Bose-Einstein distribution",
+     "latex": "$$n_B(\\varepsilon)=\\frac{1}{e^{\\beta(\\varepsilon-\\mu)}-1}$$",
+     "note": "Eq. (1.127). Classical Maxwell-Boltzmann limit when the occupation is much below one."
+    }
+   ]
+  }
+ ],
+ "questions": [
+  {
+   "id": "ch01-E1",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "Which relation defines the fermion annihilation and creation operators?",
+   "choices": [
+    "$[c_\\nu,c^\\dagger_{\\nu'}]=\\delta_{\\nu\\nu'}$",
+    "$\\{c_\\nu,c^\\dagger_{\\nu'}\\}=\\delta_{\\nu\\nu'}$",
+    "$\\{c_\\nu,c_{\\nu'}\\}=1$",
+    "$c^\\dagger_\\nu c_\\nu=1$"
+   ],
+   "answerIndex": 1,
+   "solution": "Fermions obey anticommutators, Eq. (1.52). The commutator form is the boson rule (1.41). The anticommutator of two annihilators vanishes, and $c^\\dagger c$ is the occupation number, not 1.",
+   "source": "Sec. 1.3.3, Eq. (1.52)"
+  },
+  {
+   "id": "ch01-E2",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "From the fermion anticommutators, show $(c^\\dagger_\\nu)^2=0$ and $\\hat n_\\nu^2=\\hat n_\\nu$, so that $n_\\nu\\in\\{0,1\\}$.",
+   "solution": "From $\\{c^\\dagger_\\nu,c^\\dagger_\\nu\\}=2(c^\\dagger_\\nu)^2=0$ we get $(c^\\dagger_\\nu)^2=0$.\n\nUsing $c_\\nu c^\\dagger_\\nu=1-c^\\dagger_\\nu c_\\nu$:\n$$\\hat n_\\nu^2=c^\\dagger_\\nu(c_\\nu c^\\dagger_\\nu)c_\\nu=c^\\dagger_\\nu(1-c^\\dagger_\\nu c_\\nu)c_\\nu=\\hat n_\\nu-(c^\\dagger_\\nu)^2c_\\nu^2=\\hat n_\\nu.$$\nAn operator with $\\lambda^2=\\lambda$ has eigenvalues 0 and 1 only.",
+   "source": "Sec. 1.3.3, Eqs. (1.52)-(1.54)"
+  },
+  {
+   "id": "ch01-E3",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "For bosons, $b^\\dagger|n\\rangle$ equals",
+   "choices": [
+    "$\\sqrt n\\,|n+1\\rangle$",
+    "$\\sqrt{n+1}\\,|n+1\\rangle$",
+    "$(n+1)\\,|n+1\\rangle$",
+    "$\\sqrt{n+1}\\,|n\\rangle$"
+   ],
+   "answerIndex": 1,
+   "solution": "The normalization follows from $b b^\\dagger=n+1$ and $b^\\dagger b=n$, Eq. (1.45). The option $(n+1)|n+1\\rangle$ is wrong because the normalization is a square root.",
+   "source": "Sec. 1.3.2, Eqs. (1.45)-(1.46)"
+  },
+  {
+   "id": "ch01-E4",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "Write the kinetic energy and the Fourier component $\\hat\\rho_\\sigma(q)$ of free electrons in the plane-wave basis.",
+   "solution": "$$\\hat T=\\sum_{k\\sigma}\\varepsilon_k\\,c^\\dagger_{k\\sigma}c_{k\\sigma},\\qquad \\varepsilon_k=\\frac{\\hbar^2k^2}{2m},$$\n$$\\hat\\rho_\\sigma(q)=\\sum_k c^\\dagger_{k\\sigma}c_{k+q\\,\\sigma}.$$\nThe density operator changes the momentum by q, so it creates particle-hole pairs.",
+   "source": "Sec. 1.4.3, Eqs. (1.89), (1.95)"
+  },
+  {
+   "id": "ch01-E5",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "For $\\hat H=\\sum_{ij}a^\\dagger_i h_{ij}a_j$ with $h$ hermitian, what must the unitary $U$ in $\\alpha_i=\\sum_j U_{ij}a_j$ satisfy so that $\\hat H=\\sum_i\\epsilon_i\\alpha^\\dagger_i\\alpha_i$?",
+   "solution": "Write $a=U^\\dagger\\alpha$, so $a^\\dagger=\\alpha^\\dagger U$ and $\\hat H=\\alpha^\\dagger(UhU^\\dagger)\\alpha$.\nThe condition is\n$$UhU^\\dagger=\\mathrm{diag}(\\epsilon_1,\\epsilon_2,\\dots).$$\nEquivalently, the $i$-th row $u_i$ of $U$ satisfies $u_i h=\\epsilon_i u_i$. Because $U$ is unitary, the new $\\alpha_i$ obey the same canonical algebra as the $a_i$, Eq. (1.65).",
+   "source": "Ex. 1.3; Sec. 1.3.5, Eq. (1.65)"
+  },
+  {
+   "id": "ch01-H1",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Prove that the one-body operator $\\hat T=\\sum_{\\nu\\mu}T_{\\nu\\mu}c^\\dagger_\\nu c_\\mu$ holds for fermions (Eq. 1.61), by repeating the boson argument of Eqs. (1.58)-(1.60) (Book Exercise 1.1).",
+   "solution": "Book Exercise 1.1. Act with $\\hat T_{tot}=\\sum_j T_j$ on $|\\nu_1\\cdots\\nu_N\\rangle=c^\\dagger_{\\nu_1}\\cdots c^\\dagger_{\\nu_N}|0\\rangle$. Each term $T_j$ replaces the operator in position $j$, so\n$$\\hat T|\\nu_1\\cdots\\nu_N\\rangle=\\sum_j\\sum_{ab}T_{ab}\\,\\delta_{a,\\nu_j}\\,c^\\dagger_{\\nu_1}\\cdots\\underbrace{c^\\dagger_b}_{\\text{position }j}\\cdots c^\\dagger_{\\nu_N}|0\\rangle,$$\nwith $T_{ab}=\\int dr\\,\\psi^*_b T\\psi_a$ as in Eq. (1.27b).\n\nSign count for fermions. Writing the replacement as an operator, $c_a$ must first move past the $j-1$ operators in front of position $j$, giving $(-1)^{j-1}$. Then $c^\\dagger_b$ must move back to position $j$, giving another $(-1)^{j-1}$. The two signs cancel, so each occurrence gives the same term with a plus sign.\n\nSumming over $j$ (the occupied states $a$ that equal $\\nu_j$) gives $\\sum_{ab}T_{ab}c^\\dagger_b c_a$ acting on the state, which is the operator form. Relabeling indices gives $\\hat T=\\sum_{\\nu\\mu}T_{\\nu\\mu}c^\\dagger_\\nu c_\\mu$, Eq. (1.61).\nResult: the one-body operator has the same form for fermions as for bosons, because the sign from the anticommutators cancels.",
+   "source": "Ex. 1.1; Sec. 1.3.4, Eqs. (1.58)-(1.61)"
+  },
+  {
+   "id": "ch01-H2",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Tight-binding model: $\\hat H=-t\\sum_{j,\\delta}c^\\dagger_{j+\\delta}c_j$ with nearest neighbors $\\delta$. Diagonalize it for a 1D ring of $N$ sites with lattice constant $a$ and for a 2D square lattice (Book Exercise 1.4).",
+   "solution": "Book Exercise 1.4. Use $c_j=N^{-1/2}\\sum_k e^{ikja}c_k$ with $k=2\\pi n/(Na)$ in the first Brillouin zone. Then\n$$\\sum_j c^\\dagger_{j+\\delta}c_j=\\sum_k e^{-ik\\delta a}c^\\dagger_k c_k,$$\nbecause the sum over $j$ gives $\\delta_{kk'}$. Summing over the two neighbors $\\delta=\\pm a$ in 1D:\n$$\\hat H=\\sum_k\\varepsilon_k c^\\dagger_kc_k,\\qquad \\varepsilon_k=-2t\\cos ka.$$\nIn 2D, each direction contributes its own cosine:\n$$\\varepsilon_{\\mathbf k}=-2t\\left(\\cos k_xa+\\cos k_ya\\right).$$\nFor $t>0$ the band minimum is at $k=0$ and the bandwidth is $4t$ in 1D and $8t$ in 2D. The Hamiltonian is diagonal in $k$ because it is translation invariant.",
+   "source": "Ex. 1.4; Secs. 1.3.5-1.3.6, Eqs. (1.65), (1.72)-(1.73)"
+  },
+  {
+   "id": "ch01-H3",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Show that the Yukawa potential $V(r)=\\frac{e^2}{4\\pi\\epsilon_0 r}e^{-k_s r}$ has Fourier transform $V_q=\\frac{e^2}{\\epsilon_0(q^2+k_s^2)}$, and recover the Coulomb $V_q$ for $k_s\\to0$ (Book Exercise 1.6).",
+   "solution": "Book Exercise 1.6. Write $e_0^2=e^2/4\\pi\\epsilon_0$. Use spherical coordinates with $\\mathbf q$ along the polar axis. The angular integral gives $\\int d\\cos\\theta\\,d\\phi\\,e^{-iqr\\cos\\theta}=4\\pi\\,\\sin(qr)/(qr)$, so\n$$V_q=\\int d^3r\\,e^{-i\\mathbf q\\cdot\\mathbf r}V(r)=\\frac{4\\pi e_0^2}{q}\\int_0^\\infty dr\\,e^{-k_sr}\\sin(qr).$$\nThe $r^2$ from the volume element cancels the $1/r$ in the potential. The remaining radial integral is elementary:\n$$\\int_0^\\infty dr\\,e^{-k_sr}\\sin(qr)=\\frac{q}{q^2+k_s^2}.$$\nHence $V_q=4\\pi e_0^2/(q^2+k_s^2)=e^2/[\\epsilon_0(q^2+k_s^2)]$. Setting $k_s\\to0$ gives $e^2/(\\epsilon_0 q^2)$, the Coulomb result of Eq. (1.102).",
+   "source": "Ex. 1.6; Sec. 1.4.4, Eqs. (1.100b), (1.102)"
+  },
+  {
+   "id": "ch01-H4",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Bogoliubov transformation for fermions. $\\hat H=E_0(a^\\dagger a+b^\\dagger b)+E_1(a^\\dagger b^\\dagger+ba)$ with $a=u\\alpha-v\\beta^\\dagger$, $b=u\\beta+v\\alpha^\\dagger$, $u,v$ real. Find the conditions on $u,v$ and the diagonal form of $\\hat H$ (Book Exercise 1.7).",
+   "solution": "Book Exercise 1.7. The anticommutators $\\{a,a^\\dagger\\}=1$ and $\\{b,b^\\dagger\\}=1$ with $\\{\\alpha,\\alpha^\\dagger\\}=\\{\\beta,\\beta^\\dagger\\}=1$ give $u^2+v^2=1$.\n\nInsert the transformation. Using $\\alpha\\beta=-\\beta\\alpha$ and $\\alpha\\alpha^\\dagger=1-\\alpha^\\dagger\\alpha$:\n$$a^\\dagger a+b^\\dagger b=(u^2-v^2)(\\alpha^\\dagger\\alpha+\\beta^\\dagger\\beta)+2v^2-2uv(\\alpha^\\dagger\\beta^\\dagger+\\beta\\alpha)$$\n$$a^\\dagger b^\\dagger+ba=(u^2-v^2)(\\alpha^\\dagger\\beta^\\dagger+\\beta\\alpha)+2uv(\\alpha^\\dagger\\alpha+\\beta^\\dagger\\beta-1)$$\n\nCancelling the pair terms $(\\alpha^\\dagger\\beta^\\dagger+\\beta\\alpha)$ requires\n$$E_1(u^2-v^2)-2uvE_0=0.$$\nWith $u=\\cos t$, $v=\\sin t$ this is $E_1\\cos2t=E_0\\sin2t$, so $\\tan2t=E_1/E_0$. Let $\\lambda=\\sqrt{E_0^2+E_1^2}$, so $\\cos2t=E_0/\\lambda$ and $\\sin2t=E_1/\\lambda$. The diagonal coefficient is\n$$E_0\\cos2t+E_1\\sin2t=\\lambda.$$\nResult: $\\hat H=\\lambda(\\alpha^\\dagger\\alpha+\\beta^\\dagger\\beta)+\\text{const}$, with the constant from the $2v^2E_0-2uvE_1$ terms.",
+   "source": "Ex. 1.7; Sec. 1.3.3, Eqs. (1.52)-(1.57)"
+  }
+ ]
+}

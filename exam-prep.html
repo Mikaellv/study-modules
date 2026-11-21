@@ -1,0 +1,272 @@
+<title>Many-Body Exam Prep</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<style>
+:root {
+  --bg: #f5f6f8; --surface: #ffffff; --surface-2: #eceff3; --ink: #1d2430; --muted: #5b6676; --line: #d9dee6;
+  --accent: #3b5bdb; --accent-soft: #e4eaff; --accent-ink: #ffffff;
+  --ok: #2b8a3e; --ok-soft: #e2f3e5; --bad: #c0392b; --bad-soft: #fbe4e1; --warn: #9a6700; --warn-soft: #fff4d6;
+  --code-bg: #f7f8fa; --radius: 10px;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Sora", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1218; --surface: #161b24; --surface-2: #1d2430; --ink: #e6eaf1; --muted: #9aa5b5; --line: #2a3340;
+  --accent: #8ca4ff; --accent-soft: #1d2847; --accent-ink: #0b1020;
+  --ok: #5cc277; --ok-soft: #14301c; --bad: #ff8a7a; --bad-soft: #3a1c18; --warn: #f0c060; --warn-soft: #3a2f10;
+  --code-bg: #111620; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0f1218; --surface: #161b24; --surface-2: #1d2430; --ink: #e6eaf1; --muted: #9aa5b5; --line: #2a3340;
+  --accent: #8ca4ff; --accent-soft: #1d2847; --accent-ink: #0b1020;
+  --ok: #5cc277; --ok-soft: #14301c; --bad: #ff8a7a; --bad-soft: #3a1c18; --warn: #f0c060; --warn-soft: #3a2f10;
+  --code-bg: #111620; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15.5px/1.6 var(--font-body); }
+button, select { font: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.hidden { display: none !important; }
+
+.top { position: sticky; top: 0; z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
+.top h1 { font: 600 1.05rem var(--font-display); margin: 0; flex: 1 1 260px; }
+.filters { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { border: 1px solid var(--line); background: var(--surface-2); color: var(--ink); border-radius: 999px; padding: 4px 12px; font-size: .85rem; }
+.chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.progress { flex: 0 0 180px; font-size: .85rem; color: var(--muted); }
+.bar { height: 6px; background: var(--surface-2); border-radius: 3px; overflow: hidden; margin-top: 4px; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--ok); transition: width .3s; }
+
+.layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; max-width: 1100px; margin: 0 auto; padding: 20px 16px 60px; }
+nav.toc { position: sticky; top: 90px; align-self: start; font-size: .92rem; }
+nav.toc a { display: block; padding: 5px 8px; border-radius: 6px; color: var(--muted); text-decoration: none; }
+nav.toc a:hover, nav.toc a.on { background: var(--accent-soft); color: var(--ink); }
+nav.toc .sc { font-size: .75rem; margin-left: 6px; }
+
+main section.ch { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; margin-bottom: 22px; }
+main h2 { font: 700 1.25rem var(--font-display); margin: 0 0 4px; }
+main h3 { font: 600 1rem var(--font-display); margin: 22px 0 8px; }
+.sub { color: var(--muted); font-size: .9rem; margin: 0 0 14px; }
+.score { float: right; font-size: .85rem; color: var(--muted); }
+
+.kr { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; margin: 8px 0; }
+.kr b { display: block; margin-bottom: 2px; }
+.kr .note { color: var(--muted); font-size: .9rem; }
+
+.q { border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; margin: 12px 0; background: var(--surface); }
+.q.done-ok { border-color: var(--ok); }
+.q.done-bad { border-color: var(--bad); }
+.tag { display: inline-block; font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; border-radius: 4px; padding: 2px 7px; margin-right: 6px; }
+.tag.easy { background: var(--ok-soft); color: var(--ok); }
+.tag.hard { background: var(--warn-soft); color: var(--warn); }
+.qid { color: var(--muted); font-size: .8rem; }
+.qprompt { margin: 8px 0 10px; }
+.choices { display: grid; gap: 6px; }
+.choice { text-align: left; border: 1px solid var(--line); background: var(--surface-2); color: var(--ink); border-radius: 6px; padding: 7px 10px; }
+.choice.right { background: var(--ok-soft); border-color: var(--ok); }
+.choice.wrong { background: var(--bad-soft); border-color: var(--bad); }
+.btn { border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); border-radius: 6px; padding: 6px 12px; font-size: .9rem; }
+.btn.ghost { background: transparent; color: var(--accent); }
+textarea { width: 100%; min-height: 70px; font: inherit; border: 1px solid var(--line); border-radius: 6px; padding: 8px; background: var(--code-bg); color: var(--ink); resize: vertical; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; }
+.sol { margin-top: 10px; border-left: 3px solid var(--accent); padding: 8px 12px; background: var(--accent-soft); border-radius: 0 6px 6px 0; }
+.mark { font-size: .9rem; }
+.mark label { margin-right: 10px; cursor: pointer; }
+.fb { font-weight: 600; margin-top: 8px; }
+.fb.ok { color: var(--ok); } .fb.bad { color: var(--bad); }
+.checklist { list-style: none; padding: 0; }
+.checklist li { padding: 4px 0; }
+.empty { color: var(--muted); font-style: italic; }
+
+@media (max-width: 760px) {
+  .layout { grid-template-columns: 1fr; }
+  nav.toc { position: static; display: flex; overflow-x: auto; gap: 4px; }
+  nav.toc a { white-space: nowrap; }
+  .progress { flex-basis: 100%; }
+}
+</style>
+
+<div class="top">
+  <h1>Quantum Many-Body Physics 2: Exam Prep</h1>
+  <div class="filters" role="group" aria-label="Question filter">
+    <button class="chip" data-filter="all" aria-pressed="true">All</button>
+    <button class="chip" data-filter="easy" aria-pressed="false">Easy, closed book</button>
+    <button class="chip" data-filter="hard" aria-pressed="false">Hard, open book</button>
+    <button class="chip" id="reset" title="Clear all saved answers">Reset progress</button>
+  </div>
+  <div class="progress"><span id="pt">0 of 0 answered</span><div class="bar"><i id="pb"></i></div></div>
+</div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Chapters"></nav>
+  <main id="app"></main>
+</div>
+
+<script type="application/json" id="course-data">/*EXAM_DATA*/</script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  var DATA = [];
+  try { DATA = JSON.parse(document.getElementById("course-data").textContent) || []; } catch (e) { DATA = []; }
+  var KEY = "qm-exam-prep-v1";
+  var state = { answers: {}, filter: "all" };
+  try { state.answers = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { state.answers = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state.answers)); } catch (e) {} }
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+  function math(node) {
+    if (window.renderMathInElement) {
+      renderMathInElement(node, { delimiters: [
+        { left: "$$", right: "$$", display: true }, { left: "$", right: "$", display: false },
+        { left: "\\(", right: "\\)", display: false }, { left: "\\[", right: "\\]", display: true } ],
+        throwOnError: false });
+    }
+    return node;
+  }
+  function visible(q) { return state.filter === "all" || q.tier === state.filter; }
+
+  function renderQuestion(q) {
+    var a = state.answers[q.id] || {};
+    var card = el("div", "q");
+    var head = el("div");
+    head.appendChild(el("span", "tag " + q.tier, q.tier === "easy" ? "Easy · closed book" : "Hard · open book"));
+    head.appendChild(el("span", "qid", q.id));
+    card.appendChild(head);
+    card.appendChild(math(el("div", "qprompt", q.prompt)));
+    var fb = el("div", "fb");
+    if (q.type === "mc") {
+      var box = el("div", "choices");
+      q.choices.forEach(function (c, i) {
+        var b = el("button", "choice", c);
+        if (a.picked != null) {
+          if (i === q.answerIndex) b.classList.add("right");
+          else if (i === a.picked) b.classList.add("wrong");
+          b.disabled = true;
+        }
+        b.addEventListener("click", function () {
+          if (a.picked != null) return;
+          a.picked = i; a.ok = (i === q.answerIndex); state.answers[q.id] = a; save(); rerender();
+        });
+        box.appendChild(b);
+      });
+      card.appendChild(box);
+      if (a.picked != null) {
+        fb.textContent = a.ok ? "Correct." : "Not quite.";
+        fb.className = "fb " + (a.ok ? "ok" : "bad");
+        card.appendChild(fb);
+        card.classList.add(a.ok ? "done-ok" : "done-bad");
+      }
+    } else {
+      var ta = el("textarea"); ta.placeholder = "Work it out here (optional). Nothing is graded automatically.";
+      ta.value = a.text || "";
+      ta.addEventListener("input", function () { a.text = ta.value; state.answers[q.id] = a; save(); });
+      card.appendChild(ta);
+      var row = el("div", "row");
+      var reveal = el("button", "btn ghost", a.revealed ? "Hide solution" : "Show solution");
+      reveal.addEventListener("click", function () { a.revealed = !a.revealed; state.answers[q.id] = a; save(); rerender(); });
+      row.appendChild(reveal);
+      var mk = el("div", "mark");
+      ["Got it", "Missed it"].forEach(function (lab, idx) {
+        var lb = el("label"); var r = el("input"); r.type = "radio"; r.name = q.id; r.checked = (a.self === (idx === 0));
+        r.addEventListener("change", function () { a.self = (idx === 0); state.answers[q.id] = a; save(); rerender(); });
+        lb.appendChild(r); lb.appendChild(document.createTextNode(" " + lab)); mk.appendChild(lb);
+      });
+      row.appendChild(mk);
+      card.appendChild(row);
+      if (a.revealed) {
+        var s = el("div", "sol"); s.appendChild(math(el("div", null, q.solution)));
+        card.appendChild(s);
+      }
+      if (a.self === true) card.classList.add("done-ok");
+      if (a.self === false) card.classList.add("done-bad");
+    }
+    if (q.source) card.appendChild(el("div", "qid", "Source: " + q.source));
+    if (q.checkerNote) card.appendChild(el("div", "qid", "Unverified: " + q.checkerNote));
+    return card;
+  }
+
+  function answeredCount(q) {
+    var a = state.answers[q.id];
+    if (!a) return false;
+    return q.type === "mc" ? a.picked != null : a.self != null;
+  }
+
+  function stats(questions) {
+    var total = questions.length, done = questions.filter(answeredCount).length;
+    var ok = questions.filter(function (q) { var a = state.answers[q.id]; return a && (q.type === "mc" ? a.ok : a.self === true); }).length;
+    return { total: total, done: done, ok: ok };
+  }
+
+  function render() {
+    var app = document.getElementById("app"), toc = document.getElementById("toc");
+    app.innerHTML = ""; toc.innerHTML = "";
+    var all = [];
+    DATA.forEach(function (ch) { ch.questions.forEach(function (q) { all.push(q); }); });
+    var s0 = stats(all);
+    document.getElementById("pt").textContent = s0.done + " of " + s0.total + " answered" + (s0.done ? " · " + s0.ok + " correct" : "");
+    document.getElementById("pb").style.width = (s0.total ? Math.round(100 * s0.done / s0.total) : 0) + "%";
+
+    if (!DATA.length) { app.appendChild(el("p", "empty", "No content loaded.")); return; }
+    DATA.forEach(function (ch) {
+      var id = "ch" + ch.chapter;
+      var link = el("a", null, "Ch " + ch.chapter + " · " + ch.title); link.href = "#" + id;
+      var qs = ch.questions.filter(visible);
+      var sc = stats(ch.questions);
+      link.appendChild(el("span", "sc", sc.done + "/" + sc.total));
+      toc.appendChild(link);
+      var sec = el("section", "ch"); sec.id = id;
+      if (!qs.length) sec.classList.add("hidden");
+      var sc2 = el("span", "score", sc.done + "/" + sc.total + " answered");
+      sec.appendChild(sc2);
+      sec.appendChild(el("h2", null, "Chapter " + ch.chapter + ": " + ch.title));
+      if (ch.scope) sec.appendChild(el("p", "sub", ch.scope));
+      ch.sections.forEach(function (s) {
+        var h = el("h3", null, s.title); sec.appendChild(h);
+        (s.keyResults || []).forEach(function (k) {
+          var d = el("div", "kr");
+          d.appendChild(el("b", null, k.name));
+          d.appendChild(math(el("div", null, k.latex)));
+          if (k.note) d.appendChild(el("div", "note", k.note));
+          if (k.checkerNote) d.appendChild(el("div", "note", "Unverified: " + k.checkerNote));
+          sec.appendChild(d);
+        });
+      });
+      if (ch.questions.length) sec.appendChild(el("h3", null, "Exercises"));
+      ch.questions.forEach(function (q) { if (visible(q)) sec.appendChild(renderQuestion(q)); });
+      app.appendChild(sec);
+    });
+    var end = el("section", "ch");
+    end.appendChild(el("h2", null, "Exam-day checklist"));
+    var ul = el("ul", "checklist");
+    ["Bring a calculator if the exam allows it and a pen; check the rules for book and notes.",
+     "Easy questions first: they test definitions and one-line derivations you should do without the book.",
+     "For hard questions, write the setup (Hamiltonian, correlator, Feynman rules) before any algebra.",
+     "Check units, limits (T→0, q→0, ω→0) and symmetry of your final expression.",
+     "Leave a short justification with every answer, even if the algebra is incomplete."].forEach(function (t) {
+      var li = el("li", null, "☐ " + t); ul.appendChild(li);
+    });
+    end.appendChild(ul); app.appendChild(end);
+    math(app);
+  }
+
+  function rerender() { var y = window.scrollY; render(); window.scrollTo(0, y); }
+
+  document.querySelectorAll("[data-filter]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      state.filter = b.getAttribute("data-filter");
+      document.querySelectorAll("[data-filter]").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+      rerender();
+    });
+  });
+  document.getElementById("reset").addEventListener("click", function () {
+    if (!confirm("Clear all saved answers and self-marks?")) return;
+    state.answers = {}; save(); rerender();
+  });
+  render();
+})();
+</script>

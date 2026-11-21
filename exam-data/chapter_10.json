@@ -1,0 +1,169 @@
+{
+ "chapter": 10,
+ "title": "Transport in interacting mesoscopic systems",
+ "scope": "Sec. 10.1 (lead-dot-lead model), 10.2 and 10.2.1-10.2.2 (sequential tunneling, Coulomb blockade), 10.4 and 10.4.1-10.4.2 (linear conductance for Anderson-type models). Excludes 10.3 (coherent many-body transport) and 10.5 (Kondo effect). Summary omitted.",
+ "sections": [
+  {
+   "id": "10.1",
+   "title": "Model Hamiltonians",
+   "keyResults": [
+    {
+     "name": "Lead-dot-lead Hamiltonian",
+     "latex": "$$H=H_L+H_R+H_D+H_T$$",
+     "note": "Eqs. (10.1)-(10.3a); the tunneling term is H_T = sum (t c^dagger_{nu_R} c_{nu_D} + h.c.)."
+    }
+   ]
+  },
+  {
+   "id": "10.2",
+   "title": "Sequential tunneling: the Coulomb blockade regime",
+   "keyResults": []
+  },
+  {
+   "id": "10.2.1",
+   "title": "Coulomb blockade for a metallic dot",
+   "keyResults": [
+    {
+     "name": "Charging energy",
+     "latex": "$$E(N)=E_C N^2-eV_gN,\\qquad E_C=\\frac{e^2}{2C}$$",
+     "note": "Eqs. (10.7), (10.12)-(10.13); constant-interaction model with H_int = E_C (sum_nu n_nu)^2. Optimum charge N_opt = eV_g/2E_C."
+    },
+    {
+     "name": "Master equation",
+     "latex": "$$\\frac{dP(\\alpha)}{dt}=\\sum_\\beta\\big[\\Gamma_{\\alpha\\beta}P(\\beta)-\\Gamma_{\\beta\\alpha}P(\\alpha)\\big]$$",
+     "note": "Eq. (10.10); steady state gives Eq. (10.11)."
+    },
+    {
+     "name": "Tunneling rate, metallic dot",
+     "latex": "$$\\Gamma^\\alpha_{N+1,N}=\\gamma_\\alpha\\,f\\big(E(N+1)-E(N)+\\mu_D-\\mu_\\alpha\\big),\\qquad f(E)=\\frac{E}{e^{\\beta E}-1}$$",
+     "note": "Eqs. (10.20)-(10.21); f(E) = E n_B(E), from the identities (10.19a,b). Removal rate (Eq. 10.22): Gamma^alpha_{N-1,N} = gamma_alpha f(E(N-1)-E(N)-mu_D+mu_alpha)."
+    },
+    {
+     "name": "Detailed balance and current",
+     "latex": "$$\\Gamma_{N-1,N}P(N)=\\Gamma_{N,N-1}P(N-1),\\qquad I=(-e)\\sum_N\\big(\\Gamma^L_{N+1,N}-\\Gamma^L_{N-1,N}\\big)P(N)$$",
+     "note": "Eqs. (10.25)-(10.26)."
+    }
+   ]
+  },
+  {
+   "id": "10.2.2",
+   "title": "Coulomb blockade for a quantum dot",
+   "keyResults": [
+    {
+     "name": "Quantum dot rates",
+     "latex": "$$\\Gamma^L_{\\beta_{N+1}\\alpha_N}=\\gamma_L\\sum_{\\nu_D}|\\langle\\beta|c^\\dagger_{\\nu_D}|\\alpha\\rangle|^2\\,n_F(E_{\\beta}-E_{\\alpha}-\\mu_L),\\qquad \\Gamma^L_{\\beta_{N-1}\\alpha_N}=\\gamma_L\\sum_{\\nu_D}|\\langle\\beta|c_{\\nu_D}|\\alpha\\rangle|^2\\big[1-n_F(E_{\\alpha}-E_{\\beta}-\\mu_L)\\big]$$",
+     "note": "Eqs. (10.29)-(10.30), from the golden-rule start Eqs. (10.27)-(10.28). Adding an electron costs E_beta - E_alpha; removing one frees E_alpha - E_beta."
+    }
+   ]
+  },
+  {
+   "id": "10.4",
+   "title": "The conductance for Anderson-type models",
+   "keyResults": []
+  },
+  {
+   "id": "10.4.1",
+   "title": "The conductance in linear response",
+   "keyResults": [
+    {
+     "name": "Even-odd rotation",
+     "latex": "$$c_{\\nu e\\sigma}=\\frac{t_L^*c_{\\nu L\\sigma}+t_R^*c_{\\nu R\\sigma}}{\\sqrt{|t_L|^2+|t_R|^2}},\\quad c_{\\nu o\\sigma}=\\frac{-t_Rc_{\\nu L\\sigma}+t_Lc_{\\nu R\\sigma}}{\\sqrt{|t_L|^2+|t_R|^2}},\\qquad H_T=\\sqrt{|t_L|^2+|t_R|^2}\\sum_{\\nu\\sigma}\\big(c^\\dagger_{\\nu e\\sigma}c_{d\\sigma}+\\mathrm{h.c.}\\big)$$",
+     "note": "Eqs. (10.43)-(10.45); only the even combination couples to the dot, the odd one decouples. Rotation matrix read from Eq. (10.43)."
+    },
+    {
+     "name": "Linear conductance",
+     "latex": "$$G=e^2\\sum_\\sigma\\int\\frac{d\\xi}{2\\pi}\\,\\frac{\\Gamma_L\\Gamma_R}{\\Gamma_L+\\Gamma_R}\\,A(d\\sigma,\\xi)\\left(-\\frac{\\partial n_F}{\\partial\\xi}\\right)$$",
+     "note": "Eq. (10.56); the spectral function is computed with the leads included."
+    }
+   ]
+  },
+  {
+   "id": "10.4.2",
+   "title": "Calculation of Coulomb blockade peaks",
+   "keyResults": [
+    {
+     "name": "Dot retarded function",
+     "latex": "$$G^R(d\\sigma,\\omega)=\\frac{1-\\langle n_{\\bar\\sigma}\\rangle}{\\omega-\\xi_d-\\Sigma^R(\\omega)}+\\frac{\\langle n_{\\bar\\sigma}\\rangle}{\\omega-\\xi_d-U-\\Sigma^R(\\omega)},\\qquad \\Sigma^R(\\omega)=\\int\\frac{d\\xi}{2\\pi}\\frac{\\Gamma}{\\omega-\\xi+i\\eta}=-\\frac{i\\Gamma}{2}$$",
+     "note": "Eqs. (10.65)-(10.68), with D^R = <n_sigmabar>/(omega - xi_d - U - Sigma) from Eq. (10.65); Gamma = Gamma_L + Gamma_R, wide band. Spin-flip terms are dropped to close the EOM."
+    },
+    {
+     "name": "Spectral function, two Lorentzians",
+     "latex": "$$A(d\\sigma,\\omega)=\\Gamma\\left[\\frac{1-\\langle n_{\\bar\\sigma}\\rangle}{(\\omega-\\xi_d)^2+(\\Gamma/2)^2}+\\frac{\\langle n_{\\bar\\sigma}\\rangle}{(\\omega-\\xi_d-U)^2+(\\Gamma/2)^2}\\right]$$",
+     "note": "Eq. (10.69); follows from -2 Im of Eq. (10.68) with Sigma = -i Gamma/2, so the numerator is Gamma. Integrates to 1 with the measure d omega/2 pi."
+    },
+    {
+     "name": "Self-consistent occupation",
+     "latex": "$$\\langle n_{d\\sigma}\\rangle=\\int\\frac{d\\omega}{2\\pi}\\,n_F(\\omega)\\,A(d\\sigma,\\omega)$$",
+     "note": "Eq. (10.70)."
+    }
+   ]
+  }
+ ],
+ "questions": [
+  {
+   "id": "ch10-E1",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "Give the two conditions for Coulomb blockade in a metallic dot.",
+   "solution": "(i) The charging energy must exceed the thermal energy, $E_C=e^2/2C\\gg k_BT$ (Eqs. 10.7, 10.13; Fig. 10.2 shows the oscillations washing out as $k_BT/E_C$ grows). (ii) The tunnel coupling must be weak, so that the charge on the dot is well defined: the dwell time on the dot is the longest time scale (Sec. 10.2), equivalent to a tunnel resistance $R_T\\gg h/e^2$.",
+   "source": "Sec. 10.1, Eq. (10.7); Sec. 10.2, 10.2.1, Eq. (10.13)",
+   "checkerNote": "The book states the weak-tunneling condition in words (Sec. 10.2) and does not print R_T >> h/e^2; that form is the standard criterion, kept as an equivalence."
+  },
+  {
+   "id": "ch10-E2",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "After the rotation of Eq. (10.43) the dot couples to",
+   "choices": [
+    "both lead combinations equally",
+    "only the even combination",
+    "only the odd combination",
+    "neither combination"
+   ],
+   "answerIndex": 1,
+   "solution": "Eqs. (10.43)-(10.45) show that only the even combination $c_{\\nu e}$ hybridizes with the dot. The odd combination decouples and does not contribute to the dot spectral function.",
+   "source": "Sec. 10.4, Eqs. (10.43)-(10.45)"
+  },
+  {
+   "id": "ch10-E3",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "Write the steady-state solution of the sequential-tunneling master equation for a chain of charge states.",
+   "solution": "Detailed balance between neighbouring charge states (Eq. 10.25) gives\n$$\\Gamma_{N-1,N}\\,P(N)=\\Gamma_{N,N-1}\\,P(N-1)\\quad\\Longrightarrow\\quad P(N)=P(N-1)\\,\\frac{\\Gamma_{N,N-1}}{\\Gamma_{N-1,N}},$$\nwhich determines all $P(N)$ up to a constant. Normalization $\\sum_NP(N)=1$ fixes the constant.",
+   "source": "Sec. 10.2.1, Eq. (10.25)"
+  },
+  {
+   "id": "ch10-E4",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "Eq. (10.56) gives $G=e^2\\sum_\\sigma\\int\\frac{d\\xi}{2\\pi}\\frac{\\Gamma_L\\Gamma_R}{\\Gamma_L+\\Gamma_R}A(d\\sigma,\\xi)\\left(-\\frac{\\partial n_F}{\\partial\\xi}\\right)$ in units $\\hbar=1$. Take the Lorentzian $A(d\\sigma,\\xi)=\\Gamma/[(\\xi-\\xi_d)^2+(\\Gamma/2)^2]$ with $\\Gamma=\\Gamma_L+\\Gamma_R$ and find $G$ at $T=0$ for a symmetric non-interacting level on resonance, $\\xi_d=0$ and $\\Gamma_L=\\Gamma_R$.",
+   "solution": "At $T=0$, $-\\partial n_F/\\partial\\xi=\\delta(\\xi)$, so each spin gives\n$$G_\\sigma=e^2\\,\\frac{1}{2\\pi}\\,\\frac{\\Gamma_L\\Gamma_R}{\\Gamma_L+\\Gamma_R}\\,A(0)=\\frac{e^2}{2\\pi}\\cdot\\frac{\\Gamma}{4}\\cdot\\frac{4}{\\Gamma}=\\frac{e^2}{h}.$$\nWith two spins, $G=2e^2/h$.",
+   "source": "Sec. 10.4.1, Eq. (10.56)"
+  },
+  {
+   "id": "ch10-H1",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Ex. 10.2. A single-level dot (Eq. 10.8) is in sequential tunneling. (a) Write the master equations for $P(0), P(\\uparrow), P(\\downarrow), P(d)$ with rates $\\Gamma_{\\beta\\alpha}$ for the transition $\\alpha\\to\\beta$. (b) In the large-$U$ limit with a degenerate level, find $P(0)$ and $P(\\sigma)$. (c) For a Zeeman-split level with only $P(0)$ and $P(\\uparrow)$ occupied, find both occupations. (d) Find the current from Eq. (10.26) and the linear conductance.",
+   "solution": "Book Exercise 10.2. (a) Steady state (Eq. 10.11) for the empty state: rate out equals rate in,\n$$\\big(\\Gamma_{\\uparrow0}+\\Gamma_{\\downarrow0}\\big)P(0)=\\Gamma_{0\\uparrow}P(\\uparrow)+\\Gamma_{0\\downarrow}P(\\downarrow),$$\nand similarly for $P(\\uparrow),P(\\downarrow),P(d)$, with $\\Gamma_{\\beta\\alpha}=\\Gamma^L_{\\beta\\alpha}+\\Gamma^R_{\\beta\\alpha}$ and $\\sum P=1$.\n(b) With degenerate spins and $P(d)=0$ (large $U$), $P(0)=\\dfrac{\\Gamma_{01}}{\\Gamma_{01}+2\\Gamma_{10}}$ and $P(\\uparrow)=P(\\downarrow)=\\dfrac{\\Gamma_{10}}{\\Gamma_{01}+2\\Gamma_{10}}$, where $\\Gamma_{01}$ is the removal rate and $\\Gamma_{10}$ the addition rate.\n(c) With the Zeeman split and only two states, $P(0)=\\dfrac{\\Gamma_{0\\uparrow}}{\\Gamma_{0\\uparrow}+\\Gamma_{\\uparrow0}}$ and $P(\\uparrow)=\\dfrac{\\Gamma_{\\uparrow0}}{\\Gamma_{0\\uparrow}+\\Gamma_{\\uparrow0}}$.\n(d) The rates are $\\Gamma^x_{\\uparrow0}=\\Gamma_xn_F(\\varepsilon-\\mu_x)$ and $\\Gamma^x_{0\\uparrow}=\\Gamma_x[1-n_F(\\varepsilon-\\mu_x)]$ for $x=L,R$. Eq. (10.26) then gives\n$$I=e\\,\\frac{\\Gamma_L\\Gamma_R}{\\Gamma_L+\\Gamma_R}\\big[n_F(\\varepsilon-\\mu_R)-n_F(\\varepsilon-\\mu_L)\\big],\\qquad G=\\frac{e^2}{\\hbar}\\frac{\\Gamma_L\\Gamma_R}{\\Gamma_L+\\Gamma_R}\\,\\frac{1}{4k_BT\\cosh^2[(\\varepsilon-\\mu)/2k_BT]},$$\na thermally broadened peak whose height grows as $1/k_BT$.",
+   "source": "Ex. 10.2; Sec. 10.2.2, Eqs. (10.26), (10.29)",
+   "checkerNote": "Part (d) forms taken from the exercise statement (E.10.3)-(E.10.6); overall sign of I follows the book's convention."
+  },
+  {
+   "id": "ch10-H2",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Ex. 10.6. Starting from Eqs. (10.56) and (10.69), show that in the weak-tunneling limit $\\Gamma\\ll k_BT$ the conductance reproduces the master-equation result of Ex. 10.2 for large $U$.",
+   "solution": "Book Exercise 10.6. In the limit $\\Gamma\\ll k_BT$ the Lorentzians become delta functions,\n$$A(d\\sigma,\\omega)\\to 2\\pi\\big[(1-\\langle n_{\\bar\\sigma}\\rangle)\\,\\delta(\\omega-\\xi_d)+\\langle n_{\\bar\\sigma}\\rangle\\,\\delta(\\omega-\\xi_d-U)\\big].$$\nFor large $U$ the second delta lies far above $\\mu$ and drops out. Eq. (10.70) then gives $n=(1-n)\\,n_F(\\xi_d)$, so $n=n_F/(1+n_F)$ and $1-n=1/(1+n_F)$. Inserting into Eq. (10.56),\n$$G=2e^2\\frac{\\Gamma_L\\Gamma_R}{\\Gamma_L+\\Gamma_R}\\,\\frac{1}{1+n_F(\\xi_d)}\\left(-\\frac{\\partial n_F}{\\partial\\xi}\\right)_{\\xi_d},$$\na thermally broadened peak of height proportional to $\\Gamma_L\\Gamma_R/[(\\Gamma_L+\\Gamma_R)k_BT]$. This equals the master-equation result of Ex. 10.2 for a degenerate level with large $U$, where $P(0)+P(\\sigma)=1/(1+n_F)$ is the probability that the spin-$\\sigma$ level is available.",
+   "source": "Ex. 10.6; Sec. 10.4.2, Eqs. (10.56), (10.69)-(10.70)"
+  },
+  {
+   "id": "ch10-H3",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Ex. 10.7. For $\\varepsilon_{d\\uparrow}=\\varepsilon_{d\\downarrow}=\\varepsilon$, show that the self-consistent solution of Eq. (10.70) with the spectral function of Eq. (10.69) at $T=0$ is given in closed form. Use $\\Gamma$ for the full width.",
+   "solution": "Book Exercise 10.7. Define $F(E)=\\int_{-\\infty}^{0}\\frac{d\\omega}{2\\pi}\\frac{\\Gamma}{(\\omega-E)^2+\\Gamma^2/4}=\\tfrac12-\\tfrac1\\pi\\arctan\\frac{2E}{\\Gamma}$. Eq. (10.70) with Eq. (10.69) gives, for $\\langle n_\\sigma\\rangle=\\langle n_{\\bar\\sigma}\\rangle=n$,\n$$n=(1-n)\\,F(\\varepsilon)+n\\,F(\\varepsilon+U)\\quad\\Longrightarrow\\quad n=\\frac{F(\\varepsilon)}{1+F(\\varepsilon)-F(\\varepsilon+U)}.$$\nChecks: $n\\to1$ for $\\varepsilon\\ll-U$ (both $F\\to1$), $n\\to0$ for $\\varepsilon\\gg0$, and $n\\approx\\tfrac12$ between the resonances for $U\\gg\\Gamma$ ($F(\\varepsilon)\\approx1$, $F(\\varepsilon+U)\\approx0$). In the book's notation $n=n_0/(1-n_U+n_0)$ with $n_0=F(\\varepsilon)$ and $n_U=F(\\varepsilon+U)$.",
+   "source": "Ex. 10.7; Sec. 10.4.2, Eqs. (10.69)-(10.70)"
+  }
+ ]
+}

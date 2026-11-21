@@ -1,0 +1,156 @@
+{
+ "chapter": "15",
+ "title": "Fermi liquid theory (Secs. 15.1 and 15.4)",
+ "scope": "Secs. 15.1 (15.1.1, 15.1.2) and 15.4 (15.4.1-15.4.3). Secs. 15.2, 15.3 and 15.5 are out of scope; Eq. (15.44) is quoted only as a pointer.",
+ "sections": [
+  {
+   "id": "15.1",
+   "title": "Adiabatic continuity",
+   "keyResults": [
+    {
+     "name": "Adiabatic solution",
+     "latex": "$$\\psi_{\\rm adia}(x,t)\\approx\\psi_{V_0(t)}(x)\\,\\exp\\Big[-i\\int^t E\\,dt'\\Big]$$",
+     "note": "Eqs. (15.1)-(15.4); the states follow the instantaneous eigenstates when the change is slow (validity condition Eq. 15.4)."
+    }
+   ]
+  },
+  {
+   "id": "15.1.1",
+   "title": "Example: one-dimensional well",
+   "keyResults": []
+  },
+  {
+   "id": "15.1.2",
+   "title": "The quasiparticle concept and conserved quantities",
+   "keyResults": [
+    {
+     "name": "Quasiparticle state",
+     "latex": "$$|(k\\sigma)_p\\rangle=c^\\dagger_{k\\sigma}|G\\rangle$$",
+     "note": "Eqs. (15.6)-(15.7); adiabatically connected to a free particle state, with momentum, spin and charge conserved."
+    }
+   ]
+  },
+  {
+   "id": "15.4",
+   "title": "Microscopic basis of the Fermi liquid theory",
+   "keyResults": []
+  },
+  {
+   "id": "15.4.1",
+   "title": "Renormalization of the single particle Green's function",
+   "keyResults": [
+    {
+     "name": "Retarded Green's function with self-energy",
+     "latex": "$$G^R(k,\\omega)=\\frac{1}{\\omega-\\xi_k-\\Sigma^R(k,\\omega)}$$",
+     "note": "Eqs. (15.47)-(15.48)."
+    },
+    {
+     "name": "Renormalized Fermi surface",
+     "latex": "$$\\tilde\\xi_{\\tilde k_F}+\\mathrm{Re}\\,\\Sigma^R(\\tilde k_F,0)=0$$",
+     "note": "Eq. (15.49)."
+    },
+    {
+     "name": "Quasiparticle weight",
+     "latex": "$$Z=\\Big[1-\\partial_\\omega\\,\\mathrm{Re}\\,\\Sigma^R(\\tilde k_F,\\omega)\\big|_{\\omega=0}\\Big]^{-1}$$",
+     "note": "Eq. (15.50); the jump of n_k at k_F equals Z (Eq. 15.57)."
+    },
+    {
+     "name": "Effective mass",
+     "latex": "$$\\frac{m^*}{m}=Z^{-1}\\Big[1+\\frac{m}{\\tilde k_F}\\,\\partial_k\\mathrm{Re}\\,\\Sigma(k,0)\\Big]^{-1}$$",
+     "note": "Eqs. (15.53)-(15.54)."
+    },
+    {
+     "name": "Quasiparticle lifetime",
+     "latex": "$$\\frac{1}{\\tilde\\tau_k}=-2Z\\,\\mathrm{Im}\\,\\Sigma^R(k,\\tilde\\xi_k)$$",
+     "note": "Eq. (15.52)."
+    },
+    {
+     "name": "Quasiparticle peak and background",
+     "latex": "$$A(k,\\omega)=2\\pi Z\\,\\delta(\\omega-\\tilde\\xi_k)+A'(k,\\omega),\\qquad \\int\\frac{d\\omega}{2\\pi}A'=1-Z$$",
+     "note": "Eqs. (15.55)-(15.57); the peak is Lorentzian when Im Sigma is small."
+    }
+   ]
+  },
+  {
+   "id": "15.4.2",
+   "title": "Imaginary part of the single-particle Green's function",
+   "keyResults": [
+    {
+     "name": "Quasiparticle decay near the Fermi surface",
+     "latex": "$$\\frac1{\\tau_k}=\\frac{\\sqrt3\\pi^2}{128}\\,\\omega_p\\Big(\\frac{\\xi_k}{\\varepsilon_F}\\Big)^2,\\qquad \\mathrm{Im}\\,\\Sigma^R(k,\\xi_k)\\propto\\xi_k^2$$",
+     "note": "Eq. (15.68), Quinn-Ferrell result from the RPA self-energy. The lifetime diverges as xi_k goes to 0; Luttinger showed the decay is at least xi_k^2 to all orders."
+    }
+   ]
+  },
+  {
+   "id": "15.4.3",
+   "title": "Mass renormalization?",
+   "keyResults": []
+  }
+ ],
+ "questions": [
+  {
+   "id": "ch15-E1",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "State the principle of adiabatic continuity. Why does it allow the low-lying states of the interacting gas to be labelled by the free-particle quantum numbers?",
+   "solution": "Switching the interaction on slowly maps the non-interacting eigenstates one-to-one onto the interacting ones, without level crossings and without transitions between states. Quantum numbers such as $\\mathbf k$, spin and charge therefore carry over, so the low-energy excitations can be labelled like free particles and holes (Sec. 15.1.2, Eqs. 15.6-15.7).",
+   "source": "Sec. 15.1, Sec. 15.1.2, Eqs. (15.4), (15.6)-(15.7)"
+  },
+  {
+   "id": "ch15-E2",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "The quasiparticle residue $Z$ satisfies which statement?",
+   "choices": [
+    "$Z=m^*/m$ always",
+    "$Z>1$",
+    "$0<Z\\le1$, and $Z$ equals the jump of $n_k$ at $k_F$",
+    "$Z=0$ in a Fermi liquid"
+   ],
+   "answerIndex": 2,
+   "solution": "$Z$ is a weight between 0 and 1: $Z=[1-\\partial_\\omega\\mathrm{Re}\\,\\Sigma]^{-1}$ (Eq. 15.50), and the sum rule gives $\\int\\frac{d\\omega}{2\\pi}A'=1-Z\\ge0$ (Eq. 15.56-15.57). It equals the jump of $n_k$ at $k_F$ (Eq. 15.57). The mass ratio $m^*/m$ is a separate quantity, and $Z$ vanishes only in the absence of a quasiparticle peak, which a Fermi liquid does not have.",
+   "source": "Sec. 15.4.1, Eqs. (15.50), (15.57)"
+  },
+  {
+   "id": "ch15-E3",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "Write $Z$ and $m^*$ in terms of the real part of the self-energy $\\mathrm{Re}\\,\\Sigma$.",
+   "solution": "$$Z=\\Big[1-\\partial_\\omega\\mathrm{Re}\\,\\Sigma^R(\\tilde k_F,\\omega)\\big|_{\\omega=0}\\Big]^{-1}\\quad\\text{(Eq. 15.50)}.$$\nDifferentiating the renormalized dispersion gives $\\tilde k_F/m^*=Z\\,(\\tilde k_F/m)\\,[1+(m/\\tilde k_F)\\partial_k\\mathrm{Re}\\,\\Sigma]$, so\n$$\\frac{m}{m^*}=Z\\Big(1+\\frac{m}{\\tilde k_F}\\,\\partial_k\\mathrm{Re}\\,\\Sigma(k,0)\\Big)\\quad\\text{(Eqs. 15.51-15.54)}.$$\nEquivalently $m^*/m=Z^{-1}[1+(m/\\tilde k_F)\\partial_k\\mathrm{Re}\\,\\Sigma(k,0)]^{-1}$.",
+   "source": "Sec. 15.4.1, Eqs. (15.50)-(15.54)"
+  },
+  {
+   "id": "ch15-E4",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "Why are quasiparticles long-lived close to the Fermi surface? Use the scaling of the decay rate with $\\xi_k$.",
+   "solution": "Pauli blocking restricts the decay. The scattered particle and the created particle-hole pair must both lie within an energy $\\sim\\xi_k$ of $\\varepsilon_F$, which cuts the phase space. The Quinn-Ferrell result is $1/\\tau_k=\\frac{\\sqrt3\\pi^2}{128}\\,\\omega_p\\,(\\xi_k/\\varepsilon_F)^2$ (Eq. 15.68), so $1/\\tau\\propto\\xi_k^2$ (and $\\propto T^2$ at finite temperature), so the width over energy goes to zero at the Fermi surface (Eqs. 15.63-15.68).",
+   "source": "Sec. 15.4.2, Eqs. (15.63)-(15.68)"
+  },
+  {
+   "id": "ch15-H1",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Book Exercise 15.2. Compton scattering and the jump $Z$. Starting from the spectral function of Eq. (15.57), compute $n_k=\\int\\frac{d\\omega}{2\\pi}A(k,\\omega)n_F(\\omega)$ and explain how the impulse-approximation intensity measures the jump of $n_k$ at $k_F$.",
+   "solution": "1. Insert $A=2\\pi Z\\delta(\\omega-\\tilde\\xi_k)+A'$ (Eq. 15.57). The quasiparticle term gives $Z\\,n_F(\\tilde\\xi_k)$, which is a step of height $Z$ at $\\tilde k_F$ because $n_F$ becomes a step at $T=0$.\n2. The incoherent part $A'$ carries weight $1-Z$ and gives a smooth contribution to $n_k$.\n3. In the impulse approximation the Compton intensity is a projection of $n_k$ onto the momentum component fixed by the scattering kinematics. The derivative of the Compton profile therefore has a jump at the Fermi momentum whose size is proportional to $Z$.",
+   "source": "Ex. 15.2; Sec. 15.4.1, Eq. (15.57); Sec. 8.3.4, Eq. (8.62)"
+  },
+  {
+   "id": "ch15-H2",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Book Exercise 15.4. In the high-frequency limit $\\epsilon=1-\\omega_p^2/\\omega^2$ (Eq. 14.76), a wave in a metal propagates for $\\omega>\\omega_p$ and is reflected below. For sodium (bcc, $a=4.23$ Å, one electron per atom), find $n$, $\\omega_p$ and the wavelength $\\lambda_p=2\\pi c/\\omega_p$.",
+   "solution": "1. A bcc cubic cell contains two atoms, so $n=2/a^3=2/(4.23\\times10^{-10}\\,\\mathrm{m})^3\\approx2.64\\times10^{28}\\,\\mathrm{m^{-3}}$.\n2. $\\omega_p=\\sqrt{ne^2/(m\\epsilon_0)}\\approx9.17\\times10^{15}\\,\\mathrm{s^{-1}}$ (Eq. 14.77).\n3. $\\lambda_p=2\\pi c/\\omega_p\\approx 205$ nm. The book quotes 206 nm as the observed UV transparency edge; the two agree within rounding. Light with $\\lambda<\\lambda_p$ ($\\omega>\\omega_p$) propagates in the metal, and light with longer wavelength is reflected, which is why polished metals look shiny.",
+   "source": "Ex. 15.4; Sec. 14.5, Eqs. (14.76)-(14.77)"
+  },
+  {
+   "id": "ch15-H3",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Book Exercise 15.1, adapted to Sec. 15.1.2. A wave packet $\\psi(\\mathbf r,t)=\\int d\\mathbf k\\,a(\\mathbf k)\\,e^{i(\\mathbf k\\cdot\\mathbf r-\\omega(\\mathbf k)t)}$ is peaked at $\\mathbf k_0$. Expand $\\omega(\\mathbf k)$ to first order and find the energy and the group velocity. Then argue why the number of quasiparticles is conserved when the external potential varies slowly in space and time.",
+   "solution": "1. Expand $\\omega(\\mathbf k)\\approx\\omega(\\mathbf k_0)+\\mathbf v_g\\cdot(\\mathbf k-\\mathbf k_0)$ with $\\mathbf v_g=\\nabla_{\\mathbf k}\\omega(\\mathbf k_0)$. Then $\\psi\\approx e^{i(\\mathbf k_0\\cdot\\mathbf r-\\omega_0t)}F(\\mathbf r-\\mathbf v_gt)$, where $F$ is the envelope. The packet has energy $\\omega(\\mathbf k_0)$ and moves at $\\mathbf v_g$.\n2. A slowly varying potential does not induce transitions between states (adiabatic continuity, Sec. 15.1.2). The packet can change its $\\mathbf k$ and position, but it stays one quasiparticle state for each quantum number, so the number of quasiparticles is fixed.",
+   "source": "Ex. 15.1; Sec. 15.1.2"
+  }
+ ]
+}

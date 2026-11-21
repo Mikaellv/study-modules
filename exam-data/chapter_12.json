@@ -1,0 +1,84 @@
+{
+ "chapter": "12",
+ "title": "Feynman diagrams and external potentials (Sec. 12.1 only)",
+ "scope": "Sec. 12.1 (Eqs. 12.1-12.10): non-interacting fermions in an external potential. Secs. 12.2-12.6 are out of scope.",
+ "sections": [
+  {
+   "id": "12.1",
+   "title": "Non-interacting particles in external potentials",
+   "keyResults": [
+    {
+     "name": "Hamiltonian with external potential",
+     "latex": "$$H=H_0+V,\\qquad V=\\sum_\\sigma\\int d\\mathbf r\\,\\Psi^\\dagger_\\sigma(\\mathbf r)V_\\sigma(\\mathbf r)\\Psi_\\sigma(\\mathbf r)$$",
+     "note": "Eqs. (12.1)-(12.2); short-hand 1 = (r_1, sigma_1, tau_1)."
+    },
+    {
+     "name": "Equation of motion for the full function",
+     "latex": "$$\\left(-\\partial_{\\tau_b}-H(b)\\right)\\mathcal G(b,a)=\\delta(b-a)$$",
+     "note": "Eq. (12.3b); same sign convention as Eq. (11.66)."
+    },
+    {
+     "name": "Dyson equation in integral form",
+     "latex": "$$\\mathcal G(b,a)=\\mathcal G_0(b,a)+\\int d1\\,\\mathcal G_0(b,1)\\,V(1)\\,\\mathcal G(1,a)$$",
+     "note": "Eq. (12.5)."
+    },
+    {
+     "name": "Perturbation series",
+     "latex": "$$\\mathcal G=\\mathcal G_0+\\mathcal G_0V\\mathcal G_0+\\mathcal G_0V\\mathcal G_0V\\mathcal G_0+\\cdots$$",
+     "note": "Eq. (12.6); each term is a sum over scattering events by V."
+    },
+    {
+     "name": "Feynman rules for the external potential",
+     "latex": "$$\\text{full line: }\\mathcal G,\\qquad \\text{thin line: }\\mathcal G_0,\\qquad \\text{cross: }V(1)$$",
+     "note": "Eqs. (12.7)-(12.8); internal vertices are integrated over 1."
+    },
+    {
+     "name": "Diagrammatic Dyson equation",
+     "latex": "$$\\mathcal G=\\mathcal G_0+\\mathcal G_0\\,V\\,\\mathcal G$$",
+     "note": "Eqs. (12.9)-(12.10); the integral form (12.5) is recovered from the diagrams."
+    }
+   ]
+  }
+ ],
+ "questions": [
+  {
+   "id": "ch12-E1",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "Write the integral Dyson equation for $\\mathcal G(b,a)$ of non-interacting fermions in an external potential $V(1)$, and write its first two iterations in terms of $\\mathcal G_0$.",
+   "solution": "$$\\mathcal G(b,a)=\\mathcal G_0(b,a)+\\int d1\\,\\mathcal G_0(b,1)V(1)\\mathcal G(1,a)\\qquad\\text{(Eq. 12.5)}.$$\nInserting the equation into itself gives\n$$\\mathcal G(b,a)=\\mathcal G_0(b,a)+\\int d1\\,\\mathcal G_0(b,1)V(1)\\mathcal G_0(1,a)+\\int d1\\,d2\\,\\mathcal G_0(b,1)V(1)\\mathcal G_0(1,2)V(2)\\mathcal G_0(2,a)+\\cdots\\quad\\text{(Eq. 12.6)}.$$",
+   "source": "Sec. 12.1, Eqs. (12.3)-(12.6)"
+  },
+  {
+   "id": "ch12-E2",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "In the diagrams of Sec. 12.1 the external potential is drawn as a cross. What does an internal vertex with a cross mean?",
+   "choices": [
+    "A fixed external point with no integration",
+    "An integral $\\int d1$ over space and imaginary time with the factor $V(1)$ at that vertex",
+    "A sum over spin only, with no factor",
+    "A factor $-1$ for each closed fermion loop"
+   ],
+   "answerIndex": 1,
+   "solution": "Each internal vertex is integrated over $1=(\\mathbf r_1,\\sigma_1,\\tau_1)$ and carries the factor $V(1)$ (Eqs. 12.7-12.8). The external points $a$ and $b$ are fixed. The other options describe other rules of the book.",
+   "source": "Sec. 12.1, Eqs. (12.7)-(12.8)"
+  },
+  {
+   "id": "ch12-H1",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Book Exercise 12.1. One-dimensional electrons with $U(x)=U_0\\delta(x)$ and $\\hbar=1$. Use $v=k/m$ and the free retarded function $G^R_0(x,x',\\omega)=-\\frac{i}{v}e^{ik|x-x'|}$. Solve the Dyson equation for $x'<0<x$ and find the transmission amplitude $t$ and $|t|^2$.",
+   "solution": "1. Dyson's equation with the delta potential gives $G(x,x')=G_0(x,x')+G_0(x,0)\\,U_0\\,G(0,x')$. Setting $x=0$ gives $G(0,x')=G_0(0,x')/[1-U_0G_0(0,0)]$.\n2. With $G_0(0,0)=-i/v$, the denominator is $1+iU_0/v$.\n3. For $x'<0<x$, $G_0(x,0)U_0G_0(0,x')=-(U_0/v^2)e^{ik(x-x')}$. Collecting terms, $G(x,x')=-\\frac{i}{v}\\,t\\,e^{ik(x-x')}$ with\n$$t=\\frac{1}{1+iU_0/v},\\qquad |t|^2=\\frac{1}{1+(U_0/v)^2}.$$\nThis matches the barrier result of Ex. 7.2.",
+   "source": "Ex. 12.1; Sec. 12.1, Eqs. (12.5), (12.9); cf. Ex. 7.2"
+  },
+  {
+   "id": "ch12-H2",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Book Exercise 12.2 (resonant tunneling). The potential is $U_0[\\delta(x-a_1)+\\delta(x-a_2)]$. Define $\\alpha=U_0/(iv)$ and $\\theta=k(a_2-a_1)$, and use $G^R_0$ as in Ex. 12.1. For $x'<a_1<a_2<x$, show that $G^R=-\\frac{i}{v}\\,t\\,e^{ik(x-x')}$ with $t=[(1-\\alpha)^2-\\alpha^2e^{2i\\theta}]^{-1}$, and show that $|t|=1$ when $\\alpha=i\\cot\\theta$.",
+   "solution": "1. Write $G(x,x')=G_0(x,x')+\\sum_j G_0(x,a_j)U_jG(a_j,x')$ with $G_0(x,x')=-\\frac iv e^{ik|x-x'|}$. Put $\\Phi_j=G(a_j,x')$, $E=e^{i\\theta}$ and $\\alpha_j=U_j/(iv)=U_jG_0(0,0)$. Setting $x=a_1,a_2$ gives the 2x2 system\n$$(1-\\alpha_1)\\Phi_1-\\alpha_2E\\,\\Phi_2=s_1,\\qquad -\\alpha_1E\\,\\Phi_1+(1-\\alpha_2)\\Phi_2=s_1E,\\qquad s_1=-\\tfrac iv e^{ik(a_1-x')}.$$\nIts determinant is $D=(1-\\alpha_1)(1-\\alpha_2)-\\alpha_1\\alpha_2E^2$. Inserting $\\Phi_{1,2}$ in $G(x,x')$ for $x>a_2$, the numerator collapses to 1, so\n$$G^R(x,x')=-\\frac iv\\,t\\,e^{ik(x-x')},\\qquad t=\\frac1D.$$\n2. For equal barriers, $\\alpha_1=\\alpha_2=\\alpha$, this is the stated $t=[(1-\\alpha)^2-\\alpha^2e^{2i\\theta}]^{-1}$. For $U_2=0$ it reduces to $1/(1-\\alpha_1)$, the single-barrier result of Ex. 12.1.\n3. Put $\\alpha=i\\cot\\theta$ into $D=(1-\\alpha)^2-\\alpha^2e^{2i\\theta}$. Using $\\alpha^2=-\\cot^2\\theta$ and $e^{2i\\theta}-1=2i\\sin\\theta\\,e^{i\\theta}$ one finds $D=1-2\\cos\\theta\\,e^{i\\theta}$. Then $D=1-2\\cos^2\\theta-2i\\sin\\theta\\cos\\theta=-\\cos2\\theta-i\\sin2\\theta=-e^{2i\\theta}$, so\n$$|t|=1/|D|=1.$$\nThis is the resonance condition of the exercise (Eq. E.12.6). Physically, the two paths $x'\\to a_1\\to x$ and $x'\\to a_1\\to a_2\\to a_1\\to a_2\\to x$ and all longer ones interfere constructively.",
+   "source": "Ex. 12.2 (Eqs. E.12.4-E.12.6); Sec. 12.1"
+  }
+ ]
+}

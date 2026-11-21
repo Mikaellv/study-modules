@@ -1,0 +1,188 @@
+{
+ "chapter": 9,
+ "title": "Equation of motion theory",
+ "scope": "Sec. 9.1 (single-particle Green's function, EOM, non-interacting case), 9.2 (single level coupled to a continuum), 9.3 (Anderson model, EOM and mean field), 9.4.1 (RPA by EOM). Summary omitted.",
+ "sections": [
+  {
+   "id": "9.1",
+   "title": "The single-particle Green's function",
+   "keyResults": []
+  },
+  {
+   "id": "9.1.1",
+   "title": "Non-interacting particles",
+   "keyResults": [
+    {
+     "name": "EOM for the retarded function",
+     "latex": "$$(\\omega+i\\eta)\\,C^R_{AB}(\\omega)=\\langle[A,B]_{B,F}\\rangle+C^R_{[A,H],B}(\\omega)$$",
+     "note": "General form for operators A, B, obtained as in Eqs. (9.1)-(9.9) (the book states it for field operators: Eqs. 9.5, 9.8-9.10). Here i d_t A(t) = [A,H](t).",
+     "checkerNote": "The general A,B form is not printed literally in the book; the field-operator versions Eqs. (9.5), (9.8)-(9.10) are."
+    },
+    {
+     "name": "Quadratic Hamiltonian",
+     "latex": "$$\\sum_{\\nu''}\\big[(\\omega+i\\eta)\\delta_{\\nu\\nu''}-t_{\\nu\\nu''}\\big]G^R(\\nu''\\nu';\\omega)=\\delta_{\\nu\\nu'}$$",
+     "note": "Eq. (9.11); with interactions the right side gains D^R (Eq. 9.10a)."
+    },
+    {
+     "name": "Free retarded function",
+     "latex": "$$G^R_0(\\nu,\\omega)=\\frac{1}{\\omega-\\varepsilon_\\nu+i\\eta}$$",
+     "note": "Eqs. (9.12)-(9.14); agrees with Eq. (8.55)."
+    }
+   ]
+  },
+  {
+   "id": "9.2",
+   "title": "Single level coupled to a continuum",
+   "keyResults": [
+    {
+     "name": "Level Green's function",
+     "latex": "$$G^R(l,\\omega)=\\frac{1}{\\omega-\\xi_0-\\Sigma^R(\\omega)},\\qquad \\Sigma^R(\\omega)=\\sum_\\nu\\frac{|t_\\nu|^2}{\\omega-\\xi_\\nu+i\\eta}$$",
+     "note": "Eqs. (9.21)-(9.22)."
+    },
+    {
+     "name": "Wide-band width",
+     "latex": "$$\\Sigma^R\\approx-\\frac{i\\Gamma}{2},\\qquad \\Gamma=2\\pi\\sum_\\nu|t_\\nu|^2\\,\\delta(\\omega-\\xi_\\nu)$$",
+     "note": "Eqs. (9.39)-(9.42), with the self-energy of Eq. (9.22); constant 2 pi d(eps)|t(eps)|^2 = Gamma gives Re Sigma as a shift and Im Sigma = -Gamma/2. The spectral function is a Lorentzian of full width Gamma."
+    }
+   ]
+  },
+  {
+   "id": "9.3",
+   "title": "Anderson's model for magnetic impurities",
+   "keyResults": []
+  },
+  {
+   "id": "9.3.1",
+   "title": "The equation of motion for the Anderson model",
+   "keyResults": [
+    {
+     "name": "Anderson Hamiltonian",
+     "latex": "$$H=\\sum_{k\\sigma}(\\varepsilon_k-\\mu)c^\\dagger_{k\\sigma}c_{k\\sigma}+\\sum_\\sigma(\\varepsilon_d-\\mu)\\,n_{d\\sigma}+U\\,n_{d\\uparrow}n_{d\\downarrow}+\\sum_{k\\sigma}\\big(t_k\\,c^\\dagger_{d\\sigma}c_{k\\sigma}+t_k^*\\,c^\\dagger_{k\\sigma}c_{d\\sigma}\\big)$$",
+     "note": "Eqs. (9.23)-(9.26), with the book's convention for t_k. The interaction term generates a two-particle function in the EOM, Eqs. (9.30)-(9.34)."
+    },
+    {
+     "name": "Dot EOM",
+     "latex": "$$(\\omega+i\\eta-\\varepsilon_d+\\mu)\\,G^R(d\\sigma,\\omega)-\\sum_k t_k\\,G^R(k\\sigma,d\\sigma,\\omega)=1+U\\,D^R(d\\sigma,\\omega)$$",
+     "note": "Eq. (9.30); D^R is the function <<n_{d,sigma-bar} d_sigma; d^dagger_sigma>>."
+    }
+   ]
+  },
+  {
+   "id": "9.3.2",
+   "title": "Mean-field approximation for the Anderson model",
+   "keyResults": [
+    {
+     "name": "Mean-field Green's function",
+     "latex": "$$G^R_\\sigma(\\omega)=\\frac{1}{\\omega-\\varepsilon_d+\\mu-U\\langle n_{\\bar\\sigma}\\rangle-\\Sigma^R(\\omega)}$$",
+     "note": "Eqs. (9.35)-(9.38); the level is shifted by U times the opposite-spin occupation."
+    },
+    {
+     "name": "Self-consistency",
+     "latex": "$$\\cot(\\pi\\langle n_\\uparrow\\rangle)=(\\langle n_\\downarrow\\rangle-x)\\,y,\\qquad \\cot(\\pi\\langle n_\\downarrow\\rangle)=(\\langle n_\\uparrow\\rangle-x)\\,y$$",
+     "note": "Eqs. (9.45a)-(9.45b) with x=(mu-eps~)/U and y=2U/Gamma, where eps~ = eps_d + Re Sigma. Verified by evaluating the T=0 integral of Eq. (9.44): n_up = 1/2 - (1/pi) arctan[2(eps~-mu+U n_down)/Gamma], so cot(pi n_up) = (n_down - x) y."
+    }
+   ]
+  },
+  {
+   "id": "9.4",
+   "title": "The two-particle correlation function",
+   "keyResults": []
+  },
+  {
+   "id": "9.4.1",
+   "title": "The random phase approximation",
+   "keyResults": [
+    {
+     "name": "RPA density response",
+     "latex": "$$\\chi^R_{\\rm RPA}(q,\\omega)=\\frac{\\chi^R_0(q,\\omega)}{1-V(q)\\,\\chi^R_0(q,\\omega)}$$",
+     "note": "Eq. (9.57)."
+    },
+    {
+     "name": "RPA dielectric function",
+     "latex": "$$\\varepsilon_{\\rm RPA}(q,\\omega)=1-V(q)\\,\\chi^R_0(q,\\omega)$$",
+     "note": "Eq. (9.58); the plasmon pole, Eq. (9.59), is not reproduced here because the md extraction of it is unreadable."
+    }
+   ]
+  }
+ ],
+ "questions": [
+  {
+   "id": "ch09-E1",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "Derive the equation of motion for $C^R_{AB}(t)=-i\\theta(t)\\langle[A(t),B]\\rangle$ and write it in frequency space.",
+   "solution": "Differentiating $\\theta(t)$ gives $\\delta(t)\\langle[A,B]\\rangle$, and $i\\partial_tA(t)=[A,H](t)$ (since $\\partial_tA=i[H,A]$). The result is\n$$(\\omega+i\\eta)\\,C^R_{AB}(\\omega)=\\langle[A,B]\\rangle+C^R_{[A,H],B}(\\omega).$$\nFor fermions the commutator in the first term is an anticommutator.",
+   "source": "Sec. 9.1, Eqs. (9.1)-(9.10)"
+  },
+  {
+   "id": "ch09-E2",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "In the wide-band limit a single level coupled to a continuum has spectral function",
+   "choices": [
+    "a delta peak at $\\xi_0$",
+    "a Lorentzian of full width $\\Gamma=2\\pi\\sum_\\nu|t_\\nu|^2\\delta(\\omega-\\xi_\\nu)$",
+    "a Gaussian of width $\\Gamma$",
+    "a step function"
+   ],
+   "answerIndex": 1,
+   "solution": "Eq. (9.22) with the constant coupling of Eq. (9.40) gives $\\Sigma^R\\approx -i\\Gamma/2$ plus a real shift (Eq. 9.41), so $A=\\Gamma/[(\\omega-\\tilde\\xi_0)^2+\\Gamma^2/4]$, a Lorentzian of full width $\\Gamma$ (Eq. 9.42). A delta peak would need zero coupling, and a Gaussian is not produced by a constant self-energy.",
+   "source": "Sec. 9.2, Eq. (9.22); Sec. 9.3.2, Eqs. (9.39)-(9.42)"
+  },
+  {
+   "id": "ch09-E3",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "Why does the EOM for the Anderson model not close, and what does the mean-field approximation do?",
+   "solution": "Commuting $d_\\sigma$ with the interaction $Un_{d\\uparrow}n_{d\\downarrow}$ produces $n_{d\\bar\\sigma}d_\\sigma$, a two-particle Green's function $D^R$ (Eqs. 9.30-9.34). Its own equation of motion generates yet another function, so the set does not close. Mean field replaces $n_{d\\bar\\sigma}$ by $\\langle n_{d\\bar\\sigma}\\rangle$, which gives a level shifted to $\\varepsilon_d+U\\langle n_{\\bar\\sigma}\\rangle$ (Eqs. 9.35-9.38).",
+   "source": "Sec. 9.3.1-9.3.2, Eqs. (9.30)-(9.38)"
+  },
+  {
+   "id": "ch09-E4",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "The RPA density response of the electron gas is",
+   "choices": [
+    "$\\dfrac{\\chi_0}{1-V\\chi_0}$",
+    "$\\chi_0\\,(1-V\\chi_0)$",
+    "$\\chi_0+V$",
+    "$V\\chi_0^2$"
+   ],
+   "answerIndex": 0,
+   "solution": "Eq. (9.57) follows from the equation of motion for $\\chi^R(kq,\\omega)$ truncated in the random phase approximation (Eqs. 9.54-9.56), giving $\\chi_0/(1-V\\chi_0)$. The option $\\chi_0(1-V\\chi_0)$ has the wrong structure (no pole from the interaction), and the others do not reduce to $\\chi_0$ for $V\\to0$.",
+   "source": "Sec. 9.4.1, Eqs. (9.57)-(9.58)"
+  },
+  {
+   "id": "ch09-H1",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Ex. 9.1. Two orbitals have $H=E_1c^\\dagger_1c_1+E_2c^\\dagger_2c_2+t\\,c^\\dagger_1c_2+t^*c^\\dagger_2c_1$. Use the EOM to find $G^R_{11}(\\omega)$ and $G^R_{21}(\\omega)$, and interpret the poles.",
+   "solution": "Book Exercise 9.1. In the basis $(1,2)$ the EOM (Eq. 9.10a) is a $2\\times2$ matrix equation. Inverting gives\n$$G^R_{11}(\\omega)=\\frac{\\omega-E_2}{(\\omega-E_1)(\\omega-E_2)-|t|^2},\\qquad G^R_{21}(\\omega)=\\frac{t^*}{(\\omega-E_1)(\\omega-E_2)-|t|^2}.$$\nThe poles are at $E_\\pm=\\frac{E_1+E_2}{2}\\pm\\sqrt{\\left(\\frac{E_1-E_2}{2}\\right)^2+|t|^2}$, the bonding and antibonding levels. The residues give the weight of orbital 1 in each eigenstate.",
+   "source": "Ex. 9.1; Sec. 9.1.1, Eq. (9.11)"
+  },
+  {
+   "id": "ch09-H2",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Ex. 9.2. Derive the EOM relations of Eqs. (9.30)-(9.31) by differentiating the Green's functions of Eq. (9.28). Show the dot and lead equations.",
+   "solution": "Book Exercise 9.2. With the book's hybridization $t_kc^\\dagger_{d\\sigma}c_{k\\sigma}+t_k^*c^\\dagger_{k\\sigma}c_{d\\sigma}$ (Eq. 9.25), compute $[d_\\sigma,H]$ and $[c_{k\\sigma},H]$. The commutators give\n$$(\\omega+i\\eta-\\varepsilon_d+\\mu)\\,G^R(d\\sigma,\\omega)-\\sum_kt_k\\,G^R(k\\sigma,d\\sigma,\\omega)=1+U\\,D^R(d\\sigma,\\omega),\\qquad (\\omega+i\\eta-\\varepsilon_k+\\mu)\\,G^R(k\\sigma,d\\sigma,\\omega)=t_k^*\\,G^R(d\\sigma,\\omega),$$\nwith $D^R=\\langle\\langle n_{d\\bar\\sigma}d_\\sigma;d^\\dagger_\\sigma\\rangle\\rangle$. The first equation uses $[d_\\sigma,Un_{d\\uparrow}n_{d\\downarrow}]=Un_{d\\bar\\sigma}d_\\sigma$.",
+   "source": "Ex. 9.2; Sec. 9.3.1, Eqs. (9.28)-(9.31)"
+  },
+  {
+   "id": "ch09-H3",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Ex. 9.3. An STM tip sits over an adatom described by the Anderson model. The tip-to-atom tunneling is described by Eq. (8.65). Show that $dI/dV$ measures the adatom spectral function, and state its mean-field form.",
+   "solution": "Book Exercise 9.3. The tunneling current of Eq. (8.74) with a flat tip density of states gives $dI/dV\\propto A_d(-eV)$ (Eq. 8.77, for the book's $V=V_1-V_2$). In mean field (Sec. 9.3.2) the adatom spectral function is, for each spin, a Lorentzian of full width $\\Gamma$ centered at $\\omega=\\tilde\\varepsilon-\\mu+U\\langle n_{\\bar\\sigma}\\rangle$ (Eq. 9.42), so $dI/dV$ shows one peak per spin. Without magnetization the two peaks coincide.",
+   "source": "Ex. 9.3; Sec. 8.4.1; Sec. 9.3.2"
+  },
+  {
+   "id": "ch09-H4",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "From the self-consistency condition of Eq. (9.45) in the symmetric case $x=1/2$, find the condition for a magnetic solution with $\\langle n_\\uparrow\\rangle\\neq\\langle n_\\downarrow\\rangle$.",
+   "solution": "Put $\\langle n_{\\uparrow,\\downarrow}\\rangle=\\tfrac12\\pm\\delta$. Then $\\cot(\\pi\\langle n_\\uparrow\\rangle)=-\\tan(\\pi\\delta)$ and the right side is $(\\langle n_\\downarrow\\rangle-\\tfrac12)y=-y\\delta$, so\n$$\\tan(\\pi\\delta)=y\\,\\delta.$$\nThe ratio $\\tan(\\pi\\delta)/\\delta$ rises monotonically from $\\pi$ at $\\delta\\to0$ to infinity at $\\delta\\to\\tfrac12$. A non-zero root therefore exists exactly when $y>\\pi$, that is $U>\\pi\\Gamma/2$.",
+   "source": "Sec. 9.3.2, Eq. (9.45)"
+  }
+ ]
+}

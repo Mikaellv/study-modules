@@ -13,4 +13,5 @@ for f in git-basics.html sql-basics.html; do
     printf '\n</body>\n</html>\n'
   } > "docs/$f"
 done
-echo "Built docs/git-basics.html and docs/sql-basics.html"
+python3 scripts/build_exam.py
+echo "Built docs/git-basics.html, docs/sql-basics.html and docs/exam-prep.html"

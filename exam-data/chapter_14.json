@@ -1,0 +1,221 @@
+{
+ "chapter": "14",
+ "title": "The interacting electron gas",
+ "scope": "Secs. 14.1-14.5 (Eqs. 14.1-14.81). The summary in Sec. 14.6 is left out.",
+ "sections": [
+  {
+   "id": "14.1",
+   "title": "The self-energy in the random phase approximation",
+   "keyResults": []
+  },
+  {
+   "id": "14.1.1",
+   "title": "The density dependence of self-energy diagrams",
+   "keyResults": []
+  },
+  {
+   "id": "14.1.2",
+   "title": "The divergence number of self-energy diagrams",
+   "keyResults": []
+  },
+  {
+   "id": "14.1.3",
+   "title": "RPA resummation of the self-energy",
+   "keyResults": [
+    {
+     "name": "RPA self-energy",
+     "latex": "$$\\Sigma^{\\rm RPA}_\\sigma(k,ik_n)=-\\frac1\\beta\\sum_{iq_n}\\frac1{\\mathcal V}\\sum_q W^{\\rm RPA}(q,iq_n)\\,\\mathcal G_0(k+q,ik_n+iq_n)$$",
+     "note": "Eqs. (14.11)-(14.14); Fock form with the bare W replaced by the RPA interaction."
+    }
+   ]
+  },
+  {
+   "id": "14.2",
+   "title": "The renormalized Coulomb interaction in RPA",
+   "keyResults": [
+    {
+     "name": "RPA-renormalized interaction",
+     "latex": "$$W^{\\rm RPA}(q,iq_n)=\\frac{W(q)}{1-W(q)\\,\\chi_0(q,iq_n)}$$",
+     "note": "Eqs. (14.15)-(14.16); from the Dyson equation for the interaction."
+    },
+    {
+     "name": "Static long-wavelength screening",
+     "latex": "$$W^{\\rm RPA}(q,0)=\\frac{e^2}{\\epsilon_0\\,(q^2+k_s^2)},\\qquad k_s^2=-\\frac{e^2}{\\epsilon_0}\\chi_0(0,0)$$",
+     "note": "Eq. (14.18); the Thomas-Fermi wavenumber k_s is defined in Eq. (14.19), and W^RPA(0,0) = -1/chi_0(0,0) is Eq. (14.20)."
+    }
+   ]
+  },
+  {
+   "id": "14.2.1",
+   "title": "Calculation of the pair-bubble",
+   "keyResults": [
+    {
+     "name": "Pair bubble",
+     "latex": "$$\\chi_0(q,iq_n)=2\\int\\frac{d\\mathbf p}{(2\\pi)^3}\\,\\frac{n_F(\\xi_{\\mathbf p})-n_F(\\xi_{\\mathbf p+\\mathbf q})}{iq_n+\\xi_{\\mathbf p}-\\xi_{\\mathbf p+\\mathbf q}}$$",
+     "note": "Eq. (14.21); the factor 2 is the spin sum, from Eq. (11.88)."
+    },
+    {
+     "name": "Screening wavenumber",
+     "latex": "$$k_s^2=\\frac{e^2}{\\epsilon_0}\\,d(\\varepsilon_F)=\\frac{4}{\\pi}\\frac{k_F}{a_0}$$",
+     "note": "Eq. (14.24); d(eps_F) is the density of states at the Fermi level."
+    }
+   ]
+  },
+  {
+   "id": "14.2.2",
+   "title": "The electron-hole pair interpretation of RPA",
+   "keyResults": [
+    {
+     "name": "Imaginary part of the pair bubble",
+     "latex": "$$\\mathrm{Im}\\,\\chi^R_0(q,\\omega)\\neq0\\ \\text{only inside the particle-hole continuum}$$",
+     "note": "Eq. (14.30); the RPA screening can only absorb energy by creating electron-hole pairs."
+    }
+   ]
+  },
+  {
+   "id": "14.3",
+   "title": "The groundstate energy of the electron gas",
+   "keyResults": [
+    {
+     "name": "Coupling-constant integration",
+     "latex": "$$E=E_0+\\int_0^1\\frac{d\\lambda}{\\lambda}\\,\\langle\\lambda W\\rangle_\\lambda$$",
+     "note": "Eqs. (14.33)-(14.41); standard form of the coupling-constant integral used in the RPA treatment."
+    },
+    {
+     "name": "Ground-state energy per particle",
+     "latex": "$$\\frac{E}{N}=\\frac{2.211}{r_s^2}-\\frac{0.916}{r_s}+\\Big(0.0622\\ln r_s-0.094\\Big)\\ \\text{Ry}$$",
+     "note": "Eq. (14.45); the constant is -0.094 Ry (checked against the book, including the summary of Sec. 14.6)."
+    }
+   ]
+  },
+  {
+   "id": "14.4",
+   "title": "The dielectric function and screening",
+   "keyResults": [
+    {
+     "name": "RPA dielectric function",
+     "latex": "$$\\epsilon_{\\rm RPA}(q,iq_n)=1-\\frac{e^2}{\\epsilon_0 q^2}\\,\\chi_0(q,iq_n)$$",
+     "note": "Eq. (14.67); screened impurity potential follows in Eqs. (14.68)-(14.70)."
+    }
+   ]
+  },
+  {
+   "id": "14.5",
+   "title": "Plasma oscillations and Landau damping",
+   "keyResults": [
+    {
+     "name": "High-frequency long-wavelength dielectric function",
+     "latex": "$$\\epsilon_{\\rm RPA}(q,\\omega)\\approx1-\\frac{\\omega_p^2}{\\omega^2}\\Big[1+\\frac35\\Big(\\frac{qv_F}{\\omega}\\Big)^2\\Big]$$",
+     "note": "Eq. (14.76); the limit is taken in Eqs. (14.71)-(14.75)."
+    }
+   ]
+  },
+  {
+   "id": "14.5.1",
+   "title": "Plasma oscillations and plasmons",
+   "keyResults": [
+    {
+     "name": "Plasma frequency",
+     "latex": "$$\\omega_p=\\sqrt{\\frac{ne^2}{m\\epsilon_0}}$$",
+     "note": "Eq. (14.77)."
+    },
+    {
+     "name": "Plasmon dispersion",
+     "latex": "$$\\omega(q)\\approx\\omega_p\\Big(1+\\frac{3}{10}\\,\\frac{q^2v_F^2}{\\omega_p^2}\\Big)$$",
+     "note": "Eq. (14.78); the mode lies outside the particle-hole continuum, so it is undamped."
+    }
+   ]
+  },
+  {
+   "id": "14.5.2",
+   "title": "Landau damping",
+   "keyResults": [
+    {
+     "name": "Damping condition",
+     "latex": "$$\\mathrm{Im}\\,\\chi^R_0(q,\\omega)\\neq0\\quad\\text{on the plasmon branch}$$",
+     "note": "Eqs. (14.79)-(14.80); a pole with real frequency needs Im chi_0 = 0 at that point."
+    }
+   ]
+  }
+ ],
+ "questions": [
+  {
+   "id": "ch14-E1",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "What is the plasma frequency of a three-dimensional electron gas of density $n$ and effective mass $m$?",
+   "choices": [
+    "$ne^2/(m\\epsilon_0)$",
+    "$\\sqrt{ne^2/\\epsilon_0}$",
+    "$v_Fk_F$",
+    "$\\sqrt{ne^2/(m\\epsilon_0)}$"
+   ],
+   "answerIndex": 3,
+   "solution": "The plasma frequency is $\\omega_p=\\sqrt{ne^2/(m\\epsilon_0)}$ (Eq. 14.77). The first option is $\\omega_p^2$, not $\\omega_p$. The second has no mass. The third is a product of a velocity and a wave number.",
+   "source": "Sec. 14.5.1, Eq. (14.77)"
+  },
+  {
+   "id": "ch14-E2",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "At high density, why are the bubble-chain diagrams the leading terms in the self-energy?",
+   "solution": "At high density ($r_s\\to0$) the low-order diagrams dominate, because the scaling of each diagram with $k_F$, equivalently $r_s$, makes a diagram of order $n$ larger than one of higher order $n'>n$ (Eqs. 14.6-14.7). Within a given order the most divergent diagram dominates: the divergence number $\\delta$ counts the interaction lines that carry the same small momentum, and the diagram with $\\delta=n$ diverges most strongly as $q\\to0$ (Eqs. 14.8-14.9). That diagram at each order is a chain of pair bubbles (Eq. 14.10). Summing these chains is the RPA resummation of Eqs. (14.11)-(14.14).",
+   "source": "Secs. 14.1.1-14.1.3, Eqs. (14.6)-(14.11)"
+  },
+  {
+   "id": "ch14-E3",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "Write the RPA interaction as a series in the bare interaction $W$ and the pair bubble $\\chi_0$. Give its static long-wavelength form with the Thomas-Fermi wavenumber $k_s$.",
+   "solution": "$$W^{\\rm RPA}=W+W\\chi_0W+W\\chi_0W\\chi_0W+\\cdots=\\frac{W}{1-W\\chi_0}\\quad\\text{(Eqs. 14.15-14.16)}.$$\nFor $q\\to0$ and $\\omega=0$, with $W=e^2/(\\epsilon_0q^2)$,\n$$W^{\\rm RPA}(q,0)=\\frac{e^2}{\\epsilon_0(q^2+k_s^2)},\\qquad k_s^2=\\frac{e^2}{\\epsilon_0}d(\\varepsilon_F)\\quad\\text{(Eqs. 14.18-14.19, 14.24)}.$$",
+   "source": "Sec. 14.2, Eqs. (14.15)-(14.18), (14.24)"
+  },
+  {
+   "id": "ch14-E4",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "Landau damping of a plasmon occurs when:",
+   "choices": [
+    "$\\omega>\\omega_p$",
+    "the plasmon dispersion enters the particle-hole continuum, where $\\mathrm{Im}\\,\\chi^R_0\\neq0$",
+    "$T=0$",
+    "$q=0$"
+   ],
+   "answerIndex": 1,
+   "solution": "A pole of Eq. (14.79) lies on the real axis only where $\\mathrm{Im}\\,\\chi^R_0=0$. Where the plasmon enters the particle-hole continuum, the pole broadens into a Lorentzian and the mode is damped (Eqs. 14.79-14.80; Eq. 14.30 for the continuum). The conditions in the other options are not the criterion.",
+   "source": "Sec. 14.5.2, Eqs. (14.79)-(14.80); Sec. 14.2.1, Eq. (14.30)"
+  },
+  {
+   "id": "ch14-H1",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Book Exercise 14.1. Classical derivation of $\\omega_p$. Displace a slab of electrons of density $n$ by a distance $\\xi$ perpendicular to its surfaces, against the uniform positive background. Find the restoring field and the frequency of the oscillation.",
+   "solution": "The displacement leaves a surface charge $\\pm ne\\xi$ on the two faces of the slab. Each face contributes $ne\\xi/(2\\epsilon_0)$ to the field, so the field inside is $E=ne\\xi/\\epsilon_0$. Each electron feels a force $-eE$, so\n$$m\\ddot\\xi=-\\frac{ne^2}{\\epsilon_0}\\,\\xi\\quad\\Rightarrow\\quad \\omega_p=\\sqrt{\\frac{ne^2}{m\\epsilon_0}}.$$\nNo $\\hbar$ appears, which is the classical result of Eq. (14.77).",
+   "source": "Ex. 14.1; Sec. 14.5.1, Eq. (14.77)"
+  },
+  {
+   "id": "ch14-H2",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Book Exercise 14.2. A two-dimensional electron gas in GaAs ($m^*=0.067m$, $\\varepsilon_r=13$). Show that the two-dimensional Fourier transform of the Coulomb interaction $\\frac{e^2}{4\\pi\\varepsilon_r\\epsilon_0 r}$ is $W^{2D}(q)=\\dfrac{e^2}{2\\varepsilon_r\\epsilon_0 q}$.",
+   "solution": "Use $\\int d^2r\\,e^{-i\\mathbf q\\cdot\\mathbf r}f(r)=2\\pi\\int_0^\\infty dr\\,r\\,f(r)J_0(qr)$. For $f=e^2/(4\\pi\\varepsilon_r\\epsilon_0r)$,\n$$W^{2D}(q)=\\frac{e^2}{4\\pi\\varepsilon_r\\epsilon_0}\\,2\\pi\\int_0^\\infty dr\\,J_0(qr)=\\frac{e^2}{2\\varepsilon_r\\epsilon_0}\\cdot\\frac1q=\\frac{e^2}{2\\varepsilon_r\\epsilon_0\\,q},$$\nusing $\\int_0^\\infty J_0(qr)\\,dr=1/q$ (the hint $\\int_0^\\pi d\\theta\\cos(\\alpha\\cos\\theta)=\\pi J_0(\\alpha)$ gives the angular integral).",
+   "source": "Ex. 14.2; Sec. 1.4.4; Sec. 2.3.2"
+  },
+  {
+   "id": "ch14-H3",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Book Exercise 14.3 (homework). For a two-dimensional gas use $\\varepsilon_{\\rm RPA}=1-W^{2D}(q)\\chi^{2D}_0(q,\\omega)$ with the high-frequency limit $\\chi^{2D}_0\\approx n_{2D}q^2/(m^*\\omega^2)$. Find the plasmon dispersion and show that it is gapless, with $k_F=\\sqrt{2\\pi n_{2D}}$.",
+   "solution": "Setting $\\varepsilon_{\\rm RPA}=0$ gives $1=W^{2D}(q)\\,n_{2D}q^2/(m^*\\omega^2)$. Inserting $W^{2D}(q)=e^2/(2\\varepsilon_r\\epsilon_0q)$,\n$$\\omega^2(q)=\\frac{n_{2D}e^2}{2\\varepsilon_r\\epsilon_0m^*}\\,q\\quad\\Rightarrow\\quad \\omega(q)=\\sqrt{\\frac{n_{2D}e^2\\,q}{2\\varepsilon_r\\epsilon_0m^*}}\\propto\\sqrt q.$$\nThe mode has no gap at $q=0$, unlike the three-dimensional plasmon of Eq. (14.78). The Fermi wavenumber follows from $n_{2D}=2\\cdot\\pi k_F^2/(2\\pi)^2=k_F^2/(2\\pi)$, so $k_F=\\sqrt{2\\pi n_{2D}}$.",
+   "source": "Ex. 14.3; Sec. 14.5, Eqs. (14.71)-(14.78)"
+  },
+  {
+   "id": "ch14-H4",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Book Exercise 14.4. For the two-dimensional gas take the static pair bubble at small $q$ as $\\chi^{2D}_0(q\\to0,0)=-m^*/(\\pi\\hbar^2)$ (both spins). Show that $W^{2D}_{\\rm RPA}(q,0)=\\dfrac{e^2}{2\\varepsilon_r\\epsilon_0\\,(q+k_s^{2D})}$ with $k_s^{2D}=2/a_0^*$ and $a_0^*=4\\pi\\varepsilon_r\\epsilon_0\\hbar^2/(m^*e^2)$.",
+   "solution": "From Eq. (14.16) with $W^{2D}=e^2/(2\\varepsilon_r\\epsilon_0q)$,\n$$W^{2D}_{\\rm RPA}=\\frac{W^{2D}}{1-W^{2D}\\chi_0^{2D}}=\\frac{W^{2D}}{1+W^{2D}d^{2D}},\\qquad d^{2D}=\\frac{m^*}{\\pi\\hbar^2}.$$\nMultiplying numerator and denominator by $2\\varepsilon_r\\epsilon_0q$ gives $e^2/[2\\varepsilon_r\\epsilon_0(q+k_s^{2D})]$ with\n$$k_s^{2D}=\\frac{e^2d^{2D}}{2\\varepsilon_r\\epsilon_0}=\\frac{e^2m^*}{2\\pi\\varepsilon_r\\epsilon_0\\hbar^2}=\\frac{2}{a_0^*}.$$\nThe last step uses $a_0^*=4\\pi\\varepsilon_r\\epsilon_0\\hbar^2/(m^*e^2)$.",
+   "source": "Ex. 14.4; Sec. 14.2, Eqs. (14.16)-(14.24)"
+  }
+ ]
+}

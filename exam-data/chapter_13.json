@@ -1,0 +1,187 @@
+{
+ "chapter": "13",
+ "title": "Feynman diagrams and pair interactions",
+ "scope": "Chapter introduction and Secs. 13.1-13.5 (Eqs. 13.1-13.37). Secs. 13.6 and 13.7 are out of scope.",
+ "sections": [
+  {
+   "id": "intro",
+   "title": "Pair-interaction Hamiltonian (chapter introduction)",
+   "keyResults": [
+    {
+     "name": "Pair-interaction Hamiltonian",
+     "latex": "$$W=\\frac12\\int\\Psi^\\dagger\\Psi^\\dagger\\,W\\,\\Psi\\Psi$$",
+     "note": "Eqs. (13.1)-(13.3); W(1,2) is the pair potential."
+    }
+   ]
+  },
+  {
+   "id": "13.1",
+   "title": "The perturbation series for G",
+   "keyResults": [
+    {
+     "name": "Perturbation series for the Green's function",
+     "latex": "$$\\mathcal G(b,a)=-\\frac{\\langle T_\\tau\\,\\hat U(\\beta,0)\\,\\Psi(b)\\Psi^\\dagger(a)\\rangle_0}{\\langle \\hat U(\\beta,0)\\rangle_0}$$",
+     "note": "Eq. (13.7); the denominator is the vacuum sum that cancels in Sec. 13.2.3."
+    }
+   ]
+  },
+  {
+   "id": "13.2",
+   "title": "The Feynman rules for pair interactions",
+   "keyResults": [
+    {
+     "name": "Closed fermion loops",
+     "latex": "$$\\text{each diagram is multiplied by }(-1)^F,\\quad F=\\text{number of closed fermion loops}$$",
+     "note": "Eq. (13.18) and Sec. 13.2.1; the rules are stated for topologically distinct connected diagrams."
+    }
+   ]
+  },
+  {
+   "id": "13.2.1",
+   "title": "Feynman rules for the denominator of G",
+   "keyResults": []
+  },
+  {
+   "id": "13.2.2",
+   "title": "Feynman rules for the numerator of G",
+   "keyResults": []
+  },
+  {
+   "id": "13.2.3",
+   "title": "The cancellation of disconnected Feynman diagrams",
+   "keyResults": [
+    {
+     "name": "Only connected diagrams remain",
+     "latex": "$$\\mathcal G(b,a)=\\text{sum of connected, topologically distinct diagrams}$$",
+     "note": "Eqs. (13.15)-(13.17); the denominator cancels all disconnected parts of the numerator."
+    }
+   ]
+  },
+  {
+   "id": "13.3",
+   "title": "Self-energy and Dyson's equation",
+   "keyResults": [
+    {
+     "name": "Dyson equation with self-energy",
+     "latex": "$$\\mathcal G=\\mathcal G_0+\\mathcal G_0\\,\\Sigma\\,\\mathcal G$$",
+     "note": "Eqs. (13.21)-(13.22); Sigma is the sum of irreducible diagrams."
+    }
+   ]
+  },
+  {
+   "id": "13.4",
+   "title": "The Feynman rules in Fourier space",
+   "keyResults": [
+    {
+     "name": "Algebraic Dyson equation",
+     "latex": "$$\\mathcal G_\\sigma(k,ik_n)=\\frac{1}{ik_n-\\xi_k-\\Sigma_\\sigma(k,ik_n)}$$",
+     "note": "Eqs. (13.29)-(13.30); valid for a translation-invariant system."
+    }
+   ]
+  },
+  {
+   "id": "13.5",
+   "title": "Examples of how to evaluate Feynman diagrams",
+   "keyResults": []
+  },
+  {
+   "id": "13.5.1",
+   "title": "The Hartree self-energy diagram",
+   "keyResults": [
+    {
+     "name": "Hartree self-energy",
+     "latex": "$$\\Sigma^H_\\sigma=W(0)\\,\\frac{N}{\\mathcal V}$$",
+     "note": "Eq. (13.32); cancelled by the positive background in jellium."
+    }
+   ]
+  },
+  {
+   "id": "13.5.2",
+   "title": "The Fock self-energy diagram",
+   "keyResults": [
+    {
+     "name": "Fock self-energy",
+     "latex": "$$\\Sigma^F_\\sigma(k)=-\\int\\frac{d\\mathbf p}{(2\\pi)^3}\\,W(\\mathbf k-\\mathbf p)\\,n_F(\\xi_{\\mathbf p})$$",
+     "note": "Eq. (13.34); the internal spin equals the external spin, and there is no loop."
+    }
+   ]
+  },
+  {
+   "id": "13.5.3",
+   "title": "The pair-bubble self-energy diagram",
+   "keyResults": []
+  }
+ ],
+ "questions": [
+  {
+   "id": "ch13-E1",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "Each closed fermion loop in a diagram of the imaginary-time expansion contributes which factor?",
+   "choices": [
+    "$+1$",
+    "$-1$ per loop",
+    "$i$",
+    "$1/\\beta$"
+   ],
+   "answerIndex": 1,
+   "solution": "Fermion loops give $(-1)^F$ (Eq. 13.18, rule 5). The spin sum over a loop is a separate factor 2. The $1/\\beta$ factors come from the Matsubara sums over internal frequencies, not from the loop itself.",
+   "source": "Sec. 13.2, Eq. (13.18); Sec. 13.2.1"
+  },
+  {
+   "id": "ch13-E2",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "Explain why disconnected diagrams drop out of $\\mathcal G(b,a)$ in Eq. (13.7).",
+   "solution": "The numerator contains terms where the external vertices $a$ and $b$ connect to one piece, and other pieces are vacuum diagrams with no external line. The vacuum pieces are products of the same diagrams that appear in the denominator $\\langle\\hat U(\\beta,0)\\rangle_0$. The denominator divides out these products exactly, so only connected diagrams remain (Eqs. 13.15-13.17).",
+   "source": "Sec. 13.2.3, Eqs. (13.15)-(13.17)"
+  },
+  {
+   "id": "ch13-E3",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "Solve the Dyson equation $\\mathcal G=\\mathcal G_0+\\mathcal G_0\\Sigma\\mathcal G$ in Fourier space for $\\mathcal G$ in terms of $\\Sigma$, with $\\mathcal G_0(k,ik_n)=1/(ik_n-\\xi_k)$.",
+   "solution": "Write the equation as $\\mathcal G^{-1}=\\mathcal G_0^{-1}-\\Sigma$. Then\n$$\\mathcal G(k,ik_n)=\\frac{1}{\\mathcal G_0^{-1}-\\Sigma}=\\frac{1}{ik_n-\\xi_k-\\Sigma(k,ik_n)}.$$",
+   "source": "Sec. 13.4, Eqs. (13.29)-(13.30)"
+  },
+  {
+   "id": "ch13-E4",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "In jellium with the Coulomb interaction, the Hartree self-energy is $W(0)N/\\mathcal V$. What happens to it?",
+   "choices": [
+    "It is momentum dependent",
+    "It equals the Fock term",
+    "It is cancelled by the positive background, which removes the $q=0$ term",
+    "It diverges and is not cancelled"
+   ],
+   "answerIndex": 2,
+   "solution": "The $q=0$ Hartree term is cancelled exactly by the uniform positive background of the jellium model (Eq. 2.34), so $\\Sigma^H$ vanishes. The Fock term is momentum dependent, so the first two options describe the Fock term, not the Hartree term.",
+   "source": "Sec. 13.5.1, Eq. (13.32); Sec. 2.2, Eq. (2.34)"
+  },
+  {
+   "id": "ch13-H1",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Book Exercise 13.1. Evaluate the Matsubara sum $\\frac1\\beta\\sum_{ip_n}\\frac{e^{ip_n0^+}}{ip_n-\\xi_p}$ with Eq. (11.57). Use it for the Fock self-energy $\\Sigma^F_\\sigma$ of Eq. (13.33) and the pair bubble $\\Pi_0$ of Eq. (13.37), and check that the Hartree term gives $\\Sigma^H_\\sigma=W(0)N/\\mathcal V$.",
+   "solution": "1. By Eq. (11.57) with $g(z)=1/(z-\\xi_p)$, the sum equals $n_F(\\xi_p)$, as in ch11-H1. The factor $e^{ip_n0^+}$ is the same-time convergence factor of rule (6) in Eq. (13.27).\n2. Fock (no fermion loop, $F=0$, internal spin fixed to $\\sigma$, interaction line $-W(\\mathbf k-\\mathbf p)$): $\\Sigma^F_\\sigma(k)=-\\int\\frac{d\\mathbf p}{(2\\pi)^3}W(\\mathbf k-\\mathbf p)\\,\\frac1\\beta\\sum_{ip_n}\\frac{e^{ip_n\\eta}}{ip_n-\\xi_p}=-\\int\\frac{d\\mathbf p}{(2\\pi)^3}W(\\mathbf k-\\mathbf p)\\,n_F(\\xi_p)$.\n3. Hartree ($F=1$ gives $-1$, the interaction line gives $-W(0)$, the spin sum gives 2): $\\Sigma^H_\\sigma=2W(0)\\int\\frac{d\\mathbf p}{(2\\pi)^3}n_F(\\xi_p)=W(0)N/\\mathcal V$.\n4. Pair bubble: with $F=1$ and spin sum 2, $\\Pi_0(q,iq_n)=-2\\int\\frac{d\\mathbf p}{(2\\pi)^3}\\frac1\\beta\\sum_{ip_n}\\frac{1}{(ip_n+iq_n-\\xi_{p+q})(ip_n-\\xi_p)}$. The poles of $g(z)$ are $z=\\xi_p$ and $z=\\xi_{p+q}-iq_n$, and $n_F(\\xi_{p+q}-iq_n)=n_F(\\xi_{p+q})$ for bosonic $iq_n$. Eq. (11.57) gives\n$$\\Pi_0(q,iq_n)=-2\\int\\frac{d\\mathbf p}{(2\\pi)^3}\\frac{n_F(\\xi_p)-n_F(\\xi_{p+q})}{iq_n+\\xi_p-\\xi_{p+q}}=-\\chi_0(q,iq_n),$$\nwhich is Eq. (14.21) up to the sign convention $\\chi_0\\equiv-\\Pi_0$ of Eq. (14.12).",
+   "source": "Ex. 13.1; Sec. 13.5, Eqs. (13.32)-(13.34), (13.37); Eq. (11.57)"
+  },
+  {
+   "id": "ch13-H2",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Book Exercise 13.2. Expand the numerator and denominator of $\\mathcal G(b,a)$ in Eq. (13.7) to second order in $W$. Show that the disconnected pieces cancel and that $\\mathcal G=\\mathcal G_0+\\mathcal N_1^c+\\mathcal N_2^c+O(W^3)$, where $\\mathcal N^c_n$ are the connected $n$-th order contributions.",
+   "solution": "Write the denominator as $D=1+D_1+D_2+\\cdots$, where $D_n$ are the vacuum diagrams of order $n$ (Eq. 13.14). Every numerator diagram factorizes into a part connected to the external points $a$ and $b$ times a vacuum part (Eqs. 13.15-13.16). Summing all vacuum parts of every order gives the same series $D$, so\n$$N=(\\mathcal G_0+N_1^c+N_2^c+\\cdots)\\,(1+D_1+D_2+\\cdots),$$\nwhere $N^c_n$ is the connected $n$-th order contribution. Through second order,\n$$N=\\mathcal G_0(1+D_1+D_2)+N_1^c(1+D_1)+N_2^c+O(W^3).$$\nThe term $N_1^cD_1$ is a connected first-order piece times a first-order vacuum loop. Dividing by $D$ gives\n$$\\mathcal G=\\frac ND=\\mathcal G_0+N_1^c+N_2^c+O(W^3),$$\nbecause $\\mathcal G_0(1+D_1+D_2)/D=\\mathcal G_0$ and $[N_1^c(1+D_1)+N_2^c]/(1+D_1+\\cdots)=N_1^c+N_2^c+O(W^3)$. Only connected diagrams remain. The all-orders version is the combinatorial argument of Eqs. (13.19)-(13.20).",
+   "source": "Ex. 13.2; Sec. 13.2.3, Eqs. (13.15)-(13.20)"
+  },
+  {
+   "id": "ch13-H3",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Book Exercise 13.3 (homework). For the Anderson model of Eqs. (9.23)-(9.26), derive the mean-field Dyson equation diagrammatically. Show that $\\mathcal G_{d\\sigma}(ik_n)=\\dfrac{1}{ik_n-(\\varepsilon_d-\\mu)-U\\langle n_{\\bar\\sigma}\\rangle-\\Sigma_{\\rm hyb}(ik_n)}$, with $\\Sigma_{\\rm hyb}(ik_n)=\\sum_k |t_k|^2/(ik_n-\\xi_k)$, $\\xi_k=\\varepsilon_k-\\mu$.",
+   "solution": "1. The hybridization vertices $t_k$ connect the dot line to the lead line. Two such vertices, with the lead propagator between them, form the hybridization self-energy $\\Sigma_{\\rm hyb}(ik_n)=\\sum_k |t_k|^2\\,\\mathcal G_0(k,ik_n)=\\sum_k |t_k|^2/(ik_n-\\xi_k)$.\n2. The term $Un_{d\\uparrow}n_{d\\downarrow}$ in mean field gives a constant shift $U\\langle n_{\\bar\\sigma}\\rangle$ of the dot level $\\varepsilon_d-\\mu$. It has no internal momentum and adds to the self-energy as a constant.\n3. Summing the geometric series of Dyson's equation (13.29) gives the stated $\\mathcal G_{d\\sigma}$. This is the diagrammatic version of Eqs. (9.37)-(9.38).",
+   "source": "Ex. 13.3; Sec. 13.3-13.4; Sec. 9.3.2, Eqs. (9.37)-(9.38)"
+  }
+ ]
+}

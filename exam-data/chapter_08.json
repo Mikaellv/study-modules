@@ -1,0 +1,257 @@
+{
+ "chapter": 8,
+ "title": "Green's functions",
+ "scope": "Sec. 8.1 (classical Green's functions), 8.2 and 8.2.1 (one-particle Green's function, S-matrix link), 8.3 (many-body single-particle functions, spectral function, broadening), 8.4.1 (tunneling spectroscopy), 8.5 (density response and Lindhard function). Summary omitted.",
+ "sections": [
+  {
+   "id": "8.1",
+   "title": "\"Classical\" Green's functions",
+   "keyResults": [
+    {
+     "name": "Coulomb potential as Green's integral",
+     "latex": "$$\\phi(\\mathbf r)=\\frac{1}{4\\pi\\varepsilon_0}\\int d\\mathbf r'\\,\\frac{\\rho_e(\\mathbf r')}{|\\mathbf r'-\\mathbf r|}$$",
+     "note": "Eq. (8.6); a Poisson-type solution built from the free Green's function, Eqs. (8.1)-(8.3)."
+    }
+   ]
+  },
+  {
+   "id": "8.2",
+   "title": "Green's function for the one-particle Schrodinger equation",
+   "keyResults": [
+    {
+     "name": "Free Green's function equation",
+     "latex": "$$(E-H_0)\\,G_0(\\mathbf r,\\mathbf r',E)=\\delta(\\mathbf r-\\mathbf r')$$",
+     "note": "Eq. (8.8); sign convention as printed in the book, with the operator acting on the first argument."
+    },
+    {
+     "name": "Dyson equation",
+     "latex": "$$G = G_0 + G_0\\,V\\,G$$",
+     "note": "Eq. (8.20); iteration gives the series in Eq. (8.18)."
+    }
+   ]
+  },
+  {
+   "id": "8.2.1",
+   "title": "Example: from the S-matrix to the Green's function",
+   "keyResults": [
+    {
+     "name": "Green's function from S-matrix",
+     "latex": "$$G^R(x,x',E)=t(E)\\,G^R_0(x,x',E)\\quad (x'<0,\\; x>W)$$",
+     "note": "Eq. (8.27); in 1D with hbar = 1, G^R_0 = -(im/k) e^{ik(x-x')} for free motion."
+    }
+   ]
+  },
+  {
+   "id": "8.3",
+   "title": "Single-particle Green's functions of many-body systems",
+   "keyResults": []
+  },
+  {
+   "id": "8.3.1",
+   "title": "Green's function of translation-invariant systems",
+   "keyResults": [
+    {
+     "name": "Momentum diagonal Green's function",
+     "latex": "$$G(\\mathbf k,\\mathbf k') = \\delta_{\\mathbf k\\mathbf k'}\\,G(\\mathbf k)$$",
+     "note": "Eqs. (8.35)-(8.36); follows from translation invariance."
+    }
+   ]
+  },
+  {
+   "id": "8.3.2",
+   "title": "Green's function of free electrons",
+   "keyResults": [
+    {
+     "name": "Free retarded Green's function",
+     "latex": "$$G^R_0(k\\sigma,\\omega)=\\frac{1}{\\omega-\\xi_k+i\\eta}$$",
+     "note": "Eqs. (8.41c) and (8.55); time form -i theta(t) e^{-i xi_k t}."
+    },
+    {
+     "name": "Free greater Green's function",
+     "latex": "$$G^>_0(k\\sigma,\\omega)=-2\\pi i\\,\\big(1-n_F(\\xi_k)\\big)\\,\\delta(\\omega-\\xi_k)$$",
+     "note": "Eq. (8.43); the lesser function is G^<_0(k sigma, omega) = +2 pi i n_F(xi_k) delta(omega - xi_k), with the opposite sign and n_F in place of 1-n_F (Eq. 8.41b)."
+    }
+   ]
+  },
+  {
+   "id": "8.3.3",
+   "title": "The Lehmann representation",
+   "keyResults": [
+    {
+     "name": "Lehmann representation",
+     "latex": "$$G^R(\\nu,\\omega)=\\frac{1}{Z}\\sum_{n,n'}\\frac{\\big(e^{-\\beta E_n}+e^{-\\beta E_{n'}}\\big)\\,|\\langle n'|c^\\dagger_\\nu|n\\rangle|^2}{\\omega-(E_{n'}-E_n)+i\\eta}$$",
+     "note": "Eqs. (8.45)-(8.48); poles at exact excitation energies E_{n'}-E_n. Checked against the denominators and the weights e^{-beta E_n}+e^{-beta E_n'} printed in Eq. (8.48)."
+    }
+   ]
+  },
+  {
+   "id": "8.3.4",
+   "title": "The spectral function",
+   "keyResults": [
+    {
+     "name": "Spectral function",
+     "latex": "$$A(\\nu,\\omega)=-2\\,\\mathrm{Im}\\,G^R(\\nu,\\omega)$$",
+     "note": "Eq. (8.50) (definition); Eq. (8.49) is the Lehmann form of 2 Im G^R."
+    },
+    {
+     "name": "Greater and lesser functions",
+     "latex": "$$iG^>(\\nu,\\omega)=A(\\nu,\\omega)\\big[1-n_F(\\omega)\\big],\\qquad iG^<(\\nu,\\omega)=-A(\\nu,\\omega)\\,n_F(\\omega)$$",
+     "note": "Eqs. (8.51a,b) for fermions, with G^< = +i<c^dagger c> as in Eq. (8.31b). The minus sign in iG^< is fixed by Eqs. (8.41b), (8.62) and by G^R = theta(t)(G^> - G^<). The boson analogue (Ex. 8.4) has iG^< = +A n_B."
+    },
+    {
+     "name": "Spectral sum rule",
+     "latex": "$$\\int_{-\\infty}^{\\infty}\\frac{d\\omega}{2\\pi}\\,A(\\nu,\\omega)=1$$",
+     "note": "Eq. (8.59); from the equal-time anticommutator."
+    },
+    {
+     "name": "Occupation from spectral function",
+     "latex": "$$\\langle n_\\nu\\rangle=\\int\\frac{d\\omega}{2\\pi}\\,A(\\nu,\\omega)\\,n_F(\\omega)$$",
+     "note": "Eq. (8.62); follows from n = -iG^<(t=0) and iG^< = -A n_F."
+    },
+    {
+     "name": "Free spectral function",
+     "latex": "$$A_0(k\\sigma,\\omega)=2\\pi\\,\\delta(\\omega-\\xi_k)$$",
+     "note": "Eq. (8.56)."
+    }
+   ]
+  },
+  {
+   "id": "8.3.5",
+   "title": "Broadening of the spectral function",
+   "keyResults": [
+    {
+     "name": "Lorentzian broadening",
+     "latex": "$$A(\\nu,\\omega)=\\frac{2/\\tau}{(\\omega-\\xi_\\nu)^2+(1/\\tau)^2}$$",
+     "note": "Eqs. (8.63)-(8.64); from G^R(nu,t) proportional to e^{-i xi_nu t - t/tau}."
+    }
+   ]
+  },
+  {
+   "id": "8.4",
+   "title": "Measuring the single-particle spectral function",
+   "keyResults": []
+  },
+  {
+   "id": "8.4.1",
+   "title": "Tunneling spectroscopy",
+   "keyResults": [
+    {
+     "name": "Tunnel current",
+     "latex": "$$I_p=\\int\\frac{d\\omega}{2\\pi}\\sum_{\\nu\\mu}|T_{\\nu\\mu}|^2A_1(\\nu,\\omega)\\,A_2(\\mu,\\omega+eV)\\,\\big[n_F(\\omega+eV)-n_F(\\omega)\\big]$$",
+     "note": "Eq. (8.74), tunneling Hamiltonian Eq. (8.65), to lowest order in T_{nu mu} (Kubo, Eq. 8.68). A_2 is evaluated at omega+eV, the same shift as the Fermi function it multiplies; this is the form that gives Eq. (8.77).",
+     "checkerNote": "Overall sign/convention of I_p and V not legible in the md; the argument omega+eV of A_2 is consistent with Eqs. (8.75)-(8.77)."
+    },
+    {
+     "name": "Tunneling conductance",
+     "latex": "$$\\frac{dI}{dV}\\propto\\sum_\\nu A_1(\\nu,-eV)$$",
+     "note": "Eqs. (8.76)-(8.77); system 2 has a flat density of states, so -dn_F(omega+eV)/d omega tends to delta(omega+eV) at low temperature. The argument is -eV for the book's V = V_1 - V_2."
+    }
+   ]
+  },
+  {
+   "id": "8.5",
+   "title": "Two-particle correlation functions of many-body systems",
+   "keyResults": [
+    {
+     "name": "Lindhard function",
+     "latex": "$$\\chi^R_0(q,\\omega)=\\frac{1}{\\mathcal V}\\sum_{k\\sigma}\\frac{n_F(\\xi_k)-n_F(\\xi_{k+q})}{\\omega+\\xi_k-\\xi_{k+q}+i\\eta}$$",
+     "note": "Eq. (8.85); free-electron density response."
+    },
+    {
+     "name": "Dissipative part",
+     "latex": "$$\\mathrm{Im}\\,\\chi^R_0(q,\\omega)=-\\frac{\\pi}{\\mathcal V}\\sum_{k\\sigma}\\big[n_F(\\xi_k)-n_F(\\xi_{k+q})\\big]\\,\\delta(\\xi_k-\\xi_{k+q}+\\omega)$$",
+     "note": "Eq. (8.86); follows from the Lindhard form with the i eta prescription."
+    }
+   ]
+  }
+ ],
+ "questions": [
+  {
+   "id": "ch08-E1",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "The free-electron retarded Green's function $G^R_0(k,\\omega)$ is",
+   "choices": [
+    "$\\frac{1}{\\omega-\\xi_k+i\\eta}$",
+    "$\\frac{1}{\\omega-\\xi_k-i\\eta}$",
+    "$\\frac{1}{\\omega+\\xi_k+i\\eta}$",
+    "$2\\pi\\delta(\\omega-\\xi_k)$"
+   ],
+   "answerIndex": 0,
+   "solution": "Fourier transform $-i\\theta(t)e^{-i\\xi_k t}e^{-\\eta t}$ to get $1/(\\omega-\\xi_k+i\\eta)$. The $-i\\eta$ form is the advanced function, and $2\\pi\\delta(\\omega-\\xi_k)$ is the spectral function $A_0$, not $G^R_0$.",
+   "source": "Sec. 8.3.2, Eq. (8.41c); Sec. 8.3.4, Eq. (8.55)"
+  },
+  {
+   "id": "ch08-E2",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "Define the spectral function $A(\\nu,\\omega)$, state its sum rule, and give its value for free electrons.",
+   "solution": "$A(\\nu,\\omega)=-2\\,\\mathrm{Im}\\,G^R(\\nu,\\omega)$ (Eq. 8.50). The sum rule is $\\int\\frac{d\\omega}{2\\pi}A(\\nu,\\omega)=1$ (Eq. 8.59), which follows from the equal-time anticommutator. For free electrons $A_0(k\\sigma,\\omega)=2\\pi\\,\\delta(\\omega-\\xi_k)$ (Eq. 8.56).",
+   "source": "Sec. 8.3.4, Eqs. (8.50), (8.56), (8.59)"
+  },
+  {
+   "id": "ch08-E3",
+   "tier": "easy",
+   "type": "mc",
+   "prompt": "A Lorentzian spectral peak of half-width $1/\\tau$ in $A(\\nu,\\omega)=\\frac{2/\\tau}{(\\omega-\\xi_\\nu)^2+1/\\tau^2}$ means",
+   "choices": [
+    "infinite lifetime of the state",
+    "the quasiparticle decays with a lifetime of order $\\tau$",
+    "the temperature is $1/\\tau$",
+    "the occupation is $1/\\tau$"
+   ],
+   "answerIndex": 1,
+   "solution": "The retarded function decays as $e^{-t/\\tau}$ (Eq. 8.63), so the quasiparticle has lifetime of order $\\tau$. An infinite lifetime would give a delta peak, and the other choices mix units.",
+   "source": "Sec. 8.3.5, Eqs. (8.63)-(8.64)"
+  },
+  {
+   "id": "ch08-E4",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "What does a tunneling experiment between a metal and a sample measure at low temperature, and why?",
+   "solution": "At low temperature, with a flat density of states in the metal, $dI/dV\\propto\\sum_\\nu A_1(\\nu,-eV)$ (Eqs. 8.76-8.77; the sign of the argument follows the book's $V=V_1-V_2$). The derivative of the Fermi function tends to a delta function, so the measured curve is the sample's spectral function at energy $\\mp eV$ relative to the Fermi level. Sweeping $V$ scans the energy.",
+   "source": "Sec. 8.4.1, Eqs. (8.74)-(8.77)"
+  },
+  {
+   "id": "ch08-E5",
+   "tier": "easy",
+   "type": "free",
+   "prompt": "Ex. 8.8. Show that $G^A(\\nu,\\omega)=[G^R(\\nu,\\omega)]^*$ for a diagonal Green's function.",
+   "solution": "Book Exercise 8.8. For a diagonal function, $G^R(\\nu,t)=-i\\theta(t)\\langle\\{c_\\nu(t),c^\\dagger_\\nu\\}\\rangle$ and $G^A(\\nu,t)=i\\theta(-t)\\langle\\{c_\\nu(t),c^\\dagger_\\nu\\}\\rangle$ (Eq. 8.34 and its advanced partner). Take the complex conjugate of $G^A(\\nu,\\omega)=\\int dt\\,e^{i(\\omega-i\\eta)t}G^A(\\nu,t)$. Since $\\langle\\{c(t),c^\\dagger\\}\\rangle^*=\\langle\\{c,c^\\dagger(t)\\}\\rangle=\\langle\\{c(-t),c^\\dagger\\}\\rangle$ by time-translation invariance, the change of variable $t\\to-t$ turns the result into $\\int dt\\,e^{i(\\omega+i\\eta)t}G^R(\\nu,t)$. Hence $[G^A(\\nu,\\omega)]^*=G^R(\\nu,\\omega)$, equivalently $G^A=[G^R]^*$ (Eq. 8.53).",
+   "source": "Ex. 8.8; Sec. 8.3.3, Eqs. (8.34), (8.53)-(8.54)"
+  },
+  {
+   "id": "ch08-H1",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Ex. 8.5. Find the DC conductance of a perfect 1D wire from the Kubo formula of Sec. 6.3 with the method of Sec. 8.5. Use the current operator and the small-frequency limit of the response function.",
+   "solution": "Book Exercise 8.5. The 1D particle current operator is\n$$I_p(x)=\\frac{\\hbar}{mL}\\sum_{k q\\sigma}\\Big(k+\\frac q2\\Big)c^\\dagger_{k\\sigma}c_{k+q\\sigma}\\,e^{iqx}.$$\nThe method of Sec. 8.5 gives $\\Pi^R(x-x';t-t')$ as a sum over $k,q,\\sigma$ of $\\big(\\frac{\\hbar}{mL}(k+\\frac q2)\\big)^2e^{i(\\varepsilon_k-\\varepsilon_{k+q})(t-t')}\\,[n_F(\\varepsilon_k)-n_F(\\varepsilon_{k+q})]\\,e^{iq(x-x')}$. Set $x=x'$ and use $G=\\frac{ie^2}{\\omega}\\Pi^R(\\omega)$ (Eq. 6.30). At low frequency $\\mathrm{Im}\\,\\Pi^R$ is proportional to $\\omega\\sum(-\\partial n_F/\\partial\\varepsilon_k)\\,\\delta(\\varepsilon_k-\\varepsilon_{k+q})(k+q/2)^2$. Do the $q$-integral first and then take $\\omega\\to0$. The sum over $k$ then reduces to $\\int d\\varepsilon\\,(-\\partial n_F/\\partial\\varepsilon)$, which is 1 for $\\mu\\gg k_BT$. Each spin contributes $e^2/h$, so\n$$G=\\frac{2e^2}{h}.$$",
+   "source": "Ex. 8.5; Sec. 6.3, Eq. (6.30); Sec. 8.5, Eqs. (8.81)-(8.85)",
+   "checkerNote": "Cites Sec. 6.3 / Eq. (6.30), which lies outside chapters 7-10 (the exercise itself starts from it). The integrals leading to Eq. (E.8.8) are summarized, not reproduced."
+  },
+  {
+   "id": "ch08-H2",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Ex. 8.4. Show the boson analogues of the fermion relations in Eq. (8.51). That is, find $A$ in terms of $G^R$ and $iG^>$, $iG^<$ in terms of $A$ and $n_B$.",
+   "solution": "Book Exercise 8.4. Repeat the Lehmann steps with commutators in place of anticommutators. The result is\n$$A=-2\\,\\mathrm{Im}\\,G^R,\\qquad iG^>(\\nu,\\omega)=A(\\nu,\\omega)\\big[1+n_B(\\omega)\\big],\\qquad iG^<(\\nu,\\omega)=A(\\nu,\\omega)\\,n_B(\\omega).$$\nFor fermions the factor $1-n_F$ replaces $1+n_B$, and $iG^<=-A\\,n_F$ (Eq. 8.51).",
+   "source": "Ex. 8.4; Sec. 8.3.3, Eqs. (8.45)-(8.51)"
+  },
+  {
+   "id": "ch08-H3",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Ex. 8.6. A 2D electron gas occupies the strip $0<x<L$ with hard walls at $x=0$ and $x=L$. At $T=0$, find the density $n(x)$ as a function of distance from the left edge. State the period of the oscillations.",
+   "solution": "Book Exercise 8.6. Use standing waves $\\sqrt{2/L}\\sin(k_xx)$ in $x$ and plane waves in $y$, and fill all states with $k_x^2+k_y^2<k_F^2$: $n(x)=\\sum_\\nu|\\psi_\\nu(x)|^2\\langle c^\\dagger_\\nu c_\\nu\\rangle$. With the integral $\\int_0^{k_F}\\!ds\\sqrt{k_F^2-s^2}\\cos(2xs)=\\pi k_FJ_1(2k_Fx)/4x$ the result is the Friedel form\n$$n(x)=n_0\\left[1-\\frac{J_1(2k_Fx)}{k_Fx}\\right],\\qquad n_0=\\frac{k_F^2}{2\\pi}.$$\nThe oscillations have period $\\pi/k_F=\\lambda_F/2$ and decay as $x^{-3/2}$ away from the wall. Finite temperature damps them.",
+   "source": "Ex. 8.6; Sec. 8.3.4, Eq. (8.62)"
+  },
+  {
+   "id": "ch08-H4",
+   "tier": "hard",
+   "type": "free",
+   "prompt": "Ex. 8.7. Show Eq. (8.27): insert the 1D scattering eigenstates into the propagator and evaluate the $k$-integral by contours. Give $G^R(x,x',E)$ for $x'<0$ and $x>W$.",
+   "solution": "Book Exercise 8.7. Inserting the scattering eigenstates into Eq. (8.26) and using Eq. (7.13) gives, for $x'<0$ and $x>W$,\n$$G^R(x,x',E)=\\int_0^\\infty\\frac{dk}{2\\pi}\\frac{t_ke^{ik(x-x')}+[t'_k]^*e^{-ik(x-x')}}{E-k^2/2m+i\\eta}.$$\nFor the first term close the contour in the upper half plane (quarter circle); it picks up the pole at $k=\\sqrt{2mE}$. The second term has no pole inside its contour and vanishes. With $\\hbar=1$ the result is\n$$G^R(x,x',E)=-\\frac{im}{k}\\,t(E)\\,e^{ik(x-x')}.$$",
+   "source": "Ex. 8.7; Sec. 8.2.1, Eqs. (8.26)-(8.27); Sec. 7.1.3, Eq. (7.13)"
+  }
+ ]
+}
